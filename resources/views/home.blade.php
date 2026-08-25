@@ -1,0 +1,174 @@
+@php
+    $locale = app()->getLocale();
+    $dir    = $locale === 'ar' ? 'rtl' : 'ltr';
+@endphp
+<!DOCTYPE html>
+<html lang="{{ $locale }}" dir="{{ $dir }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ __('home.app_title') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/new-logo1.png') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 72px;
+        }
+    </style>
+</head>
+<body>
+
+{{-- <canvas id="bg-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0.65;"></canvas> --}}
+
+@include('partials.public_nav')
+
+<!-- MAIN CONTENT -->
+<div class="main-content" style="position:relative;z-index:10;">
+    <div class="hero-content">
+
+        <!-- CENTER LOGO & TEXT -->
+        <div class="logo-section-center">
+            <img src="{{ asset('images/new-logo1.png') }}" alt="أمر تم" class="main-logo">
+            <div class="logo-text-box">
+                <h2>{{ __('home.hero_title') }}</h2>
+                <p>{{ __('home.hero_desc') }}</p>
+            </div>
+        </div>
+
+        <!-- CARDS LAYOUT -->
+        <div class="cards-container">
+
+            <!-- RIGHT SIDE (2 CARDS) -->
+            <div class="cards-side">
+                <a href="/jobs" class="card-wrapper card-search">
+                    <div class="card-highlight"></div>
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="icon-box"><i class="fa fa-search"></i></div>
+                            <h3>{{ __('home.card_jobs_title') }}</h3>
+                        </div>
+                        <div class="card-back">
+                            <p>{{ __('home.card_jobs_desc') }}</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="{{ route('amrtm.index') }}" class="card-wrapper card-briefcase">
+                    <div class="card-highlight"></div>
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="icon-box"><i class="fa fa-layer-group"></i></div>
+                            <h3>{{ __('home.card_amr_title') }}</h3>
+                        </div>
+                        <div class="card-back">
+                            <p>{{ __('home.card_amr_desc') }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- CENTER (1 CARD) -->
+
+            <div class="cards-center">
+    <div class="card-placeholder"></div>
+</div>
+           <!-- <div class="cards-center">
+                <a href="/consultants" class="card-wrapper card-users">
+                    <div class="card-highlight"></div>
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="icon-box"><i class="fa fa-users"></i></div>
+                            <h3>{{ __('home.card_consult_title') }}</h3>
+                        </div>
+                        <div class="card-back">
+                            <p>{{ __('home.card_consult_desc') }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div> -->
+
+            <!-- LEFT SIDE (2 CARDS) -->
+            <div class="cards-side">
+                <a href="https://halls.amrtm.com.sa" class="card-wrapper card-home">
+                    <div class="card-highlight"></div>
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="icon-box"><i class="fa fa-home"></i></div>
+                            <h3>{{ __('home.card_halls_title') }}</h3>
+                        </div>
+                        <div class="card-back">
+                            <p>{{ __('home.card_halls_desc') }}</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/brands-auction" class="card-wrapper card-agency">
+                    <div class="card-highlight"></div>
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="icon-box"><i class="fa fa-store"></i></div>
+                            <h3>{{ __('home.card_agency_title') }}</h3>
+                        </div>
+                        <div class="card-back">
+                            <p>{{ __('home.card_agency_desc') }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<footer class="footer" style="position:relative;z-index:10;">
+    <div class="footer-bottom">
+        <p>{{ __('home.copyright', ['year' => date('Y')]) }}</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+<script>
+// (function(){
+//     const canvas = document.getElementById('bg-canvas');
+//     if (!canvas || !window.THREE) return;
+//     const W = window.innerWidth, H = window.innerHeight;
+//     const scene = new THREE.Scene();
+//     const camera = new THREE.PerspectiveCamera(60, W/H, 0.1, 1000);
+//     camera.position.z = 14;
+//     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+//     renderer.setSize(W, H); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+//     renderer.setClearColor(0x000000, 0);
+//     const COUNT = 120, geo = new THREE.BufferGeometry();
+//     const pos = new Float32Array(COUNT * 3), vel = [];
+//     for (let i = 0; i < COUNT; i++) {
+//         pos[i*3]=(Math.random()-.5)*28; pos[i*3+1]=(Math.random()-.5)*28; pos[i*3+2]=(Math.random()-.5)*4;
+//         vel.push({ x:(Math.random()-.5)*0.012, y:(Math.random()-.5)*0.012 });
+//     }
+//     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+//     scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ color:0x38bdf8, size:0.1, transparent:true, opacity:0.55 })));
+//     const MAX_L=350, lPos=new Float32Array(MAX_L*6), lGeo=new THREE.BufferGeometry();
+//     lGeo.setAttribute('position', new THREE.BufferAttribute(lPos, 3)); lGeo.setDrawRange(0,0);
+//     scene.add(new THREE.LineSegments(lGeo, new THREE.LineBasicMaterial({ color:0x7dd3fc, transparent:true, opacity:0.14 })));
+//     (function animate(){
+//         requestAnimationFrame(animate);
+//         for(let i=0;i<COUNT;i++){
+//             pos[i*3]+=vel[i].x; pos[i*3+1]+=vel[i].y;
+//             if(Math.abs(pos[i*3])>14)vel[i].x*=-1; if(Math.abs(pos[i*3+1])>14)vel[i].y*=-1;
+//         }
+//         geo.attributes.position.needsUpdate=true;
+//         let li=0;
+//         for(let i=0;i<COUNT&&li<MAX_L;i++) for(let j=i+1;j<COUNT&&li<MAX_L;j++){
+//             const dx=pos[i*3]-pos[j*3],dy=pos[i*3+1]-pos[j*3+1];
+//             if(Math.sqrt(dx*dx+dy*dy)<5.5){ lPos[li*6]=pos[i*3];lPos[li*6+1]=pos[i*3+1];lPos[li*6+2]=0;lPos[li*6+3]=pos[j*3];lPos[li*6+4]=pos[j*3+1];lPos[li*6+5]=0;li++; }
+//         }
+//         lGeo.setDrawRange(0,li*2); lGeo.attributes.position.needsUpdate=true;
+//         renderer.render(scene,camera);
+//     })();
+//     window.addEventListener('resize',()=>{ camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight); });
+// })();
+</script>
+</body>
+</html>

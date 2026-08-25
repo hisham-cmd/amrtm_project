@@ -1,0 +1,28 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('cart_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('cart_id')->constrained()->cascadeOnDelete();
+            $table->string('item_type');           // 'hall' or 'service'
+            $table->unsignedBigInteger('item_id'); // hall_id or partner_service_id
+            $table->string('label');               // Display name snapshot
+            $table->decimal('price_snapshot', 10, 2)->default(0);
+            $table->date('event_date')->nullable();
+            $table->text('notes')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('cart_items');
+    }
+};
