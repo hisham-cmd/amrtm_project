@@ -119,6 +119,22 @@ Route::prefix('amrtm')->name('amrtm.')->group(function () {
         [ServiceCatalogController::class, 'index']
     )->name('index');
 
+    // ── Design Proposals ────────────────────────────────────────────────────
+    Route::get('/proposals', function () {
+        return view('amrtm_proposals_chooser');
+    })->name('proposals');
+
+    Route::get('/proposal/{id}', function (int $id) {
+        $views = [
+            1 => 'amrtm_proposal1',
+            2 => 'amrtm_proposal2',
+            3 => 'amrtm_proposal3',
+            4 => 'amrtm_proposal4',
+        ];
+        abort_unless(isset($views[$id]), 404);
+        return view($views[$id]);
+    })->name('proposal');
+
     Route::get('/catalog/{key}',
         [ServiceCatalogController::class, 'categoryPage']
     )->name('catalog.category');
@@ -769,7 +785,38 @@ Route::post(
 
 // ── Public pages ─────────────────────────────────────────────────────────────
 Route::get('/', function () {
+    return view('design_chooser');
+});
+
+Route::get('/home', function () {
     return view('home');
+});
+
+Route::get('/home/proposal/{id}', function (int $id) {
+    $views = [
+        1 => 'home_proposal1',
+        2 => 'home_proposal2',
+        3 => 'home_proposal3',
+    ];
+
+    abort_unless(isset($views[$id]), 404);
+
+    return view($views[$id]);
+});
+
+
+
+Route::get('/amrtm_proposal/{id}', function (int $id) {
+    $views = [
+        1 => 'amrtm_proposal1',
+        2 => 'amrtm_proposal2',
+        3 => 'amrtm_proposal3',
+        4 => 'amrtm_proposal4',
+    ];
+
+    abort_unless(isset($views[$id]), 404);
+
+    return view($views[$id]);
 });
 
 // ── Jobs Platform ─────────────────────────────────────────────────────────────

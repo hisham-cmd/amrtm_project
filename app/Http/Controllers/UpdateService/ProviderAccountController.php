@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Provider;
+namespace App\Http\Controllers\UpdateService;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,10 +8,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-use App\Models\BsOffice;
-use App\Models\BsOfficeProfile;
-use App\Models\BsSpecialty;
-use App\Models\BsOfficeSpecialty;
+use App\Models\Business\Office;
+use App\Models\Business\OfficeProfile;
+use App\Models\Business\Specialty;
 
 class ProviderAccountController extends Controller
 {
@@ -34,14 +33,14 @@ class ProviderAccountController extends Controller
 
         if ($request->filled('email')) {
 
-            $office = BsOffice::where(
+            $office = Office::where(
                 'email',
                 $request->email
             )->first();
 
             if ($office) {
 
-                $profile = BsOfficeProfile::where(
+                $profile = OfficeProfile::where(
                     'office_id',
                     $office->id
                 )->first();
@@ -61,7 +60,7 @@ class ProviderAccountController extends Controller
         }
 
         return view(
-            'provider.account.create',
+            'update_service.provider-account',
             compact(
                 'office',
                 'profile',
@@ -377,7 +376,7 @@ class ProviderAccountController extends Controller
             |--------------------------------------------------------------------------
             */
 
-            $office = BsOffice::where(
+            $office = Office::where(
                 'email',
                 $validated['email']
             )->first();
@@ -425,7 +424,7 @@ class ProviderAccountController extends Controller
 
             if (!$office) {
 
-                $office = BsOffice::create([
+                $office = Office::create([
 
                     'type' =>
                         $validated['office_type'],
@@ -553,7 +552,7 @@ class ProviderAccountController extends Controller
             */
 
             $profile =
-                BsOfficeProfile::firstOrNew([
+                OfficeProfile::firstOrNew([
                     'office_id' =>
                         $office->id,
                 ]);
@@ -648,7 +647,7 @@ class ProviderAccountController extends Controller
             |--------------------------------------------------------------------------
             */
 
-            BsOfficeSpecialty::where(
+            DB::table('bs_office_specialties')->where(
                 'office_id',
                 $office->id
             )->delete();
@@ -662,7 +661,7 @@ class ProviderAccountController extends Controller
 
             if ($specialty) {
 
-                BsOfficeSpecialty::create([
+                DB::table('bs_office_specialties')->insert([
 
                     'office_id' =>
                         $office->id,
