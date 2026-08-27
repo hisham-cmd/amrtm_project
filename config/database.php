@@ -84,11 +84,11 @@ return [
         // ── Business Sector Platform (قطاع الأعمال) ────────────────────────
         'business' => [
             'driver'      => 'mysql',
-            'host'        => env('DB_BUSINESS_HOST', '127.0.0.1'),
-            'port'        => env('DB_BUSINESS_PORT', '3306'),
-            'database'    => env('DB_BUSINESS_DATABASE', 'amrtmco_business'),
-            'username'    => env('DB_BUSINESS_USERNAME', 'root'),
-            'password'    => env('DB_BUSINESS_PASSWORD', ''),
+            'host'        => env('DB_BUSINESS_HOST', env('DB_HOST', '127.0.0.1')),
+            'port'        => env('DB_BUSINESS_PORT', env('DB_PORT', '3306')),
+            'database'    => env('DB_BUSINESS_DATABASE', env('DB_DATABASE', 'amrtmco_business')),
+            'username'    => env('DB_BUSINESS_USERNAME', env('DB_USERNAME', 'root')),
+            'password'    => env('DB_BUSINESS_PASSWORD', env('DB_PASSWORD', '')),
             'unix_socket' => '',
             'charset'     => 'utf8mb4',
             'collation'   => 'utf8mb4_unicode_ci',
