@@ -2886,10 +2886,10 @@ body{display:block!important;background:transparent!important}
 
     <!-- Hero Slider -->
     <div class="hero-slider" id="heroSlider">
-        <div class="hero-slide active" style="background-image:url('{{ asset('images/slide-kingdom.jpg') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-skyline.jpg') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-kafd.jpg') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-skyscrapers.jpg') }}')"></div>
+        <div class="hero-slide active" style="background-image:url('{{ asset('images/slide-kafd.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-kingdom.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-diriyah.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-alula.jpg') }}')"></div>
     </div>
     <div class="hero-slider-dots" id="heroSliderDots">
         <div class="hero-slider-dot active" data-index="0"></div>
