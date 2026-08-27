@@ -1,4 +1,4 @@
-﻿
+
 
 @php
 $typeConfig = [
@@ -349,7 +349,7 @@ body.en,body.en *:not(i){font-family:'Inter',sans-serif;direction:ltr;}
 <div class="search-wrap">
   <div class="search-box">
     <i class="ti ti-search"></i>
-    <input type="text" id="search-inp" placeholder="ابحث باسم المكتب أو المدينة..." oninput="filterOffices(this.value)">
+    <input type="text" id="search-inp" placeholder="ابحث بالتخصص أو المدينة..." oninput="filterOffices(this.value)">
   </div>
 </div>
 
@@ -360,29 +360,29 @@ body.en,body.en *:not(i){font-family:'Inter',sans-serif;direction:ltr;}
       <div class="empty-ico" style="color:{{ $cfg['color'] }};background:{{ $cfg['bg'] }};">
         <i class="ti {{ $cfg['icon'] }}"></i>
       </div>
-      <h3 id="empty-title">لا توجد مكاتب مسجّلة حالياً</h3>
-      <p id="empty-desc">لم يتم تسجيل أي مكتب في هذا التخصص بعد. هل مكتبك متخصص في هذا المجال؟ سجّل الآن وابدأ في تلقي الطلبات.</p>
+      <h3 id="empty-title">لا توجد خدمات متاحة حالياً</h3>
+      <p id="empty-desc">لم يتم تسجيل أي مزود خدمة في هذا المجال بعد. هل تقدم خدمات في هذا التخصص؟ سجّل الآن وابدأ في استقبال الطلبات.</p>
       <a href="{{ route('amrtm.login') }}?type=office&mode=register" class="empty-btn">
         <i class="ti ti-building-plus"></i>
-        <span id="empty-cta">تسجيل مكتب جديد</span>
+        <span id="empty-cta">تسجيل مزود خدمة جديد</span>
       </a>
     </div>
   @else
     <div class="off-grid" id="off-grid">
       @foreach($offices as $office)
-      <a class="oc" href="{{ route('amrtm.offices.detail', [$type, $office->id]) }}" data-name-ar="{{ strtolower($office->name_ar) }}" data-name-en="{{ strtolower($office->name_en ?? '') }}" data-city="{{ strtolower($office->city ?? '') }}">
+      @php
+        $specAr = $office->display_specialty_ar;
+        $specEn = $office->display_specialty_en;
+      @endphp
+      <a class="oc" href="{{ route('amrtm.offices.detail', [$type, $office->id]) }}" data-name-ar="{{ strtolower($specAr) }}" data-name-en="{{ strtolower($specEn) }}" data-city="{{ strtolower($office->city ?? '') }}">
         <div class="oc-head">
           <div class="oc-av" style="background:{{ $cfg['gradient'] }};">
-            {{ mb_substr($office->name_ar, 0, 1) }}
+            <i class="ti {{ $cfg['icon'] }}" style="font-size:22px;"></i>
           </div>
           <div class="oc-meta">
-            <div class="oc-nm" data-ar="{{ $office->name_ar }}" data-en="{{ $office->name_en ?? $office->name_ar }}">{{ $office->name_ar }}</div>
+            <div class="oc-nm" data-ar="{{ $specAr }}" data-en="{{ $specEn }}">{{ $specAr }}</div>
             <div class="oc-badges">
-              @if($office->is_verified)
-                <span class="oc-badge ver"><i class="ti ti-shield-check"></i> <span class="badge-ver-lbl">موثّق</span></span>
-              @else
-                <span class="oc-badge pend"><i class="ti ti-clock"></i> <span class="badge-pend-lbl">قيد المراجعة</span></span>
-              @endif
+              <span class="oc-badge ver"><i class="ti ti-shield-check"></i> <span class="badge-ver-lbl">معتمد من آمر تم</span></span>
               @if($office->city)
                 <span class="oc-badge type"><i class="ti ti-map-pin"></i> {{ $office->city }}</span>
               @endif
@@ -395,25 +395,23 @@ body.en,body.en *:not(i){font-family:'Inter',sans-serif;direction:ltr;}
             {{ $office->description_ar ?? '' }}
           </div>
         </div>
+        @else
+        <div class="oc-body">
+          <div class="oc-desc" data-ar="خدمات واستشارات متخصصة ومعتمدة عبر منصة آمر تم لقطاع الأعمال" data-en="Specialized and certified services via Amrtm Platform for business">
+            خدمات واستشارات متخصصة ومعتمدة عبر منصة آمر تم لقطاع الأعمال
+          </div>
+        </div>
         @endif
-        @if($office->specialties && count($office->specialties) > 0)
+        @if($office->specialtiesRelation && $office->specialtiesRelation->count() > 1)
         <div class="oc-spec">
-          @foreach(array_slice($office->specialties, 0, 4) as $spec)
-            <span class="oc-spec-tag">{{ $spec }}</span>
+          @foreach($office->specialtiesRelation->skip(1)->take(3) as $spec)
+            <span class="oc-spec-tag">{{ $spec->name_ar }}</span>
           @endforeach
         </div>
         @endif
         <div class="oc-foot">
-          @if($office->phone)
-            <div class="oc-info"><i class="ti ti-phone"></i> {{ $office->phone }}</div>
-          @endif
-          @if($office->email)
-            <div class="oc-info"><i class="ti ti-mail"></i> {{ $office->email }}</div>
-          @endif
-          @if(!$office->phone && !$office->email)
-            <div class="oc-info"><i class="ti ti-info-circle"></i> <span class="oc-contact-lbl">يتم التواصل عبر المنصة</span></div>
-          @endif
-          <div style="margin-right:auto"><span style="font-size:11px;font-weight:700;color:var(--pri);background:var(--pd);padding:3px 10px;border-radius:20px;" id="view-lbl-{{ $office->id }}">عرض الخدمات ←</span></div>
+          <div class="oc-info"><i class="ti ti-shield-check" style="color:#059669;"></i> <span class="oc-contact-lbl">طلب وإشراف عبر المنصة</span></div>
+          <div style="margin-right:auto"><span style="font-size:11px;font-weight:700;color:var(--pri);background:var(--pd);padding:4px 12px;border-radius:20px;" id="view-lbl-{{ $office->id }}">طلب الخدمة ←</span></div>
         </div>
       </a>
       @endforeach
@@ -422,7 +420,7 @@ body.en,body.en *:not(i){font-family:'Inter',sans-serif;direction:ltr;}
       <div class="empty">
         <div class="empty-ico" style="color:var(--t3);background:var(--pd);"><i class="ti ti-search-off"></i></div>
         <h3 id="nores-title">لا نتائج مطابقة</h3>
-        <p id="nores-desc">لم يتم العثور على مكاتب تطابق بحثك. حاول بكلمات مختلفة.</p>
+        <p id="nores-desc">لم يتم العثور على تخصصات تطابق بحثك. حاول بكلمات مختلفة.</p>
       </div>
     </div>
   @endif
@@ -480,35 +478,35 @@ const T = {
     ar:{
         li:'دخول', re:'تسجيل', da:'حسابي', dash:'لوحة التحكم',
         home:'الرئيسية', sec:'القطاع المهني',
-        available:' مكتب متاح', verified:' معتمد ومتحقق منه',
-        search:'ابحث باسم المكتب أو المدينة...',
-        viaPlat:'يتم التواصل عبر المنصة',
-        badgeVer:'موثّق', badgePend:'قيد المراجعة',
-        emptyTitle:'لا توجد مكاتب مسجّلة حالياً',
-        emptyDesc:'لم يتم تسجيل أي مكتب في هذا التخصص بعد. هل مكتبك متخصص في هذا المجال؟ سجّل الآن.',
-        emptyCta:'سجّل مكتبك الآن',
+        available:' تخصص متاح', verified:' معتمد ومتحقق منه',
+        search:'ابحث بالتخصص أو المدينة...',
+        viaPlat:'طلب وإشراف عبر المنصة',
+        badgeVer:'معتمد من آمر تم', badgePend:'قيد المراجعة',
+        emptyTitle:'لا توجد خدمات متاحة حالياً',
+        emptyDesc:'لم يتم إضافة أي تخصص في هذا المجال بعد.',
+        emptyCta:'سجّل مزود خدمة جديد',
         noresTitle:'لا نتائج مطابقة',
-        noresDesc:'لم يتم العثور على مكاتب تطابق بحثك.',
-        ctaTitle:'هل مكتبك متخصص في هذا المجال؟',
-        ctaSub:'انضم لمنصة آمر تم وابدأ في تلقي الطلبات من العملاء مباشرة',
-        ctaReg:'سجّل مكتبك', ctaLogin:'دخول المكاتب',
+        noresDesc:'لم يتم العثور على تخصصات تطابق بحثك.',
+        ctaTitle:'هل تقدم خدمات متخصصة في هذا المجال؟',
+        ctaSub:'انضم لمنصة آمر تم وابدأ في تلقي الطلبات عبر المنصة',
+        ctaReg:'سجّل كشريك خدمة', ctaLogin:'دخول المكاتب',
         fcp:'© 2025 آمر تم — جميع الحقوق محفوظة',
     },
     en:{
         li:'Sign In', re:'Register', da:'My Account', dash:'Dashboard',
         home:'Home', sec:'Professional Sector',
-        available:' offices available', verified:' verified',
-        search:'Search by office name or city...',
-        viaPlat:'Contact via platform',
-        badgeVer:'Verified', badgePend:'Under Review',
-        emptyTitle:'No offices registered yet',
-        emptyDesc:'No offices have registered in this specialty yet. Is your office specialized in this field? Register now.',
-        emptyCta:'Register Your Office',
+        available:' specialties available', verified:' verified',
+        search:'Search by specialty or city...',
+        viaPlat:'Requested via platform',
+        badgeVer:'Certified by Amrtm', badgePend:'Under Review',
+        emptyTitle:'No specialties available yet',
+        emptyDesc:'No specialties registered in this field yet.',
+        emptyCta:'Register Provider',
         noresTitle:'No matching results',
-        noresDesc:'No offices match your search.',
-        ctaTitle:'Is your office specialized in this field?',
-        ctaSub:'Join Amrtm platform and start receiving client requests directly',
-        ctaReg:'Register Office', ctaLogin:'Office Login',
+        noresDesc:'No specialties match your search.',
+        ctaTitle:'Do you provide specialized services in this field?',
+        ctaSub:'Join Amrtm platform and start receiving service requests',
+        ctaReg:'Register Provider', ctaLogin:'Office Login',
         fcp:'© 2025 Amrtm — All Rights Reserved',
     },
 };

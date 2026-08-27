@@ -28,7 +28,7 @@ class ProviderAccountController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | جلب التخصصات حسب نوع المكتب
+    | جلب التخصصات والخدمات التابعة لها حسب نوع المكتب
     |--------------------------------------------------------------------------
     */
 
@@ -52,11 +52,405 @@ class ProviderAccountController extends Controller
                 'name_en',
             ]);
 
+        $catalog = $this->getServicesCatalog();
+
+        $specialtiesWithServices = $specialties->map(function ($item) use ($catalog, $request) {
+            $name = trim($item->name_ar);
+            $cleanName = preg_replace('/^\d+\.\s*/u', '', $name); // remove numbering like "26. "
+            $services = $catalog[$cleanName] ?? $catalog[$name] ?? $this->getDefaultServicesForType($request->office_type, $name);
+
+            return [
+                'id'       => $item->id,
+                'name_ar'  => $item->name_ar,
+                'name_en'  => $item->name_en ?? $item->name_ar,
+                'services' => $services,
+            ];
+        });
+
         return response()->json([
-            'success' => true,
-            'specialties' => $specialties,
+            'success'     => true,
+            'specialties' => $specialtiesWithServices,
         ]);
     }
+
+    /**
+     * كتالوج الخدمات القياسية لكل تخصص
+     */
+    protected function getServicesCatalog(): array
+    {
+        return [
+            // المحاماة والخدمات القانونية (Law)
+            'القضايا التجارية' => [
+                ['name_ar' => 'تمثيل قضائي في المنازعات التجارية', 'name_en' => 'Commercial Litigation Representation', 'price' => 5000, 'duration' => '30 يوم'],
+                ['name_ar' => 'صياغة المذكرات واللوائح الجوابية التجارية', 'name_en' => 'Drafting Commercial Pleadings', 'price' => 2500, 'duration' => '7 أيام'],
+                ['name_ar' => 'تسوية الديون والنزاعات المالية ودياً', 'name_en' => 'Amicable Debt Settlement', 'price' => 3000, 'duration' => '14 يوم'],
+                ['name_ar' => 'استشارات العقود والصفقات التجارية', 'name_en' => 'Commercial Contract Consultation', 'price' => 1500, 'duration' => '3 أيام'],
+            ],
+            'قضايا الشركات' => [
+                ['name_ar' => 'تسوية منازعات الشركاء وحصص الشراكة', 'name_en' => 'Partners Dispute Settlement', 'price' => 4000, 'duration' => '21 يوم'],
+                ['name_ar' => 'صياغة وتعديل عقود التأسيس وقرارات الشركاء', 'name_en' => 'Articles of Association Drafting', 'price' => 2000, 'duration' => '5 أيام'],
+                ['name_ar' => 'التمثيل القضائي للشركات أمام المحاكم', 'name_en' => 'Corporate Legal Representation', 'price' => 5000, 'duration' => '30 يوم'],
+                ['name_ar' => 'الفحص والتدقيق القانوني النافي للجهالة للشركات', 'name_en' => 'Legal Due Diligence', 'price' => 6000, 'duration' => '15 يوم'],
+            ],
+            'تأسيس الشركات والتحول النظامي' => [
+                ['name_ar' => 'إجراءات تأسيس الشركات وإصدار التراخيص', 'name_en' => 'Company Incorporation & Licensing', 'price' => 3000, 'duration' => '7 أيام'],
+                ['name_ar' => 'التحول النظامي للكيانات والشركات', 'name_en' => 'Corporate Restructuring & Conversion', 'price' => 5000, 'duration' => '20 يوم'],
+                ['name_ar' => 'إعداد اللوائح الداخلية وسياسات العمل', 'name_en' => 'Internal Corporate Bylaws Drafting', 'price' => 2500, 'duration' => '10 أيام'],
+            ],
+            'حوكمة الشركات والامتثال' => [
+                ['name_ar' => 'إعداد أدلة ولوائح الحوكمة المؤسسية', 'name_en' => 'Corporate Governance Framework', 'price' => 6000, 'duration' => '25 يوم'],
+                ['name_ar' => 'تقارير الامتثال النظامي والرقابي', 'name_en' => 'Regulatory Compliance Reports', 'price' => 3500, 'duration' => '14 يوم'],
+                ['name_ar' => 'تنظيم اجتماعات مجالس الإدارة والجمعيات', 'name_en' => 'Board Meetings & General Assembly Setup', 'price' => 2000, 'duration' => '5 أيام'],
+            ],
+            'عمليات الاندماج والاستحواذ' => [
+                ['name_ar' => 'إعداد ومراجعة اتفاقيات الاندماج والاستحواذ', 'name_en' => 'M&A Agreements Drafting', 'price' => 8000, 'duration' => '30 يوم'],
+                ['name_ar' => 'التحقق القانوني واستيفاء الموافقات النظامية', 'name_en' => 'Regulatory Approvals & Clearance', 'price' => 5000, 'duration' => '20 يوم'],
+            ],
+            'الإفلاس وإعادة التنظيم المالي' => [
+                ['name_ar' => 'تقديم طلبات افتتاح إجراءات الإفلاس', 'name_en' => 'Bankruptcy Proceedings Filing', 'price' => 6000, 'duration' => '30 يوم'],
+                ['name_ar' => 'إعداد خطة ومقترح إعادة التنظيم المالي', 'name_en' => 'Financial Restructuring Proposal', 'price' => 8000, 'duration' => '45 يوم'],
+                ['name_ar' => 'تمثيل الدائنين والمدينين أمام لجان ومحاكم الإفلاس', 'name_en' => 'Creditor/Debtor Representation', 'price' => 4500, 'duration' => '21 يوم'],
+            ],
+            'الاستثمار الأجنبي' => [
+                ['name_ar' => 'استخراج وتعديل تراخيص الاستثمار الأجنبي (MISA)', 'name_en' => 'Foreign Investment License (MISA)', 'price' => 4000, 'duration' => '10 أيام'],
+                ['name_ar' => 'تأسيس فروع الشركات الأجنبية في المملكة', 'name_en' => 'Foreign Branch Establishment', 'price' => 5000, 'duration' => '15 يوم'],
+                ['name_ar' => 'استشارات الحوافز والإعفاءات الاستثمارية', 'name_en' => 'Investment Incentives Advisory', 'price' => 2000, 'duration' => '5 أيام'],
+            ],
+            'الامتياز التجاري (الفرنشايز)' => [
+                ['name_ar' => 'صياغة ومراجعة عقود الامتياز التجاري (الفرنشايز)', 'name_en' => 'Franchise Agreements Drafting', 'price' => 3500, 'duration' => '10 أيام'],
+                ['name_ar' => 'إعداد وثيقة الإفصاح وقيد الامتياز التجاري', 'name_en' => 'Franchise Disclosure Document', 'price' => 3000, 'duration' => '7 أيام'],
+            ],
+            'الوكالات التجارية' => [
+                ['name_ar' => 'تسجيل وقيد الوكالات التجارية في وزارة التجارة', 'name_en' => 'Commercial Agency Registration', 'price' => 2500, 'duration' => '7 أيام'],
+                ['name_ar' => 'صياغة ومراجعة عقود الوكالة والتوزيع', 'name_en' => 'Agency & Distribution Contracts', 'price' => 2000, 'duration' => '5 أيام'],
+            ],
+            'عقود التوزيع والامتياز' => [
+                ['name_ar' => 'صياغة اتفاقيات التوزيع الحصري والتوريد', 'name_en' => 'Exclusive Distribution Agreements', 'price' => 2500, 'duration' => '7 أيام'],
+                ['name_ar' => 'تسوية منازعات التوزيع وسلاسل الإمداد', 'name_en' => 'Distribution Disputes Settlement', 'price' => 3500, 'duration' => '15 يوم'],
+            ],
+            'الملكية الفكرية' => [
+                ['name_ar' => 'تسجيل وحماية حقوق الملكية الفكرية', 'name_en' => 'IP Registration & Protection', 'price' => 2000, 'duration' => '10 أيام'],
+                ['name_ar' => 'ملاحقة التعديات على حقوق الملكية الفكرية', 'name_en' => 'IP Infringement Litigation', 'price' => 4500, 'duration' => '25 يوم'],
+            ],
+            'العلامات التجارية' => [
+                ['name_ar' => 'تسجيل وإيداع العلامات التجارية محلياً ودولياً', 'name_en' => 'Trademark Registration & Filing', 'price' => 1500, 'duration' => '5 أيام'],
+                ['name_ar' => 'الاعتراض على العلامات التجارية ومتابعة الطعون', 'name_en' => 'Trademark Opposition & Appeals', 'price' => 3000, 'duration' => '15 يوم'],
+            ],
+            'براءات الاختراع' => [
+                ['name_ar' => 'إيداع وتسجيل طلبات براءات الاختراع', 'name_en' => 'Patent Filing & Registration', 'price' => 3500, 'duration' => '20 يوم'],
+                ['name_ar' => 'صياغة عقود ترخيص واستغلال براءات الاختراع', 'name_en' => 'Patent Licensing Agreements', 'price' => 3000, 'duration' => '10 أيام'],
+            ],
+            'حقوق المؤلف والحقوق المجاورة' => [
+                ['name_ar' => 'تسجيل وتوثيق المصنفات وحقوق المؤلف', 'name_en' => 'Copyright Registration & Protection', 'price' => 1500, 'duration' => '7 أيام'],
+                ['name_ar' => 'صياغة عقود النشر والإنتاج والتنازل عن الحقوق', 'name_en' => 'Publishing & Copyright Assignment Contracts', 'price' => 2000, 'duration' => '5 أيام'],
+            ],
+            'التجارة الإلكترونية' => [
+                ['name_ar' => 'صياغة الشروط والأحكام وسياسات المتاجر الإلكترونية', 'name_en' => 'E-Commerce Terms & Conditions', 'price' => 1500, 'duration' => '4 أيام'],
+                ['name_ar' => 'الامتثال لنظام التجارة الإلكترونية وتراخيص المنصات', 'name_en' => 'E-Commerce Regulatory Compliance', 'price' => 2500, 'duration' => '7 أيام'],
+            ],
+            'الجرائم المعلوماتية' => [
+                ['name_ar' => 'الترافع في قضايا مكافحة جرائم المعلوماتية', 'name_en' => 'Cybercrime Legal Defense', 'price' => 4000, 'duration' => '20 يوم'],
+                ['name_ar' => 'إثبات الأدلة الرقمية والتعديات الإلكترونية', 'name_en' => 'Digital Evidence & Cyber Dispute Proof', 'price' => 3000, 'duration' => '10 أيام'],
+            ],
+            'حماية البيانات والخصوصية' => [
+                ['name_ar' => 'إعداد سياسات الخصوصية وحماية البيانات الشخصية', 'name_en' => 'Data Privacy Policy (PDPL)', 'price' => 2500, 'duration' => '7 أيام'],
+                ['name_ar' => 'تدقيق الامتثال لنظام حماية البيانات الشخصية', 'name_en' => 'Data Privacy Compliance Audit', 'price' => 4000, 'duration' => '15 يوم'],
+            ],
+            'العقود وصياغتها ومراجعتها' => [
+                ['name_ar' => 'صياغة العقود التجارية والمدنية باللغتين', 'name_en' => 'Bilingual Contract Drafting', 'price' => 1800, 'duration' => '5 أيام'],
+                ['name_ar' => 'مراجعة وتدقيق العقود والاتفاقيات والملاحق', 'name_en' => 'Contract Review & Risk Analysis', 'price' => 1200, 'duration' => '3 أيام'],
+                ['name_ar' => 'صياغة اتفاقيات عدم الإفصاح (NDA) ومذكرات التفاهم', 'name_en' => 'NDA & MOU Drafting', 'price' => 1000, 'duration' => '2 يوم'],
+            ],
+            'التحكيم التجاري' => [
+                ['name_ar' => 'صياغة اتفاقيات ومشارطات التحكيم', 'name_en' => 'Arbitration Agreement Drafting', 'price' => 2500, 'duration' => '5 أيام'],
+                ['name_ar' => 'تمثيل الأطراف أمام هيئات ومراكز التحكيم', 'name_en' => 'Arbitration Tribunal Representation', 'price' => 6000, 'duration' => '30 يوم'],
+                ['name_ar' => 'تنفيذ أحكام التحكيم المحلية والأجنبية', 'name_en' => 'Arbitral Award Enforcement', 'price' => 4000, 'duration' => '15 يوم'],
+            ],
+            'الوساطة وتسوية المنازعات' => [
+                ['name_ar' => 'إدارة جلسات الوساطة والصلح الودي', 'name_en' => 'Mediation & Conciliation Sessions', 'price' => 2500, 'duration' => '7 أيام'],
+                ['name_ar' => 'صياغة محاضر واتفاقيات الصلح المعتمدة', 'name_en' => 'Settlement Agreement Drafting', 'price' => 1800, 'duration' => '3 أيام'],
+            ],
+            'التنفيذ وإجراءات محاكم التنفيذ' => [
+                ['name_ar' => 'تقديم ومتابعة طلبات التنفيذ المالية والسندات', 'name_en' => 'Enforcement Requests Filing', 'price' => 2000, 'duration' => '10 أيام'],
+                ['name_ar' => 'منازعات التنفيذ الوقتية والموضوعية', 'name_en' => 'Enforcement Dispute Defense', 'price' => 3500, 'duration' => '15 يوم'],
+                ['name_ar' => 'إجراءات استرداد وتتبع الأموال المنفذة', 'name_en' => 'Asset Tracing & Recovery', 'price' => 4000, 'duration' => '20 يوم'],
+            ],
+            'العقارات' => [
+                ['name_ar' => 'استشارات الصكوك والإفراغ العقاري والملكية', 'name_en' => 'Real Estate Title & Deed Advisory', 'price' => 1500, 'duration' => '5 أيام'],
+                ['name_ar' => 'الترافع في النزاعات العقارية وحقوق الارتفاق', 'name_en' => 'Real Estate Litigation', 'price' => 4500, 'duration' => '25 يوم'],
+            ],
+            'التطوير العقاري' => [
+                ['name_ar' => 'صياغة اتفاقيات التطوير العقاري والصناديق العقارية', 'name_en' => 'Real Estate Development Contracts', 'price' => 5000, 'duration' => '15 يوم'],
+                ['name_ar' => 'عقود البيع على الخارطة وتراخيص وافي', 'name_en' => 'Off-Plan Sales Contracts (Wafi)', 'price' => 3500, 'duration' => '10 أيام'],
+            ],
+            'المقاولات والإنشاءات' => [
+                ['name_ar' => 'صياغة ومراجعة عقود المقاولات والفيدك (FIDIC)', 'name_en' => 'FIDIC & Construction Contracts', 'price' => 3500, 'duration' => '10 أيام'],
+                ['name_ar' => 'مطالبات التأخير ومنازعات مستخلصات المقاولين', 'name_en' => 'Construction Delay & Payment Claims', 'price' => 5000, 'duration' => '20 يوم'],
+            ],
+            'نزع الملكية والتعويضات' => [
+                ['name_ar' => 'متابعة إجراءات وتظلمات نزع الملكية للمنفعة العامة', 'name_en' => 'Eminent Domain & Expropriation Appeals', 'price' => 3500, 'duration' => '15 يوم'],
+                ['name_ar' => 'المطالبة بالتعويضات العادلة أمام ديوان المظالم', 'name_en' => 'Expropriation Compensation Claims', 'price' => 4500, 'duration' => '25 يوم'],
+            ],
+            'القضايا العمالية' => [
+                ['name_ar' => 'إعداد وصياغة لوائح تنظيم العمل المعتمدة', 'name_en' => 'Workplace Regulations Drafting', 'price' => 2000, 'duration' => '7 أيام'],
+                ['name_ar' => 'الترافع والدفاع أمام المحاكم واللجان العمالية', 'name_en' => 'Labor Court Representation', 'price' => 3000, 'duration' => '20 يوم'],
+                ['name_ar' => 'تسوية الخلافات العمالية الودية ومخالصات نهاية الخدمة', 'name_en' => 'Labor Dispute & Settlement Agreements', 'price' => 1500, 'duration' => '5 أيام'],
+            ],
+            'التأمينات الاجتماعية' => [
+                ['name_ar' => 'الاعتراض على مخالفات واشتراكات التأمينات الاجتماعية', 'name_en' => 'Social Insurance Appeals (GOSI)', 'price' => 2000, 'duration' => '10 أيام'],
+                ['name_ar' => 'استشارات استحقاقات وإصابات العمل والتقاعد', 'name_en' => 'Pension & Work Injury Claims', 'price' => 1500, 'duration' => '5 أيام'],
+            ],
+            'الأحوال الشخصية' => [
+                ['name_ar' => 'الترافع في دعاوى الأحوال الشخصية والفسخ والخلع', 'name_en' => 'Personal Status Litigation', 'price' => 3500, 'duration' => '20 يوم'],
+                ['name_ar' => 'صياغة وتوثيق الاتفاقيات الأسرية وعقود الزواج', 'name_en' => 'Family Agreements Drafting', 'price' => 1500, 'duration' => '5 أيام'],
+            ],
+            'الحضانة والزيارة والنفقة' => [
+                ['name_ar' => 'الترافع في دعاوى إثبات الحضانة والزيارة والنفقة', 'name_en' => 'Custody, Visitation & Alimony Claims', 'price' => 3000, 'duration' => '15 يوم'],
+                ['name_ar' => 'تنفيذ أحكام الحضانة والرؤية والنفقة', 'name_en' => 'Family Court Judgment Enforcement', 'price' => 2000, 'duration' => '10 أيام'],
+            ],
+            'التركات والمواريث' => [
+                ['name_ar' => 'حصر وقسمة التركات الرضائية والقضائية', 'name_en' => 'Estate Inventory & Inheritance Division', 'price' => 5000, 'duration' => '30 يوم'],
+                ['name_ar' => 'تصفية الشركات والأموال المشاعة للتركات', 'name_en' => 'Estate Liquidation & Settlement', 'price' => 6000, 'duration' => '45 يوم'],
+            ],
+            'الأوقاف والوصايا' => [
+                ['name_ar' => 'صياغة وتوثيق صكوك الأوقاف والوصايا واللوائح', 'name_en' => 'Endowment & Will Deeds Drafting', 'price' => 3000, 'duration' => '10 أيام'],
+                ['name_ar' => 'حوكمة الأوقاف ونظارة الوقف والمنازعات الوقفية', 'name_en' => 'Endowment Governance & Disputes', 'price' => 4500, 'duration' => '25 يوم'],
+            ],
+            'القضايا الجزائية' => [
+                ['name_ar' => 'حضور التحقيقات والاستجوابات أمام النيابة العامة', 'name_en' => 'Public Prosecution Interrogation Attendance', 'price' => 3000, 'duration' => '7 أيام'],
+                ['name_ar' => 'الترافع والدفاع الجنائي أمام المحاكم الجزائية', 'name_en' => 'Criminal Court Defense', 'price' => 5000, 'duration' => '30 يوم'],
+            ],
+            'غسل الأموال وتمويل الإرهاب' => [
+                ['name_ar' => 'الدفاع والترافع في قضايا غسل الأموال والجرائم المالية', 'name_en' => 'Anti-Money Laundering (AML) Defense', 'price' => 8000, 'duration' => '30 يوم'],
+                ['name_ar' => 'تقييم الامتثال ومكافحة غسل الأموال للمؤسسات', 'name_en' => 'AML Compliance Assessment', 'price' => 5000, 'duration' => '15 يوم'],
+            ],
+            'مكافحة الفساد والرشوة' => [
+                ['name_ar' => 'التمثيل والدفاع في قضايا نزاهة ومكافحة الفساد', 'name_en' => 'Anti-Corruption & Bribery Legal Defense', 'price' => 7000, 'duration' => '30 يوم'],
+                ['name_ar' => 'استشارات وسياسات مكافحة الاحتيال والفساد المؤسسي', 'name_en' => 'Anti-Fraud & Ethics Policies', 'price' => 4000, 'duration' => '15 يوم'],
+            ],
+            'القضايا الإدارية (ديوان المظالم)' => [
+                ['name_ar' => 'الطعن في القرارات الإدارية السلبية والإيجابية', 'name_en' => 'Administrative Decisions Appeal', 'price' => 4500, 'duration' => '25 يوم'],
+                ['name_ar' => 'دعاوى التعويض عن الأضرار ضد الجهات الحكومية', 'name_en' => 'Administrative Compensation Claims', 'price' => 5000, 'duration' => '30 يوم'],
+            ],
+            'الوظيفة العامة والتأديب' => [
+                ['name_ar' => 'التظلم والترافع في القرارات التأديبية للموظف العام', 'name_en' => 'Civil Service Disciplinary Appeals', 'price' => 3000, 'duration' => '15 يوم'],
+                ['name_ar' => 'المطالبة بالبدلات والمستحقات الوظيفية والترقيات', 'name_en' => 'Employee Allowances & Promotion Claims', 'price' => 2500, 'duration' => '15 يوم'],
+            ],
+            'المناقصات والمشتريات الحكومية' => [
+                ['name_ar' => 'الاعتراض على نتائج الترسية ومنازعات المنافسات الحكومية', 'name_en' => 'Government Procurement Disputes', 'price' => 4000, 'duration' => '15 يوم'],
+                ['name_ar' => 'صياغة وتفسير عقود المشتريات والمنافسات الحكومية', 'name_en' => 'Government Tenders Contract Advisory', 'price' => 3000, 'duration' => '10 أيام'],
+            ],
+            'الزكاة والضرائب' => [
+                ['name_ar' => 'الاعتراض أمام لجان الفصل في المخالفات والمنازعات الضريبية', 'name_en' => 'Tax & Zakat Appeals Committee Defense', 'price' => 5000, 'duration' => '25 يوم'],
+                ['name_ar' => 'الاستشارات الضريبية والزكوية الوقائية للشركات', 'name_en' => 'Preventive Tax Legal Advisory', 'price' => 2500, 'duration' => '7 أيام'],
+            ],
+            'الجمارك والتجارة الدولية' => [
+                ['name_ar' => 'الاعتراض على القرارات الجمركية والمخالفات التقييمية', 'name_en' => 'Customs Tariff & Valuation Appeals', 'price' => 3500, 'duration' => '15 يوم'],
+                ['name_ar' => 'استشارات الاتفاقيات التجارية الدولية والتجارة الحرة', 'name_en' => 'International Trade Agreements Advisory', 'price' => 3000, 'duration' => '10 أيام'],
+            ],
+            'البنوك والتمويل' => [
+                ['name_ar' => 'الترافع أمام لجان تسوية المنازعات والمخالفات المصرفية', 'name_en' => 'Banking Disputes Committee Representation', 'price' => 5000, 'duration' => '25 يوم'],
+                ['name_ar' => 'صياغة ومراجعة عقود التمويل الإسلامي والضمانات البنكية', 'name_en' => 'Islamic Finance & Securities Contracts', 'price' => 3500, 'duration' => '10 أيام'],
+            ],
+            'التأمين' => [
+                ['name_ar' => 'الترافع أمام لجان الفصل في المنازعات والمخالفات التأمينية', 'name_en' => 'Insurance Disputes Committee Representation', 'price' => 4000, 'duration' => '20 يوم'],
+                ['name_ar' => 'مطالبات التعويض التأميني للمركبات والممتلكات والصحة', 'name_en' => 'Insurance Compensation Claims', 'price' => 2500, 'duration' => '14 يوم'],
+            ],
+            'الأوراق المالية وسوق المال' => [
+                ['name_ar' => 'الترافع أمام لجان الفصل في منازعات الأوراق المالية (CRSD)', 'name_en' => 'Securities Disputes Committee Representation', 'price' => 7000, 'duration' => '30 يوم'],
+                ['name_ar' => 'الامتثال للوائح هيئة السوق المالية ومتطلبات الطرح', 'name_en' => 'CMA Compliance & Offering Advisory', 'price' => 6000, 'duration' => '20 يوم'],
+            ],
+            'النقل والخدمات اللوجستية' => [
+                ['name_ar' => 'صياغة عقود النقل والخدمات اللوجستية والتخزين', 'name_en' => 'Logistics & Warehousing Contracts', 'price' => 2500, 'duration' => '7 أيام'],
+                ['name_ar' => 'منازعات عقود النقل البري وتلف وفقدان الشحنات', 'name_en' => 'Cargo Loss & Transit Claims', 'price' => 3500, 'duration' => '15 يوم'],
+            ],
+            'القانون البحري' => [
+                ['name_ar' => 'صياغة وتدقيق عقود الشحن والتأجير البحري وسندات الشحن', 'name_en' => 'Maritime Charterparty & Bills of Lading', 'price' => 4500, 'duration' => '15 يوم'],
+                ['name_ar' => 'منازعات الحوادث البحرية وحجز السفن والتعويضات', 'name_en' => 'Ship Arrest & Maritime Casualty Disputes', 'price' => 8000, 'duration' => '30 يوم'],
+            ],
+            'قانون الطيران' => [
+                ['name_ar' => 'عقود شراء وتأجير وصيانة الطائرات وتراخيص الطيران', 'name_en' => 'Aviation Leasing & Maintenance Contracts', 'price' => 7000, 'duration' => '25 يوم'],
+                ['name_ar' => 'منازعات الناقلين الجويين وحقوق المسافرين والشحن الجوي', 'name_en' => 'Air Carrier & Cargo Claims', 'price' => 4000, 'duration' => '20 يوم'],
+            ],
+            'الطاقة والتعدين' => [
+                ['name_ar' => 'صياغة اتفاقيات التنقيب والاستكشاف وتراخيص التعدين', 'name_en' => 'Mining Licenses & Concession Agreements', 'price' => 8000, 'duration' => '30 يوم'],
+                ['name_ar' => 'عقود مشاريع الطاقة المتجددة ومحطات التوليد', 'name_en' => 'Renewable Energy Project Contracts', 'price' => 7000, 'duration' => '25 يوم'],
+            ],
+            'القطاع الصحي والأخطاء الطبية' => [
+                ['name_ar' => 'الترافع أمام الهيئات الصحية الشرعية في دعاوى الأخطاء الطبية', 'name_en' => 'Medical Malpractice Defense & Claims', 'price' => 5000, 'duration' => '30 يوم'],
+                ['name_ar' => 'تراخيص المنشآت الصحية وعقود التشغيل الطبي', 'name_en' => 'Healthcare Licensing & Operating Agreements', 'price' => 3500, 'duration' => '15 يوم'],
+            ],
+            'التعليم والجامعات' => [
+                ['name_ar' => 'لوائح وحوكمة المنشآت التعليمية والجامعات الأهلية', 'name_en' => 'Educational Institution Bylaws & Governance', 'price' => 4000, 'duration' => '20 يوم'],
+                ['name_ar' => 'عقود الخدمات التعليمية وحقوق الملكية للمناهج والبحوث', 'name_en' => 'Educational & Research IP Contracts', 'price' => 2500, 'duration' => '10 أيام'],
+            ],
+            'الجمعيات الأهلية والقطاع غير الربحي' => [
+                ['name_ar' => 'تأسيس وترخيص الجمعيات والمؤسسات الأهلية وغير الربحية', 'name_en' => 'Non-Profit Organization Incorporation', 'price' => 3000, 'duration' => '15 يوم'],
+                ['name_ar' => 'حوكمة القطاع غير الربحي ولوائح العمل والامتثال', 'name_en' => 'NPO Governance & Compliance Framework', 'price' => 3500, 'duration' => '20 يوم'],
+            ],
+            'الاستشارات القانونية والتمثيل القضائي' => [
+                ['name_ar' => 'تقديم الاستشارات القانونية والشرعية الشاملة', 'name_en' => 'Comprehensive Legal Consultation', 'price' => 1500, 'duration' => '3 أيام'],
+                ['name_ar' => 'التمثيل القضائي وحضور الجلسات والترافع الشامل', 'name_en' => 'Full Litigation Representation', 'price' => 5000, 'duration' => '30 يوم'],
+                ['name_ar' => 'إعداد الرأي القانوني والدراسات النظامية المتخصصة', 'name_en' => 'Legal Opinions & Research Memorandums', 'price' => 2500, 'duration' => '7 أيام'],
+            ],
+
+            // مكاتب الخدمات والتعقيب (Services)
+            'الخدمات الحكومية' => [
+                ['name_ar' => 'إصدار وتجديد الرخص البلدية والمهنية والتجارية', 'name_en' => 'Municipal & Commercial License Issuance', 'price' => 500, 'duration' => '3 أيام'],
+                ['name_ar' => 'استخراج التراخيص الصناعية وتصاريح الدفاع المدني', 'name_en' => 'Industrial & Civil Defense Permits', 'price' => 1200, 'duration' => '7 أيام'],
+                ['name_ar' => 'خدمات هيئة الغذاء والدواء وتسجيل المنتجات', 'name_en' => 'SFDA Registration Services', 'price' => 1500, 'duration' => '10 أيام'],
+                ['name_ar' => 'تحديث بيانات المنشأة لدى كافة الجهات الحكومية', 'name_en' => 'Government Data Update', 'price' => 400, 'duration' => '2 يوم'],
+            ],
+            'خدمات التعقيب' => [
+                ['name_ar' => 'متابعة وتخليص معاملات وزارة التجارة والغرف التجارية', 'name_en' => 'Ministry of Commerce Expediting', 'price' => 600, 'duration' => '3 أيام'],
+                ['name_ar' => 'معاملات وزارة الموارد البشرية ومنصات قوى ومدد', 'name_en' => 'Qiwa & Mudad Platform Transactions', 'price' => 500, 'duration' => '2 يوم'],
+                ['name_ar' => 'إنهاء إجراءات الجوازات ونقل الكفالات والتأشيرات', 'name_en' => 'Passports & Visa Processing', 'price' => 400, 'duration' => '2 يوم'],
+                ['name_ar' => 'تصديق وتوثيق الوثائق والشهادات الرسمية', 'name_en' => 'Document Attestation & Certification', 'price' => 300, 'duration' => '1 يوم'],
+            ],
+            'خدمات التوثيق' => [
+                ['name_ar' => 'توثيق وإفراغ العقارات والرهون العقارية فورياً', 'name_en' => 'Instant Real Estate Notarization', 'price' => 800, 'duration' => '1 يوم'],
+                ['name_ar' => 'توثيق عقود تأسيس الشركات وقرارات تعديل الشركاء', 'name_en' => 'Articles of Association Notarization', 'price' => 600, 'duration' => '1 يوم'],
+                ['name_ar' => 'إصدار وفسخ وتعديل الوكالات الشرعية للأفراد والشركات', 'name_en' => 'Power of Attorney (POA) Issuance', 'price' => 300, 'duration' => '1 يوم'],
+                ['name_ar' => 'توثيق الإقرارات المالية وعقود الإيجار والاتفاقيات', 'name_en' => 'Financial Declaration & Lease Notarization', 'price' => 400, 'duration' => '1 يوم'],
+            ],
+            'خدمات تأسيس الشركات' => [
+                ['name_ar' => 'إصدار السجل التجاري الموحد وعقد التأسيس الإلكتروني', 'name_en' => 'Commercial Registration & Electronic Articles', 'price' => 1000, 'duration' => '2 يوم'],
+                ['name_ar' => 'فتح وتفعيل الملفات الحكومية الموحدة (العمل، الزكاة، التأمينات)', 'name_en' => 'Government Files Opening & Activation', 'price' => 800, 'duration' => '3 أيام'],
+                ['name_ar' => 'استخراج شهادات السعودة والتأمينات والزكاة والاشتراكات', 'name_en' => 'Saudization & Compliance Certificates', 'price' => 500, 'duration' => '2 يوم'],
+                ['name_ar' => 'حجز الأسماء التجارية وتعديل الأنشطة التجارية', 'name_en' => 'Trade Name Reservation & Activity Update', 'price' => 400, 'duration' => '1 يوم'],
+            ],
+
+            // شركات التخليص الجمركي (Customs)
+            'التخليص الجمركي' => [
+                ['name_ar' => 'التخليص الجمركي للشحنات البحرية والحاويات', 'name_en' => 'Sea Freight & Container Clearance', 'price' => 1200, 'duration' => '3 أيام'],
+                ['name_ar' => 'التخليص الجمركي للشحنات الجوية السريعة', 'name_en' => 'Air Freight Customs Clearance', 'price' => 800, 'duration' => '2 يوم'],
+                ['name_ar' => 'التخليص الجمركي البري عبر المنافذ والموانئ الجافة', 'name_en' => 'Land Border Customs Clearance', 'price' => 900, 'duration' => '2 يوم'],
+                ['name_ar' => 'خدمات الفسح المسبق والمستودعات الجمركية', 'name_en' => 'Pre-Clearance & Bonded Warehousing', 'price' => 1500, 'duration' => '4 أيام'],
+            ],
+            'الاستيراد والتصدير' => [
+                ['name_ar' => 'تسجيل وإصدار شهادات المطابقة والمنتجات عبر منصة سابر', 'name_en' => 'SABER Certificate of Conformity', 'price' => 700, 'duration' => '3 أيام'],
+                ['name_ar' => 'استخراج شهادات المنشأ ورخص الاستيراد والتصدير', 'name_en' => 'Certificate of Origin & Export Licenses', 'price' => 500, 'duration' => '2 يوم'],
+                ['name_ar' => 'إدارة وثائق الشحن والتأمين والمطابقة الدولية', 'name_en' => 'Shipping & Insurance Documentation', 'price' => 800, 'duration' => '3 أيام'],
+            ],
+            'الاستشارات الجمركية' => [
+                ['name_ar' => 'تحديد البنود الجمركية والتعريفة الجمركية المتكاملة', 'name_en' => 'HS Code Classification & Tariff Advisory', 'price' => 600, 'duration' => '2 يوم'],
+                ['name_ar' => 'استشارات الإعفاءات الجمركية والاتفاقيات التجارية الإقليمية', 'name_en' => 'Customs Exemptions & FTA Advisory', 'price' => 1200, 'duration' => '5 أيام'],
+                ['name_ar' => 'معالجة وتسوية الاعتراضات والنزاعات الجمركية', 'name_en' => 'Customs Penalty & Dispute Settlement', 'price' => 2000, 'duration' => '10 أيام'],
+            ],
+            'إنهاء الإجراءات الجمركية' => [
+                ['name_ar' => 'المعاينة والفحص الفني وسحب العينات المخبرية', 'name_en' => 'Customs Physical Inspection & Lab Sampling', 'price' => 600, 'duration' => '2 يوم'],
+                ['name_ar' => 'سداد الرسوم الجمركية والضرائب وإصدار إذن الفسح النهائي', 'name_en' => 'Duty Payment & Final Release Permit', 'price' => 400, 'duration' => '1 يوم'],
+                ['name_ar' => 'خدمات نقل وتعتيق وتوصيل الحاويات من الميناء للمستودع', 'name_en' => 'Port Drayage & Container Delivery', 'price' => 1000, 'duration' => '2 يوم'],
+            ],
+
+            // مكاتب المحاسبة والضرائب (Accounting)
+            'المحاسبة المالية' => [
+                ['name_ar' => 'إمساك الدفاتر والسجلات المحاسبية الشهرية والسنوية', 'name_en' => 'Bookkeeping & General Ledger Management', 'price' => 1500, 'duration' => '30 يوم'],
+                ['name_ar' => 'إعداد قيود اليومية وموازين المراجعة الدورية', 'name_en' => 'Journal Entries & Trial Balance Preparation', 'price' => 1000, 'duration' => '7 أيام'],
+                ['name_ar' => 'تسوية ومطابقة الحسابات البنكية والموردين والعملاء', 'name_en' => 'Bank & AR/AP Reconciliations', 'price' => 800, 'duration' => '5 أيام'],
+            ],
+            'مراجعة الحسابات' => [
+                ['name_ar' => 'التدقيق المالي المستقل وإصدار تقرير المراجع المعتمد', 'name_en' => 'External Financial Audit & Certified Report', 'price' => 5000, 'duration' => '20 يوم'],
+                ['name_ar' => 'فحص وتقييم نظم الرقابة والامتثال المالي الداخلي', 'name_en' => 'Internal Control Review & Assessment', 'price' => 3500, 'duration' => '15 يوم'],
+                ['name_ar' => 'الفحص النافي للجهالة المالي (Financial Due Diligence)', 'name_en' => 'Financial Due Diligence', 'price' => 6000, 'duration' => '20 يوم'],
+            ],
+            'الزكاة والضرائب' => [
+                ['name_ar' => 'إعداد وتقديم الإقرارات الزكوية وإصدار الشهادة الزكوية', 'name_en' => 'Zakat Declaration & Certificate Issuance', 'price' => 2000, 'duration' => '7 أيام'],
+                ['name_ar' => 'إعداد ورفع إقرارات ضريبة القيمة المضافة (VAT)', 'name_en' => 'VAT Return Preparation & Filing', 'price' => 1000, 'duration' => '3 أيام'],
+                ['name_ar' => 'إعداد ملفات التسعير التحويلي وضريبة الاستقطاع والدخل', 'name_en' => 'Transfer Pricing & WHT Advisory', 'price' => 3500, 'duration' => '14 يوم'],
+                ['name_ar' => 'الاعتراض والتسوية على الفروقات والربوط الضريبية', 'name_en' => 'ZATCA Tax Assessment Objections', 'price' => 3000, 'duration' => '15 يوم'],
+            ],
+            'إعداد القوائم المالية' => [
+                ['name_ar' => 'إعداد القوائم المالية الكاملة وفق المعايير الدولية (IFRS)', 'name_en' => 'IFRS Financial Statements Preparation', 'price' => 3000, 'duration' => '10 أيام'],
+                ['name_ar' => 'إعداد الموازنات التقديرية وتوقعات التدفقات النقدية', 'name_en' => 'Budgeting & Cash Flow Forecasting', 'price' => 2500, 'duration' => '7 أيام'],
+                ['name_ar' => 'تحليل المؤشرات المالية وتقارير الأداء المالي للإدارة', 'name_en' => 'Financial Ratio Analysis & Management Reports', 'price' => 1800, 'duration' => '5 أيام'],
+            ],
+            'المحاسبة الإدارية' => [
+                ['name_ar' => 'تحليل التكاليف وهياكل التسعير وهوامش الربحية', 'name_en' => 'Cost Accounting & Pricing Analysis', 'price' => 2500, 'duration' => '10 أيام'],
+                ['name_ar' => 'إعداد دراسات الجدوى والخطط المالية للمشاريع', 'name_en' => 'Financial Feasibility Studies & Modeling', 'price' => 4500, 'duration' => '15 يوم'],
+                ['name_ar' => 'تطوير الدليل المحاسبي والسياسات والإجراءات المالية', 'name_en' => 'Chart of Accounts & SOPs Design', 'price' => 3000, 'duration' => '14 يوم'],
+            ],
+
+            // الاستشارات الهندسية (Engineering)
+            'الهندسة المعمارية' => [
+                ['name_ar' => 'التصميم المعماري للمباني السكنية والتجارية والمشاريع', 'name_en' => 'Architectural Design for Buildings', 'price' => 5000, 'duration' => '20 يوم'],
+                ['name_ar' => 'إعداد المخططات التنفيذية وتفاصيل الواجهات الخارجية', 'name_en' => 'Working Drawings & Façade Design', 'price' => 3500, 'duration' => '14 يوم'],
+                ['name_ar' => 'التصميم الداخلي والديكور والمخططات الثلاثية الأبعاد (3D)', 'name_en' => 'Interior Design & 3D Visualizations', 'price' => 3000, 'duration' => '12 يوم'],
+                ['name_ar' => 'استخراج وتعديل رخص البناء والترميم عبر منصة بلدي', 'name_en' => 'Building Permits Issuance (Balady)', 'price' => 2000, 'duration' => '7 أيام'],
+            ],
+            'الهندسة المدنية' => [
+                ['name_ar' => 'التصميم الإنشائي وحساب الأحمال والهياكل الخرسانية والمعدنية', 'name_en' => 'Structural Design & Analysis', 'price' => 4000, 'duration' => '15 يوم'],
+                ['name_ar' => 'فحص وتقارير التربة والأساسات والسلامة الإنشائية', 'name_en' => 'Soil Investigation & Structural Safety Reports', 'price' => 2500, 'duration' => '7 أيام'],
+                ['name_ar' => 'الإشراف الهندسي الموقعي على أعمال الصب والخرسانة', 'name_en' => 'Site Engineering Supervision', 'price' => 3000, 'duration' => '30 يوم'],
+                ['name_ar' => 'تقييم وتدعيم المباني القائمة وتأهيل المنشآت', 'name_en' => 'Building Retrofitting & Assessment', 'price' => 3500, 'duration' => '14 يوم'],
+            ],
+            'الهندسة الكهربائية' => [
+                ['name_ar' => 'تصميم شبكات الإنارة وتوزيع القوى وجداول الأحمال', 'name_en' => 'Electrical Lighting & Power Distribution Design', 'price' => 2500, 'duration' => '10 أيام'],
+                ['name_ar' => 'تصميم أنظمة التيار الخفيف (كاميرات، شبكات، إنذار، تحكم)', 'name_en' => 'Low Current Systems Design', 'price' => 2000, 'duration' => '7 أيام'],
+                ['name_ar' => 'مخططات محطات التحويل والتغذية وموافقات شركة الكهرباء', 'name_en' => 'Substation Design & SEC Approvals', 'price' => 3500, 'duration' => '14 يوم'],
+            ],
+            'الهندسة الميكانيكية' => [
+                ['name_ar' => 'تصميم أنظمة التكييف والتهوية وتوزيع الهواء (HVAC)', 'name_en' => 'HVAC Mechanical Systems Design', 'price' => 3000, 'duration' => '10 أيام'],
+                ['name_ar' => 'تصميم أنظمة مكافحة الحريق والإنذار وموافقات السلامة', 'name_en' => 'Firefighting & Life Safety Systems Design', 'price' => 2500, 'duration' => '8 أيام'],
+                ['name_ar' => 'تصميم شبكات التغذية بالمياه والصرف الصحي وتصريف الأمطار', 'name_en' => 'Plumbing & Drainage Systems Design', 'price' => 2000, 'duration' => '7 أيام'],
+            ],
+            'هندسة المشاريع' => [
+                ['name_ar' => 'إدارة وتخطيط المشاريع الهندسية وإعداد الجداول الزمنية', 'name_en' => 'Project Management & CPM Scheduling', 'price' => 4500, 'duration' => '30 يوم'],
+                ['name_ar' => 'إعداد جداول الكميات والمواصفات ودفاتر الشروط (BOQ)', 'name_en' => 'Bill of Quantities (BOQ) & Specs Preparation', 'price' => 3000, 'duration' => '12 يوم'],
+                ['name_ar' => 'مراجعة وتدقيق المستخلصات وأوامر التغيير واستلام الأعمال', 'name_en' => 'Payment Claims & Variation Orders Review', 'price' => 2500, 'duration' => '15 يوم'],
+            ],
+            'التصميم الهندسي' => [
+                ['name_ar' => 'التخطيط العمراني وتصميم المخططات السكنية والتجارية', 'name_en' => 'Urban Planning & Master Plan Design', 'price' => 6000, 'duration' => '25 يوم'],
+                ['name_ar' => 'تصاميم اللاندسكيب وتنسيق المواقع والمساحات الخضراء', 'name_en' => 'Landscape Architecture Design', 'price' => 2500, 'duration' => '10 أيام'],
+                ['name_ar' => 'إعداد النماذج الهندسية ثلاثية الأبعاد ونمذجة البناء (BIM)', 'name_en' => 'Building Information Modeling (BIM)', 'price' => 4000, 'duration' => '15 يوم'],
+            ],
+
+            // أصحاب المهن الحرة (Freelance)
+            'البرمجة وتطوير المواقع' => [
+                ['name_ar' => 'تصميم وتطوير مواقع وتطبيقات الويب المتجاوبة', 'name_en' => 'Full-Stack Web Development', 'price' => 3500, 'duration' => '14 يوم'],
+                ['name_ar' => 'برمجة وتطوير تطبيقات الهواتف الذكية (iOS & Android)', 'name_en' => 'Mobile App Development', 'price' => 6000, 'duration' => '30 يوم'],
+                ['name_ar' => 'ربط بوابات الدفع الإلكتروني والخدمات السحابية والـ APIs', 'name_en' => 'Payment Gateway & API Integration', 'price' => 1500, 'duration' => '5 أيام'],
+                ['name_ar' => 'صيانة وتحسين أداء وحماية المواقع والأنظمة التقنية', 'name_en' => 'Web Maintenance & Speed Optimization', 'price' => 1200, 'duration' => '7 أيام'],
+            ],
+            'التصميم الجرافيكي' => [
+                ['name_ar' => 'تصميم الهويات البصرية الكاملة والشعارات ودليل الهوية', 'name_en' => 'Brand Identity & Logo Design', 'price' => 2000, 'duration' => '7 أيام'],
+                ['name_ar' => 'تصميم واجهات وتجربة المستخدم للتطبيقات والمواقع (UI/UX)', 'name_en' => 'UI/UX Design & Prototyping', 'price' => 3000, 'duration' => '12 يوم'],
+                ['name_ar' => 'تصاميم السوشيال ميديا والحملات الإعلانية المبتكرة', 'name_en' => 'Social Media Campaign Designs', 'price' => 1000, 'duration' => '5 أيام'],
+                ['name_ar' => 'تصميم المطبوعات والبروشورات والكتالوجات الترويجية', 'name_en' => 'Print & Promotional Collateral Design', 'price' => 800, 'duration' => '3 أيام'],
+            ],
+            'التسويق الرقمي' => [
+                ['name_ar' => 'إدارة الحملات الإعلانية الممولة (Google, Meta, TikTok)', 'name_en' => 'Paid Ads Campaign Management', 'price' => 2000, 'duration' => '30 يوم'],
+                ['name_ar' => 'تحسين محركات البحث وتصدر نتائج البحث الأولى (SEO)', 'name_en' => 'Search Engine Optimization (SEO)', 'price' => 2500, 'duration' => '30 يوم'],
+                ['name_ar' => 'إدارة وتفعيل حسابات وسائل التواصل الاجتماعي وصناعة المحتوى', 'name_en' => 'Social Media Management & Content', 'price' => 1800, 'duration' => '30 يوم'],
+                ['name_ar' => 'إعداد استراتيجية التسويق الرقمي وبناء مسارات البيع (Funnels)', 'name_en' => 'Digital Marketing Strategy & Sales Funnels', 'price' => 2500, 'duration' => '10 أيام'],
+            ],
+            'الترجمة' => [
+                ['name_ar' => 'الترجمة القانونية المعتمدة للعقود والوثائق الرسمية', 'name_en' => 'Certified Legal Translation', 'price' => 100, 'duration' => '2 يوم'],
+                ['name_ar' => 'الترجمة التجارية والمالية للتقارير والقوائم والمذكرات', 'name_en' => 'Commercial & Financial Translation', 'price' => 80, 'duration' => '2 يوم'],
+                ['name_ar' => 'الترجمة التقنية والطبية المتخصصة والمصطلحات الدقيقة', 'name_en' => 'Technical & Medical Translation', 'price' => 120, 'duration' => '3 أيام'],
+                ['name_ar' => 'تعريب المواقع الإلكترونية والتطبيقات والبرمجيات', 'name_en' => 'Software & Website Localization', 'price' => 1500, 'duration' => '7 أيام'],
+            ],
+            'كتابة المحتوى' => [
+                ['name_ar' => 'كتابة المحتوى الإعلاني والتسويقي وصياغة النصوص المقنعة (Copywriting)', 'name_en' => 'Marketing & Ad Copywriting', 'price' => 800, 'duration' => '4 أيام'],
+                ['name_ar' => 'كتابة المقالات المتخصصة والمحتوى المتوافق مع معايير SEO', 'name_en' => 'SEO Blog & Article Writing', 'price' => 500, 'duration' => '3 أيام'],
+                ['name_ar' => 'صياغة البروفايلات التعريفية للشركات والبيانات الصحفية', 'name_en' => 'Corporate Company Profile & Press Releases', 'price' => 1200, 'duration' => '5 أيام'],
+                ['name_ar' => 'التدقيق اللغوي والتحرير وإعادة الصياغة الاحترافية', 'name_en' => 'Proofreading & Professional Editing', 'price' => 400, 'duration' => '2 يوم'],
+            ],
+        ];
+    }
+
+    /**
+     * خدمات افتراضية في حال إضافة تخصص غير مسجل بالقائمة
+     */
+    protected function getDefaultServicesForType(string $officeType, string $specialtyName): array
+    {
+        return [
+            ['name_ar' => 'استشارة متخصصة في ' . $specialtyName, 'name_en' => 'Specialized Consultation in ' . $specialtyName, 'price' => 500, 'duration' => '3 أيام'],
+            ['name_ar' => 'إعداد وتجهيز مستندات ومعاملات ' . $specialtyName, 'name_en' => 'Document & Transaction Processing for ' . $specialtyName, 'price' => 1000, 'duration' => '7 أيام'],
+            ['name_ar' => 'متابعة وإنجاز الخدمة الشاملة عبر المنصة', 'name_en' => 'Full Service Fulfillment via Platform', 'price' => 1500, 'duration' => '14 يوم'],
+        ];
+    }
+
 
 
     /*
@@ -199,12 +593,17 @@ class ProviderAccountController extends Controller
 
             /*
             |--------------------------------------------------------------------------
-            | التخصص
+            | التخصص والخدمات
             |--------------------------------------------------------------------------
             */
 
+            'specialties' => [
+                'nullable',
+                'array',
+            ],
+
             'specialty' => [
-                'required',
+                'nullable',
             ],
 
             'manual_specialty' => [
@@ -212,6 +611,17 @@ class ProviderAccountController extends Controller
                 'string',
                 'max:255',
             ],
+
+            'services' => [
+                'nullable',
+                'array',
+            ],
+
+            'custom_services' => [
+                'nullable',
+                'array',
+            ],
+
 
             /*
             |--------------------------------------------------------------------------
@@ -468,51 +878,50 @@ class ProviderAccountController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | التأكد من التخصص اليدوي
+        | معالجة واختيار التخصصات المتعددة
         |--------------------------------------------------------------------------
         */
 
-        if (
-            $request->specialty === 'other' &&
-            !trim((string) $request->manual_specialty)
-        ) {
+        $rawSpecialties = $request->input('specialties', []);
+        if (empty($rawSpecialties) && $request->has('specialty')) {
+            $rawSpecialties = is_array($request->specialty) ? $request->specialty : [$request->specialty];
+        }
 
+        $hasOther = in_array('other', $rawSpecialties);
+        $selectedSpecialtyIds = array_values(array_filter($rawSpecialties, fn($v) => is_numeric($v)));
+
+        if (empty($selectedSpecialtyIds) && !$hasOther && !trim((string)$request->manual_specialty)) {
             return back()
                 ->withErrors([
-                    'manual_specialty' =>
-                        'يرجى كتابة التخصص اليدوي.'
+                    'specialties' => 'يرجى اختيار تخصص واحد على الأقل أو كتابة تخصص يدوي.'
                 ])
                 ->withInput();
         }
 
+        if ($hasOther && !trim((string)$request->manual_specialty) && empty($selectedSpecialtyIds)) {
+            return back()
+                ->withErrors([
+                    'manual_specialty' => 'يرجى كتابة التخصص اليدوي.'
+                ])
+                ->withInput();
+        }
 
         /*
         |--------------------------------------------------------------------------
-        | التأكد من التخصص الموجود في قاعدة البيانات
+        | جلب التخصصات المعتمدة المختارة من قاعدة البيانات
         |--------------------------------------------------------------------------
         */
 
-        $specialtyId = null;
-
-        if ($request->specialty !== 'other') {
-
-            $specialtyId = DB::connection('business')
+        $dbSpecialties = collect();
+        if (!empty($selectedSpecialtyIds)) {
+            $dbSpecialties = DB::connection('business')
                 ->table('bs_specialties')
-                ->where('id', $request->specialty)
+                ->whereIn('id', $selectedSpecialtyIds)
                 ->where('office_type', $request->office_type)
                 ->where('is_active', 1)
-                ->value('id');
-
-            if (!$specialtyId) {
-
-                return back()
-                    ->withErrors([
-                        'specialty' =>
-                            'التخصص المحدد غير متاح لنوع المكتب المختار.'
-                    ])
-                    ->withInput();
-            }
+                ->get();
         }
+
 
 
         /*
@@ -708,8 +1117,8 @@ class ProviderAccountController extends Controller
                         0,
 
                     'custom_specialty' =>
-                        $request->specialty === 'other'
-                            ? trim($request->manual_specialty)
+                        ($hasOther && trim((string)$request->manual_specialty))
+                            ? trim((string)$request->manual_specialty)
                             : null,
 
                     'profile_completed' =>
@@ -744,30 +1153,117 @@ class ProviderAccountController extends Controller
 
             /*
             |--------------------------------------------------------------------------
-            | حفظ التخصص
+            | حفظ التخصصات المتعددة
             |--------------------------------------------------------------------------
             */
 
-            if ($specialtyId) {
-
+            $specialtyNames = [];
+            foreach ($dbSpecialties as $spec) {
                 $connection
                     ->table('bs_office_specialties')
                     ->insert([
+                        'office_id'    => $office->id,
+                        'specialty_id' => $spec->id,
+                        'created_at'   => now(),
+                        'updated_at'   => now(),
+                    ]);
+                $specialtyNames[] = $spec->name_ar;
+            }
 
-                        'office_id' =>
-                            $office->id,
+            if ($hasOther && trim((string)$request->manual_specialty)) {
+                $specialtyNames[] = trim((string)$request->manual_specialty);
+            }
 
-                        'specialty_id' =>
-                            $specialtyId,
+            $office->specialties = $specialtyNames;
+            $office->save();
 
-                        'created_at' =>
-                            now(),
 
-                        'updated_at' =>
-                            now(),
+            /*
+            |--------------------------------------------------------------------------
+            | حفظ الخدمات المختارة والمخصصة للمكتب
+            |--------------------------------------------------------------------------
+            */
 
+            $allServicesToInsert = [];
+
+            // 1. الخدمات القياسية المختارة
+            if ($request->has('services') && is_array($request->services)) {
+                foreach ($request->services as $svc) {
+                    if (is_array($svc)) {
+                        $nameAr   = trim((string)($svc['name_ar'] ?? ''));
+                        $nameEn   = trim((string)($svc['name_en'] ?? $nameAr));
+                        $price    = isset($svc['price']) && is_numeric($svc['price']) ? (float)$svc['price'] : 0.00;
+                        $duration = !empty($svc['duration']) ? trim((string)$svc['duration']) : null;
+                    } else {
+                        $nameAr   = trim((string)$svc);
+                        $nameEn   = $nameAr;
+                        $price    = 0.00;
+                        $duration = null;
+                    }
+
+                    if ($nameAr !== '') {
+                        $allServicesToInsert[] = [
+                            'name_ar'  => $nameAr,
+                            'name_en'  => $nameEn !== '' ? $nameEn : $nameAr,
+                            'price'    => $price,
+                            'duration' => $duration,
+                        ];
+                    }
+                }
+            }
+
+            // 2. الخدمات المضافة يدوياً عبر زر (+)
+            if ($request->has('custom_services') && is_array($request->custom_services)) {
+                foreach ($request->custom_services as $customSvc) {
+                    if (is_array($customSvc)) {
+                        $nameAr   = trim((string)($customSvc['name_ar'] ?? ''));
+                        $nameEn   = trim((string)($customSvc['name_en'] ?? $nameAr));
+                        $price    = isset($customSvc['price']) && is_numeric($customSvc['price']) ? (float)$customSvc['price'] : 0.00;
+                        $duration = !empty($customSvc['duration']) ? trim((string)$customSvc['duration']) : null;
+                    } else {
+                        $nameAr   = trim((string)$customSvc);
+                        $nameEn   = $nameAr;
+                        $price    = 0.00;
+                        $duration = null;
+                    }
+
+                    if ($nameAr !== '') {
+                        $allServicesToInsert[] = [
+                            'name_ar'  => $nameAr,
+                            'name_en'  => $nameEn !== '' ? $nameEn : $nameAr,
+                            'price'    => $price,
+                            'duration' => $duration,
+                        ];
+                    }
+                }
+            }
+
+            // إدراج الخدمات في جدول bs_office_services
+            $seenServices = [];
+            $serviceSortOrder = 1;
+            foreach ($allServicesToInsert as $svcItem) {
+                if (isset($seenServices[$svcItem['name_ar']])) {
+                    continue;
+                }
+                $seenServices[$svcItem['name_ar']] = true;
+
+                $connection
+                    ->table('bs_office_services')
+                    ->insert([
+                        'office_id'      => $office->id,
+                        'name_ar'        => $svcItem['name_ar'],
+                        'name_en'        => $svcItem['name_en'],
+                        'description_ar' => null,
+                        'description_en' => null,
+                        'price'          => $svcItem['price'],
+                        'duration'       => $svcItem['duration'],
+                        'is_active'      => 1,
+                        'sort_order'     => $serviceSortOrder++,
+                        'created_at'     => now(),
+                        'updated_at'     => now(),
                     ]);
             }
+
 
 
             /*

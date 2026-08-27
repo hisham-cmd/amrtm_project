@@ -64,7 +64,7 @@ class ServiceCatalogController extends Controller
         $offices = Office::where('type', $type)
             ->where('is_active', true)
             ->where('is_verified', true)
-            ->orderBy('name_ar')
+            ->with(['specialtiesRelation', 'services'])
             ->get();
 
         return view('update_service.office_directory', compact('type', 'offices', 'typeLabels'));
@@ -79,11 +79,15 @@ class ServiceCatalogController extends Controller
             ->where('type', $type)
             ->where('is_active', true)
             ->where('is_verified', true)
-            ->with(['services' => fn($q) => $q->where('is_active', true)->orderBy('sort_order')])
+            ->with([
+                'specialtiesRelation',
+                'services' => fn($q) => $q->where('is_active', true)->orderBy('sort_order'),
+            ])
             ->firstOrFail();
 
         return view('update_service.office_detail', compact('type', 'office', 'typeLabels'));
     }
+
 
     public function submitOfficeRequest(Request $request): JsonResponse
     {

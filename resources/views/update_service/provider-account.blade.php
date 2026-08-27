@@ -747,6 +747,535 @@
         }
 
         /* =====================================================
+           MULTI-SELECT SPECIALTIES & SERVICES
+        ===================================================== */
+        .multi-select-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .multi-select-trigger {
+            width: 100%;
+            min-height: 48px;
+            padding: 8px 14px;
+            border: 1.5px solid #d8dee5;
+            border-radius: var(--radius-sm);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            cursor: pointer;
+            transition: all .2s ease;
+            outline: none;
+        }
+
+        .multi-select-trigger:hover {
+            border-color: #b9c4ce;
+        }
+
+        .multi-select-trigger.active,
+        .multi-select-trigger:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15,118,110,.1);
+        }
+
+        .selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            flex: 1;
+        }
+
+        .placeholder-text {
+            color: #a0a8b3;
+            font-size: 13px;
+        }
+
+        .spec-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.4;
+            transition: all .15s ease;
+        }
+
+        .spec-tag .remove-tag {
+            cursor: pointer;
+            color: #0f766e;
+            opacity: .7;
+            font-size: 11px;
+            transition: .15s;
+        }
+
+        .spec-tag .remove-tag:hover {
+            opacity: 1;
+            color: var(--danger);
+        }
+
+        .trigger-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-count {
+            background: var(--primary);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 12px;
+        }
+
+        .select-arrow-icon {
+            color: var(--primary);
+            font-size: 12px;
+            transition: transform .2s ease;
+        }
+
+        .multi-select-wrap.open .select-arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        .multi-select-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            left: 0;
+            background: #fff;
+            border: 1px solid #d8dee5;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 14px 35px rgba(15,23,42,.12);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            max-height: 320px;
+        }
+
+        .multi-select-wrap.open .multi-select-dropdown {
+            display: flex;
+            animation: dropdownFade .2s ease;
+        }
+
+        @keyframes dropdownFade {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-search {
+            padding: 10px 12px;
+            border-bottom: 1px solid #edf2f7;
+            position: relative;
+            background: #f8fafc;
+        }
+
+        .dropdown-search i {
+            position: absolute;
+            right: 22px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .dropdown-search input {
+            width: 100%;
+            height: 36px;
+            padding: 6px 34px 6px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 7px;
+            font-size: 12px;
+            outline: none;
+            background: #fff;
+            transition: .2s;
+        }
+
+        .dropdown-search input:focus {
+            border-color: var(--primary);
+        }
+
+        .dropdown-list {
+            overflow-y: auto;
+            max-height: 250px;
+            padding: 6px;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            transition: background .15s ease;
+            user-select: none;
+        }
+
+        .dropdown-item:hover {
+            background: #f1f5f9;
+        }
+
+        .dropdown-item.selected {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .dropdown-item input[type="checkbox"] {
+            width: 17px;
+            height: 17px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .dropdown-empty-hint {
+            padding: 16px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        /* Services container */
+        .services-per-specialty-container {
+            margin-top: 24px;
+            border-top: 1.5px dashed #e2e8f0;
+            padding-top: 20px;
+        }
+
+        .services-main-title {
+            margin-bottom: 16px;
+        }
+
+        .title-with-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .title-with-icon i {
+            color: var(--primary);
+            font-size: 17px;
+        }
+
+        .services-sub-hint {
+            display: block;
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .spec-services-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 14px rgba(15,23,42,.03);
+            transition: all .2s ease;
+        }
+
+        .spec-services-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 6px 20px rgba(15,23,42,.06);
+        }
+
+        .spec-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 14px;
+        }
+
+        .spec-card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .spec-card-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .spec-card-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-select-all-spec {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .15s ease;
+        }
+
+        .btn-select-all-spec:hover {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border-color: #bbf7d0;
+        }
+
+        .services-grid-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 10px;
+        }
+
+        .service-checkbox-card {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            transition: all .2s ease;
+            user-select: none;
+        }
+
+        .service-checkbox-card:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .service-checkbox-card.checked {
+            background: #f0fdf4;
+            border-color: #86efac;
+            box-shadow: 0 2px 8px rgba(34,197,94,.08);
+        }
+
+        .service-checkbox-card input[type="checkbox"] {
+            margin-top: 3px;
+            width: 17px;
+            height: 17px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .service-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .service-card-name {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+
+        .service-checkbox-card.checked .service-card-name {
+            color: #14532d;
+        }
+
+        .service-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .service-badge-price {
+            background: rgba(15,118,110,.1);
+            color: var(--primary-dark);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .service-badge-duration {
+            background: #f1f5f9;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        /* Custom Service Adding section */
+        .custom-services-global-card {
+            background: #fafcfd;
+            border: 1.5px dashed #cbd5e1;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-top: 16px;
+        }
+
+        .custom-service-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .custom-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .btn-toggle-custom-add {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border: 1px solid #bbf7d0;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .btn-toggle-custom-add:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .custom-service-form-inline {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid #e2e8f0;
+            animation: dropdownFade .2s ease;
+        }
+
+        .custom-inputs-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .btn-add-custom-service {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            border: none;
+            height: 43px;
+            padding: 0 20px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: opacity .2s;
+            white-space: nowrap;
+        }
+
+        .btn-add-custom-service:hover {
+            opacity: .9;
+        }
+
+        .custom-services-items-list {
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .custom-service-row-item {
+            background: #fff;
+            border: 1px solid #a7f3d0;
+            border-radius: 8px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            animation: dropdownFade .2s ease;
+        }
+
+        .custom-row-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            flex-wrap: wrap;
+        }
+
+        .custom-row-badge {
+            background: #10b981;
+            color: #fff;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 10.5px;
+            font-weight: 700;
+        }
+
+        .custom-row-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .btn-remove-custom-svc {
+            background: #fee2e2;
+            color: #ef4444;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all .15s;
+        }
+
+        .btn-remove-custom-svc:hover {
+            background: #ef4444;
+            color: #fff;
+        }
+
+
+        /* =====================================================
            DOCUMENTS
         ===================================================== */
 
@@ -1244,7 +1773,593 @@
                     13px;
             }
         }
+
+
+        /* ==============================================
+           MULTI-SELECT SPECIALTIES WIDGET
+        ============================================== */
+
+        .multi-select-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .multi-select-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 52px;
+            padding: 8px 14px;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all .2s ease;
+            gap: 8px;
+        }
+
+        .multi-select-trigger:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, .08);
+        }
+
+        .multi-select-wrap.open .multi-select-trigger {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, .13);
+        }
+
+        .selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            flex: 1;
+            align-items: center;
+        }
+
+        .placeholder-text {
+            color: var(--muted);
+            font-size: 13.5px;
+        }
+
+        .spec-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(135deg, var(--primary-light), #d1fae5);
+            color: var(--primary-dark);
+            font-size: 12.5px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(15, 118, 110, .15);
+            animation: tagIn .25s ease;
+        }
+
+        @keyframes tagIn {
+            from { transform: scale(.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .spec-tag .remove-tag {
+            cursor: pointer;
+            font-size: 10px;
+            color: var(--danger);
+            opacity: .65;
+            transition: opacity .15s;
+            margin-right: 2px;
+        }
+
+        .spec-tag .remove-tag:hover {
+            opacity: 1;
+        }
+
+        .trigger-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .badge-count {
+            background: var(--primary);
+            color: var(--white);
+            font-size: 11px;
+            font-weight: 800;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .select-arrow-icon {
+            color: var(--muted);
+            font-size: 13px;
+            transition: transform .2s ease;
+        }
+
+        .multi-select-wrap.open .select-arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Dropdown panel */
+        .multi-select-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: 0 12px 40px rgba(15, 23, 42, .12);
+            z-index: 120;
+            max-height: 340px;
+            overflow: hidden;
+            animation: dropdownSlide .2s ease;
+        }
+
+        @keyframes dropdownSlide {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .multi-select-wrap.open .multi-select-dropdown {
+            display: block;
+        }
+
+        .dropdown-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            background: #f8fafc;
+        }
+
+        .dropdown-search i {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .dropdown-search input {
+            border: none;
+            outline: none;
+            background: transparent;
+            flex: 1;
+            font-size: 13.5px;
+            color: var(--text);
+            font-family: inherit;
+        }
+
+        .dropdown-list {
+            overflow-y: auto;
+            max-height: 270px;
+            padding: 4px 0;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: background .15s;
+            font-size: 13.5px;
+        }
+
+        .dropdown-item:hover {
+            background: var(--primary-light);
+        }
+
+        .dropdown-item.selected {
+            background: #ecfdf5;
+            font-weight: 700;
+        }
+
+        .dropdown-item input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .dropdown-empty-hint {
+            padding: 20px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+
+        /* ==============================================
+           SERVICES PER SPECIALTY
+        ============================================== */
+
+        .services-per-specialty-container {
+            margin-top: 20px;
+            animation: fadeSlideIn .35s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .services-main-title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .services-main-title .title-with-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        .services-main-title .title-with-icon i {
+            color: var(--primary);
+        }
+
+        .services-sub-hint {
+            font-size: 12px;
+            color: var(--muted);
+            padding-right: 26px;
+        }
+
+        /* Specialty Service Card */
+        .spec-services-card {
+            background: #fafcfd;
+            border: 1.5px solid #e8eef3;
+            border-radius: var(--radius-md);
+            padding: 0;
+            margin-bottom: 14px;
+            overflow: hidden;
+            transition: border-color .2s;
+        }
+
+        .spec-services-card:hover {
+            border-color: var(--primary);
+        }
+
+        .spec-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, var(--primary-light), #d1fae5);
+            border-bottom: 1px solid #e0f0ec;
+        }
+
+        .spec-card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        .spec-card-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: var(--primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        .spec-card-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-select-all-spec {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--white);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .btn-select-all-spec:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .services-grid-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+            padding: 14px;
+        }
+
+        /* Service Checkbox Card */
+        .service-checkbox-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 14px;
+            background: var(--white);
+            border: 1.5px solid #e8eef3;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .service-checkbox-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(15, 118, 110, .08);
+        }
+
+        .service-checkbox-card.checked {
+            border-color: var(--primary);
+            background: #ecfdf5;
+            box-shadow: 0 0 0 2px rgba(15, 118, 110, .1);
+        }
+
+        .service-checkbox-card input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .service-card-info {
+            flex: 1;
+        }
+
+        .service-card-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+
+        .service-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .service-badge-price,
+        .service-badge-duration {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 4px;
+        }
+
+        .service-badge-price {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .service-badge-duration {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+
+        /* ==============================================
+           CUSTOM SERVICES GLOBAL CARD (+)
+        ============================================== */
+
+        .custom-services-global-card {
+            margin-top: 16px;
+            background: #fffbf0;
+            border: 1.5px dashed #f59e0b;
+            border-radius: var(--radius-md);
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .custom-service-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border-bottom: 1px solid #fde68a;
+        }
+
+        .custom-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #92400e;
+        }
+
+        .btn-toggle-custom-add {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all .2s;
+            box-shadow: 0 2px 8px rgba(15, 118, 110, .2);
+        }
+
+        .btn-toggle-custom-add:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(15, 118, 110, .3);
+        }
+
+        .custom-service-form-inline {
+            padding: 16px;
+            border-bottom: 1px solid #fde68a;
+            animation: fadeSlideIn .25s ease;
+        }
+
+        .custom-inputs-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .custom-add-btn-wrap {
+            padding-bottom: 0;
+        }
+
+        .btn-add-custom-service {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 22px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all .2s;
+            min-height: 44px;
+        }
+
+        .btn-add-custom-service:hover {
+            background: var(--primary-dark);
+        }
+
+        .custom-services-items-list {
+            padding: 0;
+        }
+
+        .custom-service-row-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-bottom: 1px solid #fde68a;
+            gap: 10px;
+            transition: background .15s;
+        }
+
+        .custom-service-row-item:last-child {
+            border-bottom: none;
+        }
+
+        .custom-service-row-item:hover {
+            background: #fef9e7;
+        }
+
+        .custom-row-info {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .custom-row-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #fbbf24;
+            color: #78350f;
+            font-size: 10.5px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .custom-row-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .btn-remove-custom-svc {
+            background: transparent;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all .2s;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .btn-remove-custom-svc:hover {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+
+        /* ==============================================
+           RESPONSIVE OVERRIDES FOR MULTI-SELECT
+        ============================================== */
+
+        @media (max-width: 600px) {
+            .services-grid-list {
+                grid-template-columns: 1fr;
+            }
+
+            .custom-inputs-grid {
+                flex-direction: column;
+            }
+
+            .custom-inputs-grid .form-group {
+                min-width: 100% !important;
+                flex: 1 1 100% !important;
+            }
+
+            .spec-card-header {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+            }
+
+            .custom-service-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
     </style>
+
 </head>
 
 
@@ -2087,10 +3202,10 @@
 
 
             {{-- =================================================
-                 SPECIALTY
+                 SPECIALTY & SERVICES
             ================================================== --}}
 
-            <section class="section-card">
+            <section class="section-card" id="specialties-section">
 
                 <div class="section-header">
 
@@ -2101,11 +3216,11 @@
                     <div class="section-header-text">
 
                         <h2>
-                            أختر التخصص الذي تمارسه حاليآ من القائمة التالية 
+                            التخصص والخدمات المقدمة
                         </h2>
 
                         <p>
-                            اختر تخصصًا معتمدًا أو أضف تخصصًا جديدًا للمراجعة
+                            اختر تخصص المنشأة، وحدد الخدمات المناسبة أو أضف خدمات خاصة بك
                         </p>
 
                     </div>
@@ -2115,35 +3230,25 @@
 
                 <div class="specialty-box">
 
+                    {{-- Single-select dropdown for specialty --}}
                     <div class="form-group">
 
                         <label class="form-label">
-
-                            التخصص
-
+                            التخصص المهني
                             <span class="required">*</span>
-
                         </label>
 
                         <div class="input-wrapper">
-
                             <i class="fas fa-list-check input-icon"></i>
-
                             <select
                                 name="specialty"
                                 id="specialty"
                                 class="form-control"
                                 required
                                 disabled>
-
-                                <option value="">
-                                    اختر نوع المنشأة أولاً
-                                </option>
-
+                                <option value="">اختر نوع المنشأة أولاً</option>
                             </select>
-
                             <i class="fas fa-chevron-down select-arrow"></i>
-
                         </div>
 
                         @error('specialty')
@@ -2155,45 +3260,33 @@
                     </div>
 
 
-                    <div class="specialty-info">
-
+                    <div class="specialty-info" id="specialty-info-box">
                         <i class="fas fa-circle-info"></i>
-
                         <div id="specialty-message">
-
                             اختر نوع المنشأة أولاً لعرض التخصصات المتاحة.
-
                         </div>
-
                     </div>
 
 
-                    <div
-                        class="manual-specialty"
-                        id="manual-specialty">
+                    {{-- Manual Specialty --}}
+                    <div class="manual-specialty" id="manual-specialty">
 
                         <div class="form-group">
 
                             <label class="form-label">
-
-                                اكتب التخصص الذي تمارسه حاليآ
-
+                                اكتب التخصص الذي تمارسه حالياً
                                 <span class="required">*</span>
-
                             </label>
 
                             <div class="input-wrapper">
-
                                 <i class="fas fa-pen input-icon"></i>
-
                                 <input
                                     type="text"
                                     name="manual_specialty"
                                     id="manual_specialty"
                                     class="form-control"
-                                    placeholder="اكتب تخصصك هنا"
+                                    placeholder="اكتب التخصص الإضافي هنا..."
                                     value="{{ old('manual_specialty') }}">
-
                             </div>
 
                             @error('manual_specialty')
@@ -2203,21 +3296,73 @@
                             @enderror
 
                             <div class="manual-note">
-
                                 <i class="fas fa-clock"></i>
-
-                                التخصص المكتوب يدويًا سيتم إرساله للإدارة للمراجعة.
-                                لن يظهر كتخصص معتمد إلا بعد موافقة الإدارة.
-
+                                التخصص المكتوب يدويًا سيتم إرساله للإدارة للمراجعة والاعتماد.
                             </div>
 
                         </div>
 
                     </div>
 
+                    {{-- Dynamic Services Section for Selected Specialty --}}
+                    <div class="services-per-specialty-container" id="services-container" style="display: none;">
+                        <div class="services-main-title">
+                            <div class="title-with-icon">
+                                <i class="fas fa-list-check"></i>
+                                <span>الخدمات المناسبة للتخصص المختار</span>
+                            </div>
+                            <span class="services-sub-hint">حدد الخدمات التي تقدمها أو أضف خدماتك الخاصة باستخدام أيقونة (+)</span>
+                        </div>
+
+                        {{-- Container for dynamically inserted service cards --}}
+                        <div id="specialty-services-cards-list"></div>
+
+                        {{-- Global Custom Services Adder (+) --}}
+                        <div class="custom-services-global-card">
+                            <div class="custom-service-header">
+                                <div class="custom-title">
+                                    <i class="fas fa-plus-circle" style="color: var(--primary);"></i>
+                                    <span>إضافة خدمة خاصة / مخصصة للمنشأة (+)</span>
+                                </div>
+                                <button type="button" class="btn-toggle-custom-add" id="btn-toggle-global-custom" onclick="toggleGlobalCustomForm()">
+                                    <i class="fas fa-plus"></i>
+                                    <span>إضافة خدمة مخصصة</span>
+                                </button>
+                            </div>
+
+                            {{-- Inline form to add custom service (name only) --}}
+                            <div class="custom-service-form-inline" id="global-custom-form" style="display: none;">
+                                <div class="custom-inputs-grid">
+                                    <div class="form-group" style="flex: 3; min-width: 280px;">
+                                        <label class="form-label">اسم الخدمة الخاصة <span class="required">*</span></label>
+                                        <div class="input-wrapper">
+                                            <i class="fas fa-file-signature input-icon"></i>
+                                            <input type="text" id="custom-svc-name" class="form-control" placeholder="مثال: تقديم استشارة مخصصة للمشاريع">
+                                        </div>
+                                    </div>
+                                    <div class="form-group custom-add-btn-wrap" style="align-self: flex-end;">
+                                        <button type="button" class="btn-add-custom-service" onclick="addGlobalCustomService()">
+                                            <i class="fas fa-plus"></i>
+                                            <span>إضافة</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Custom Services List --}}
+                            <div class="custom-services-items-list" id="global-custom-services-list"></div>
+                        </div>
+
+                    </div>
+
+                    {{-- Hidden container for all selected/custom services inputs --}}
+                    <div id="hidden-services-inputs"></div>
+
                 </div>
 
             </section>
+
+
 
 
             {{-- =================================================
@@ -2589,934 +3734,606 @@ document.addEventListener('DOMContentLoaded', function () {
        ELEMENTS
     ===================================================== */
 
-    const officeType =
-        document.getElementById('office_type');
+    const officeType = document.getElementById('office_type');
+    const specialty = document.getElementById('specialty');
+    const specialtyMessage = document.getElementById('specialty-message');
+    const manualBox = document.getElementById('manual-specialty');
+    const manualInput = document.getElementById('manual_specialty');
+    const form = document.getElementById('provider-form');
+    const submitButton = document.getElementById('submit-btn');
 
-    const specialty =
-        document.getElementById('specialty');
+    const servicesContainer = document.getElementById('services-container');
+    const specialtyServicesCardsList = document.getElementById('specialty-services-cards-list');
+    const globalCustomServicesList = document.getElementById('global-custom-services-list');
+    const hiddenServicesContainer = document.getElementById('hidden-services-inputs');
 
-    const specialtyMessage =
-        document.getElementById('specialty-message');
-
-    const manualBox =
-        document.getElementById('manual-specialty');
-
-    const manualInput =
-        document.getElementById('manual_specialty');
-
-    const form =
-        document.getElementById('provider-form');
-
-    const submitButton =
-        document.getElementById('submit-btn');
-
-    const trademarkNumber =
-        document.getElementById('trademark_registration_number');
-
-    const trademarkCertificate =
-        document.getElementById('trademark_certificate');
-
-    const trademarkRequiredStar =
-        document.getElementById('trademark-required-star');
-
-    const trademarkFileHint =
-        document.getElementById('trademark-file-hint');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | لو فيه success لا يوجد form أصلاً
-    |--------------------------------------------------------------------------
-    */
+    const trademarkNumber = document.getElementById('trademark_registration_number');
+    const trademarkCertificate = document.getElementById('trademark_certificate');
+    const trademarkRequiredStar = document.getElementById('trademark-required-star');
+    const trademarkFileHint = document.getElementById('trademark-file-hint');
 
     if (!form) {
         return;
     }
 
-
     /* =====================================================
        ROUTE
     ===================================================== */
 
-    const specialtiesUrl =
-        @json(route('amrtm.provider.account.specialties'));
+    const specialtiesUrl = @json(route('amrtm.provider.account.specialties'));
 
+    /* =====================================================
+       STATE
+    ===================================================== */
+
+    let loadedSpecialties = [];
+    let selectedServices = {};   // { 'service_name': { name_ar, name_en } }
+    let customServices = [];     // [{ id, name_ar }]
+
+    /* =====================================================
+       OLD VALUES
+    ===================================================== */
+
+    const oldOfficeType = @json(old('office_type'));
+    const oldSpecialty = @json(old('specialty'));
+    const oldCustomServices = @json(old('custom_services', []));
 
     /* =====================================================
        MANUAL SPECIALTY
     ===================================================== */
 
     function showManualSpecialty() {
-
-        if (!manualBox || !manualInput) {
-            return;
-        }
-
+        if (!manualBox || !manualInput) return;
         manualBox.classList.add('show');
-
         manualInput.required = true;
     }
 
-
     function hideManualSpecialty() {
-
-        if (!manualBox || !manualInput) {
-            return;
-        }
-
+        if (!manualBox || !manualInput) return;
         manualBox.classList.remove('show');
-
         manualInput.required = false;
-
-        /*
-         * لا نمسح القيمة هنا حتى لا تضيع old()
-         * في حالة validation error.
-         */
     }
-
 
     function handleSpecialtyChange() {
-
-        if (!specialty) {
-            return;
-        }
+        if (!specialty) return;
 
         if (specialty.value === 'other') {
-
             showManualSpecialty();
-
         } else {
-
             hideManualSpecialty();
-
         }
+
+        // Show services for the selected specialty
+        renderServicesUI();
+        syncHiddenInputs();
     }
 
-
     /* =====================================================
-       LOAD SPECIALTIES
+       LOAD SPECIALTIES (single-select)
     ===================================================== */
 
-    async function loadSpecialties(
-        selectedSpecialty = ''
-    ) {
+    async function loadSpecialties(selectedValue = '') {
+        if (!officeType || !specialty) return;
 
-        if (!officeType || !specialty) {
-            return;
-        }
-
-        const officeTypeValue =
-            officeType.value;
-
+        const officeTypeValue = officeType.value;
 
         if (!officeTypeValue) {
-
-            specialty.innerHTML = `
-                <option value="">
-                    اختر نوع المنشأة أولاً
-                </option>
-            `;
-
+            specialty.innerHTML = '<option value="">اختر نوع المنشأة أولاً</option>';
             specialty.disabled = true;
-
-            if (specialtyMessage) {
-
-                specialtyMessage.textContent =
-                    'اختر نوع المنشأة أولاً لعرض التخصصات المتاحة.';
-
-            }
-
+            if (specialtyMessage) specialtyMessage.textContent = 'اختر نوع المنشأة أولاً لعرض التخصصات المتاحة.';
             hideManualSpecialty();
-
+            selectedServices = {};
+            if (servicesContainer) servicesContainer.style.display = 'none';
+            syncHiddenInputs();
             return;
         }
 
-
         specialty.disabled = true;
-
-        specialty.innerHTML = `
-            <option value="">
-                جاري تحميل التخصصات...
-            </option>
-        `;
-
-
-        if (specialtyMessage) {
-
-            specialtyMessage.textContent =
-                'جاري تحميل التخصصات...';
-
-        }
-
+        specialty.innerHTML = '<option value="">جاري تحميل التخصصات...</option>';
+        if (specialtyMessage) specialtyMessage.textContent = 'جاري تحميل التخصصات...';
 
         try {
-
-            const response =
-                await fetch(
-                    specialtiesUrl +
-                    '?office_type=' +
-                    encodeURIComponent(
-                        officeTypeValue
-                    ),
-                    {
-                        method: 'GET',
-
-                        headers: {
-                            'Accept':
-                                'application/json',
-
-                            'X-Requested-With':
-                                'XMLHttpRequest'
-                        }
-                    }
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    'HTTP ' +
-                    response.status
-                );
-            }
-
-
-            const data =
-                await response.json();
-
-
-            specialty.innerHTML = `
-                <option value="">
-                    اختر التخصص
-                </option>
-            `;
-
-
-            if (
-                data.success &&
-                Array.isArray(data.specialties)
-            ) {
-
-                data.specialties.forEach(
-                    function (item) {
-
-                        const option =
-                            document.createElement(
-                                'option'
-                            );
-
-                        option.value =
-                            item.id;
-
-                        option.textContent =
-                            item.name_ar;
-
-                        if (
-                            String(item.id) ===
-                            String(selectedSpecialty)
-                        ) {
-
-                            option.selected =
-                                true;
-
-                        }
-
-                        specialty.appendChild(
-                            option
-                        );
-
-                    }
-                );
-
-
-                /*
-                 * التخصص اليدوي
-                 */
-
-                const otherOption =
-                    document.createElement(
-                        'option'
-                    );
-
-                otherOption.value =
-                    'other';
-
-                otherOption.textContent =
-                    'تخصص آخر — سأكتبه يدويًا';
-
-
-                if (
-                    String(selectedSpecialty) ===
-                    'other'
-                ) {
-
-                    otherOption.selected =
-                        true;
-
+            const response = await fetch(specialtiesUrl + '?office_type=' + encodeURIComponent(officeTypeValue), {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
+            });
 
+            if (!response.ok) throw new Error('HTTP ' + response.status);
 
-                specialty.appendChild(
-                    otherOption
-                );
+            const data = await response.json();
 
+            specialty.innerHTML = '<option value="">اختر التخصص</option>';
 
-                specialty.disabled =
-                    false;
+            if (data.success && Array.isArray(data.specialties)) {
+                loadedSpecialties = data.specialties;
 
+                data.specialties.forEach(function (item) {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.name_ar;
+                    if (String(item.id) === String(selectedValue)) {
+                        option.selected = true;
+                    }
+                    specialty.appendChild(option);
+                });
+
+                // Add manual option
+                const otherOption = document.createElement('option');
+                otherOption.value = 'other';
+                otherOption.textContent = 'تخصص آخر — سأكتبه يدويًا';
+                if (String(selectedValue) === 'other') otherOption.selected = true;
+                specialty.appendChild(otherOption);
+
+                specialty.disabled = false;
 
                 if (specialtyMessage) {
-
-                    specialtyMessage.textContent =
-                        data.specialties.length
-                            ? 'تم تحميل التخصصات المعتمدة لهذا النوع.'
-                            : 'لا توجد تخصصات معتمدة حاليًا، يمكنك إضافة تخصص يدوي للمراجعة.';
-
+                    specialtyMessage.textContent = data.specialties.length
+                        ? 'تم تحميل التخصصات المعتمدة لهذا النوع.'
+                        : 'لا توجد تخصصات معتمدة حاليًا، يمكنك إضافة تخصص يدوي للمراجعة.';
                 }
-
 
                 handleSpecialtyChange();
 
-
             } else {
-
-                specialty.innerHTML = `
-                    <option value="">
-                        اختر التخصص
-                    </option>
-
-                    <option value="other">
-                        تخصص آخر — سأكتبه يدويًا
-                    </option>
-                `;
-
-                specialty.disabled =
-                    false;
-
-                specialty.value =
-                    'other';
-
+                specialty.innerHTML = '<option value="">اختر التخصص</option><option value="other">تخصص آخر — سأكتبه يدويًا</option>';
+                specialty.disabled = false;
+                specialty.value = 'other';
                 showManualSpecialty();
-
-                if (specialtyMessage) {
-
-                    specialtyMessage.textContent =
-                        'لا توجد تخصصات متاحة حاليًا. يمكنك كتابة التخصص يدويًا.';
-
-                }
-
+                if (specialtyMessage) specialtyMessage.textContent = 'لا توجد تخصصات متاحة حاليًا. يمكنك كتابة التخصص يدويًا.';
             }
-
 
         } catch (error) {
-
-            console.error(
-                'Specialties Error:',
-                error
-            );
-
-
-            specialty.innerHTML = `
-                <option value="">
-                    اختر التخصص
-                </option>
-
-                <option value="other">
-                    تخصص آخر — سأكتبه يدويًا
-                </option>
-            `;
-
-            specialty.disabled =
-                false;
-
-            specialty.value =
-                'other';
-
+            console.error('Specialties Error:', error);
+            specialty.innerHTML = '<option value="">اختر التخصص</option><option value="other">تخصص آخر — سأكتبه يدويًا</option>';
+            specialty.disabled = false;
+            specialty.value = 'other';
             showManualSpecialty();
-
-            if (specialtyMessage) {
-
-                specialtyMessage.textContent =
-                    'تعذر تحميل التخصصات. يمكنك كتابة التخصص يدويًا.';
-
-            }
-
+            if (specialtyMessage) specialtyMessage.textContent = 'تعذر تحميل التخصصات. يمكنك كتابة التخصص يدويًا.';
         }
-
     }
 
-
     /* =====================================================
-       OFFICE TYPE
+       SERVICES UI (for single selected specialty)
     ===================================================== */
 
-    officeType.addEventListener(
-        'change',
-        function () {
+    function renderServicesUI() {
+        if (!servicesContainer || !specialtyServicesCardsList) return;
 
-            loadSpecialties();
+        const selectedId = specialty ? specialty.value : '';
 
+        // Find the selected specialty from loaded data
+        const spec = loadedSpecialties.find(s => String(s.id) === String(selectedId));
+
+        if (!spec || !Array.isArray(spec.services) || spec.services.length === 0) {
+            if (customServices.length === 0) {
+                servicesContainer.style.display = 'none';
+            } else {
+                servicesContainer.style.display = 'block';
+            }
+            specialtyServicesCardsList.innerHTML = '';
+            renderGlobalCustomServicesList();
+            return;
         }
-    );
 
+        servicesContainer.style.display = 'block';
+        specialtyServicesCardsList.innerHTML = '';
+
+        const card = document.createElement('div');
+        card.className = 'spec-services-card';
+
+        const services = spec.services;
+        const allSelected = services.every(s => selectedServices[s.name_ar] !== undefined);
+
+        let servicesHtml = '';
+        services.forEach((svc, sIdx) => {
+            const isChecked = selectedServices[svc.name_ar] !== undefined;
+            const safeKey = 'svc-' + spec.id + '-' + sIdx;
+
+            servicesHtml += `
+                <div class="service-checkbox-card ${isChecked ? 'checked' : ''}" onclick="toggleService('${spec.id}', '${encodeURIComponent(svc.name_ar)}', '${encodeURIComponent(svc.name_en || svc.name_ar)}')">
+                    <input type="checkbox" id="${safeKey}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); toggleService('${spec.id}', '${encodeURIComponent(svc.name_ar)}', '${encodeURIComponent(svc.name_en || svc.name_ar)}')">
+                    <div class="service-card-info">
+                        <div class="service-card-name">${svc.name_ar}</div>
+                    </div>
+                </div>
+            `;
+        });
+
+        card.innerHTML = `
+            <div class="spec-card-header">
+                <div class="spec-card-title">
+                    <div class="spec-card-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <span>خدمات تخصص: ${spec.name_ar}</span>
+                </div>
+                <div class="spec-card-actions">
+                    <button type="button" class="btn-select-all-spec" onclick="toggleAllServices()">
+                        <i class="fas ${allSelected ? 'fa-square-minus' : 'fa-check-double'}"></i>
+                        <span>${allSelected ? 'إلغاء تحديد الكل' : 'تحديد الكل'}</span>
+                    </button>
+                </div>
+            </div>
+            <div class="services-grid-list">
+                ${servicesHtml}
+            </div>
+        `;
+
+        specialtyServicesCardsList.appendChild(card);
+        renderGlobalCustomServicesList();
+    }
+
+    // Toggle individual service
+    window.toggleService = function (specId, nameArEnc, nameEnEnc) {
+        const nameAr = decodeURIComponent(nameArEnc);
+        const nameEn = decodeURIComponent(nameEnEnc);
+
+        if (selectedServices[nameAr]) {
+            delete selectedServices[nameAr];
+        } else {
+            selectedServices[nameAr] = {
+                name_ar: nameAr,
+                name_en: nameEn
+            };
+        }
+
+        renderServicesUI();
+        syncHiddenInputs();
+    };
+
+    // Toggle all services
+    window.toggleAllServices = function () {
+        const selectedId = specialty ? specialty.value : '';
+        const spec = loadedSpecialties.find(s => String(s.id) === String(selectedId));
+        if (!spec || !Array.isArray(spec.services)) return;
+
+        const allSelected = spec.services.every(s => selectedServices[s.name_ar] !== undefined);
+
+        if (allSelected) {
+            spec.services.forEach(s => delete selectedServices[s.name_ar]);
+        } else {
+            spec.services.forEach(s => {
+                selectedServices[s.name_ar] = {
+                    name_ar: s.name_ar,
+                    name_en: s.name_en || s.name_ar
+                };
+            });
+        }
+
+        renderServicesUI();
+        syncHiddenInputs();
+    };
 
     /* =====================================================
-       SPECIALTY
+       CUSTOM SERVICES (+)
     ===================================================== */
 
-    specialty.addEventListener(
-        'change',
-        handleSpecialtyChange
-    );
+    window.toggleGlobalCustomForm = function () {
+        const customForm = document.getElementById('global-custom-form');
+        if (!customForm) return;
+        if (customForm.style.display === 'none' || customForm.style.display === '') {
+            customForm.style.display = 'block';
+            const nameInput = document.getElementById('custom-svc-name');
+            if (nameInput) nameInput.focus();
+        } else {
+            customForm.style.display = 'none';
+        }
+    };
 
+    window.addGlobalCustomService = function () {
+        const nameInput = document.getElementById('custom-svc-name');
+
+        if (!nameInput || !nameInput.value.trim()) {
+            alert('يرجى كتابة اسم الخدمة الخاصة.');
+            if (nameInput) nameInput.focus();
+            return;
+        }
+
+        customServices.push({
+            id: 'custom_' + Date.now(),
+            name_ar: nameInput.value.trim()
+        });
+
+        nameInput.value = '';
+
+        renderGlobalCustomServicesList();
+        syncHiddenInputs();
+
+        // Show services container if hidden
+        if (servicesContainer) servicesContainer.style.display = 'block';
+    };
+
+    window.removeCustomService = function (index) {
+        customServices.splice(index, 1);
+        renderGlobalCustomServicesList();
+        syncHiddenInputs();
+
+        // Hide container if nothing to show
+        const selectedId = specialty ? specialty.value : '';
+        const spec = loadedSpecialties.find(s => String(s.id) === String(selectedId));
+        if ((!spec || !spec.services || spec.services.length === 0) && customServices.length === 0) {
+            if (servicesContainer) servicesContainer.style.display = 'none';
+        }
+    };
+
+    function renderGlobalCustomServicesList() {
+        if (!globalCustomServicesList) return;
+        globalCustomServicesList.innerHTML = '';
+
+        if (customServices.length === 0) return;
+
+        customServices.forEach((svc, index) => {
+            const item = document.createElement('div');
+            item.className = 'custom-service-row-item';
+            item.innerHTML = `
+                <div class="custom-row-info">
+                    <span class="custom-row-badge"><i class="fas fa-star"></i> خدمة مخصصة</span>
+                    <span class="custom-row-name">${svc.name_ar}</span>
+                </div>
+                <button type="button" class="btn-remove-custom-svc" onclick="removeCustomService(${index})" title="حذف الخدمة">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            `;
+            globalCustomServicesList.appendChild(item);
+        });
+    }
 
     /* =====================================================
-       OLD VALUES
+       SYNC HIDDEN INPUTS
     ===================================================== */
 
-    const oldOfficeType =
-        @json(old('office_type'));
+    function syncHiddenInputs() {
+        if (!hiddenServicesContainer) return;
+        hiddenServicesContainer.innerHTML = '';
 
-    const oldSpecialty =
-        @json(old('specialty'));
+        let svcIndex = 0;
 
+        // Standard selected services
+        Object.values(selectedServices).forEach(svc => {
+            const inputName = document.createElement('input');
+            inputName.type = 'hidden';
+            inputName.name = `services[${svcIndex}][name_ar]`;
+            inputName.value = svc.name_ar;
+            hiddenServicesContainer.appendChild(inputName);
+
+            const inputEn = document.createElement('input');
+            inputEn.type = 'hidden';
+            inputEn.name = `services[${svcIndex}][name_en]`;
+            inputEn.value = svc.name_en;
+            hiddenServicesContainer.appendChild(inputEn);
+
+            svcIndex++;
+        });
+
+        // Custom services
+        let customIndex = 0;
+        customServices.forEach(svc => {
+            const inputName = document.createElement('input');
+            inputName.type = 'hidden';
+            inputName.name = `custom_services[${customIndex}][name_ar]`;
+            inputName.value = svc.name_ar;
+            hiddenServicesContainer.appendChild(inputName);
+
+            customIndex++;
+        });
+    }
+
+    /* =====================================================
+       EVENT LISTENERS
+    ===================================================== */
+
+    if (officeType) {
+        officeType.addEventListener('change', function () {
+            selectedServices = {};
+            loadSpecialties();
+        });
+    }
+
+    if (specialty) {
+        specialty.addEventListener('change', function () {
+            selectedServices = {};
+            handleSpecialtyChange();
+        });
+    }
 
     /* =====================================================
        PASSWORD TOGGLE
     ===================================================== */
 
-    document
-        .querySelectorAll('.password-toggle')
-        .forEach(function (button) {
-
-            button.addEventListener(
-                'click',
-                function () {
-
-                    const targetId =
-                        this.dataset.target;
-
-                    const input =
-                        document.getElementById(
-                            targetId
-                        );
-
-                    if (!input) {
-                        return;
-                    }
-
-                    const icon =
-                        this.querySelector('i');
-
-                    if (
-                        input.type ===
-                        'password'
-                    ) {
-
-                        input.type =
-                            'text';
-
-                        if (icon) {
-                            icon.className =
-                                'fas fa-eye-slash';
-                        }
-
-                    } else {
-
-                        input.type =
-                            'password';
-
-                        if (icon) {
-                            icon.className =
-                                'fas fa-eye';
-                        }
-
-                    }
-
-                }
-            );
-
+    document.querySelectorAll('.password-toggle').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const targetId = this.dataset.target;
+            const input = document.getElementById(targetId);
+            if (!input) return;
+            const icon = this.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (icon) icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                if (icon) icon.className = 'fas fa-eye';
+            }
         });
-
+    });
 
     /* =====================================================
        PASSWORD MATCH
     ===================================================== */
 
-    const password =
-        document.getElementById('password');
-
-    const passwordConfirmation =
-        document.getElementById(
-            'password_confirmation'
-        );
-
+    const password = document.getElementById('password');
+    const passwordConfirmation = document.getElementById('password_confirmation');
 
     function checkPasswordMatch() {
-
-        if (
-            !password ||
-            !passwordConfirmation
-        ) {
+        if (!password || !passwordConfirmation) return true;
+        if (!passwordConfirmation.value) {
+            passwordConfirmation.classList.remove('is-invalid');
             return true;
         }
-
-        if (
-            !passwordConfirmation.value
-        ) {
-
-            passwordConfirmation.classList.remove(
-                'is-invalid'
-            );
-
-            return true;
-        }
-
-        const match =
-            password.value ===
-            passwordConfirmation.value;
-
-
+        const match = password.value === passwordConfirmation.value;
         if (!match) {
-
-            passwordConfirmation.classList.add(
-                'is-invalid'
-            );
-
+            passwordConfirmation.classList.add('is-invalid');
         } else {
-
-            passwordConfirmation.classList.remove(
-                'is-invalid'
-            );
-
+            passwordConfirmation.classList.remove('is-invalid');
         }
-
         return match;
     }
 
-
     if (passwordConfirmation) {
-
-        passwordConfirmation.addEventListener(
-            'input',
-            checkPasswordMatch
-        );
-
+        passwordConfirmation.addEventListener('input', checkPasswordMatch);
     }
-
 
     /* =====================================================
        TRADEMARK REQUIREMENT
     ===================================================== */
 
     function updateTrademarkRequirement() {
-
-        if (
-            !trademarkNumber ||
-            !trademarkCertificate
-        ) {
-            return;
-        }
-
-
-        const numberEntered =
-            trademarkNumber.value.trim().length > 0;
-
-
+        if (!trademarkNumber || !trademarkCertificate) return;
+        const numberEntered = trademarkNumber.value.trim().length > 0;
         if (numberEntered) {
-
-            trademarkCertificate.required =
-                true;
-
-            if (trademarkRequiredStar) {
-
-                trademarkRequiredStar.style.display =
-                    'inline';
-
-            }
-
-            if (trademarkFileHint) {
-
-                trademarkFileHint.textContent =
-                    'جميع أنواع الملفات مسموحة — إلزامية لأن رقم العلامة التجارية تم إدخاله';
-
-            }
-
+            trademarkCertificate.required = true;
+            if (trademarkRequiredStar) trademarkRequiredStar.style.display = 'inline';
+            if (trademarkFileHint) trademarkFileHint.textContent = 'جميع أنواع الملفات مسموحة — إلزامية لأن رقم العلامة التجارية تم إدخاله';
         } else {
-
-            trademarkCertificate.required =
-                false;
-
-            if (trademarkRequiredStar) {
-
-                trademarkRequiredStar.style.display =
-                    'none';
-
-            }
-
-            if (trademarkFileHint) {
-
-                trademarkFileHint.textContent =
-                    'اختيارية — تصبح إلزامية إذا تم إدخال رقم العلامة التجارية';
-
-            }
-
+            trademarkCertificate.required = false;
+            if (trademarkRequiredStar) trademarkRequiredStar.style.display = 'none';
+            if (trademarkFileHint) trademarkFileHint.textContent = 'اختيارية — تصبح إلزامية إذا تم إدخال رقم العلامة التجارية';
         }
-
     }
-
 
     if (trademarkNumber) {
-
-        trademarkNumber.addEventListener(
-            'input',
-            updateTrademarkRequirement
-        );
-
+        trademarkNumber.addEventListener('input', updateTrademarkRequirement);
     }
 
-
     /* =====================================================
-       FILES
+       FILE INPUTS
     ===================================================== */
 
     const fileInputs = [
-
-        {
-            id: 'commercial_register_image',
-            label: 'السجل التجاري'
-        },
-
-        {
-            id: 'license_image',
-            label: 'ترخيص المزاولة المهنية'
-        },
-
-        {
-            id: 'trademark_certificate',
-            label: 'شهادة تسجيل العلامة التجارية'
-        },
-
-        {
-            id: 'certificates',
-            label: 'الشهادات العملية'
-        },
-
-        {
-            id: 'appreciation_certificates',
-            label: 'شهادات التقدير'
-        },
-
-        {
-            id: 'cv',
-            label: 'السيرة الذاتية'
-        }
-
+        { id: 'commercial_register_image', label: 'السجل التجاري' },
+        { id: 'license_image', label: 'ترخيص المزاولة المهنية' },
+        { id: 'trademark_certificate', label: 'شهادة تسجيل العلامة التجارية' },
+        { id: 'certificates', label: 'الشهادات العملية' },
+        { id: 'appreciation_certificates', label: 'شهادات التقدير' },
+        { id: 'cv', label: 'السيرة الذاتية' }
     ];
 
+    fileInputs.forEach(function (config) {
+        const input = document.getElementById(config.id);
+        const nameBox = document.getElementById(config.id + '-name');
+        if (!input || !nameBox) return;
 
-    fileInputs.forEach(
-        function (config) {
-
-            const input =
-                document.getElementById(
-                    config.id
-                );
-
-            const nameBox =
-                document.getElementById(
-                    config.id + '-name'
-                );
-
-
-            if (
-                !input ||
-                !nameBox
-            ) {
-                return;
+        input.addEventListener('change', function () {
+            const files = Array.from(this.files || []);
+            nameBox.textContent = '';
+            const label = document.getElementById(config.id + '-label');
+            if (label) label.classList.remove('invalid');
+            if (!files.length) return;
+            if (files.length === 1) {
+                nameBox.textContent = files[0].name;
+            } else {
+                nameBox.textContent = 'تم اختيار ' + files.length + ' ملفات';
             }
-
-
-            input.addEventListener(
-                'change',
-                function () {
-
-                    const files =
-                        Array.from(
-                            this.files || []
-                        );
-
-
-                    nameBox.textContent =
-                        '';
-
-
-                    const label =
-                        document.getElementById(
-                            config.id + '-label'
-                        );
-
-
-                    if (label) {
-
-                        label.classList.remove(
-                            'invalid'
-                        );
-
-                    }
-
-
-                    if (!files.length) {
-                        return;
-                    }
-
-
-                    if (
-                        files.length === 1
-                    ) {
-
-                        nameBox.textContent =
-                            files[0].name;
-
-                    } else {
-
-                        nameBox.textContent =
-                            'تم اختيار ' +
-                            files.length +
-                            ' ملفات';
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
+        });
+    });
 
     /* =====================================================
        INITIAL LOAD
     ===================================================== */
 
     if (oldOfficeType) {
-
-        officeType.value =
-            oldOfficeType;
-
-        loadSpecialties(
-            oldSpecialty || ''
-        );
-
+        officeType.value = oldOfficeType;
+        loadSpecialties(oldSpecialty || '');
     }
 
+    if (Array.isArray(oldCustomServices) && oldCustomServices.length > 0) {
+        customServices = oldCustomServices.map((cs, idx) => ({
+            id: 'custom_old_' + idx,
+            name_ar: cs.name_ar || ''
+        }));
+        renderGlobalCustomServicesList();
+    }
 
     updateTrademarkRequirement();
-
 
     /* =====================================================
        FORM SUBMIT
     ===================================================== */
 
-    form.addEventListener(
-        'submit',
-        function (event) {
-
-            updateTrademarkRequirement();
-
-
-            /* ---------------------------------------------
-               OFFICE TYPE
-            --------------------------------------------- */
-
-            if (!officeType.value) {
-
-                event.preventDefault();
-
-                officeType.focus();
-
-                alert(
-                    'يرجى اختيار نوع المنشأة.'
-                );
-
-                return;
-            }
-
-
-            /* ---------------------------------------------
-               SPECIALTY
-            --------------------------------------------- */
-
-            if (!specialty.value) {
-
-                event.preventDefault();
-
-                specialty.focus();
-
-                alert(
-                    'يرجى اختيار التخصص.'
-                );
-
-                return;
-            }
-
-
-            /* ---------------------------------------------
-               MANUAL SPECIALTY
-            --------------------------------------------- */
-
-            if (
-                specialty.value ===
-                'other'
-            ) {
-
-                if (
-                    !manualInput.value.trim()
-                ) {
-
-                    event.preventDefault();
-
-                    showManualSpecialty();
-
-                    manualInput.focus();
-
-                    alert(
-                        'يرجى كتابة التخصص اليدوي.'
-                    );
-
-                    return;
-                }
-
-            }
-
-
-            /* ---------------------------------------------
-               PASSWORD
-            --------------------------------------------- */
-
-            if (
-                !checkPasswordMatch()
-            ) {
-
-                event.preventDefault();
-
-                passwordConfirmation.focus();
-
-                alert(
-                    'كلمتا المرور غير متطابقتين.'
-                );
-
-                return;
-            }
-
-
-            /* ---------------------------------------------
-               REQUIRED FILES
-            --------------------------------------------- */
-
-            const requiredFileIds = [
-
-                'commercial_register_image',
-                'license_image'
-
-            ];
-
-
-            if (
-                trademarkCertificate &&
-                trademarkCertificate.required
-            ) {
-
-                requiredFileIds.push(
-                    'trademark_certificate'
-                );
-
-            }
-
-
-            for (
-                const fileId
-                of requiredFileIds
-            ) {
-
-                const input =
-                    document.getElementById(
-                        fileId
-                    );
-
-
-                if (
-                    !input ||
-                    !input.files ||
-                    !input.files.length
-                ) {
-
-                    event.preventDefault();
-
-
-                    const label =
-                        document.querySelector(
-                            'label[for="' +
-                            fileId +
-                            '"]'
-                        );
-
-
-                    if (label) {
-
-                        label.classList.add(
-                            'invalid'
-                        );
-
-                        label.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-
-                    }
-
-
-                    const config =
-                        fileInputs.find(
-                            item =>
-                                item.id ===
-                                fileId
-                        );
-
-
-                    alert(
-                        'يرجى إرفاق: ' +
-                        (
-                            config
-                                ? config.label
-                                : 'المرفق المطلوب'
-                        )
-                    );
-
-
-                    return;
-                }
-
-            }
-
-
-            /* ---------------------------------------------
-               SUBMIT
-            --------------------------------------------- */
-
-            submitButton.disabled =
-                true;
-
-            submitButton.innerHTML = `
-                <i class="fas fa-spinner fa-spin"></i>
-                جاري إرسال الطلب...
-            `;
-
+    form.addEventListener('submit', function (event) {
+        updateTrademarkRequirement();
+        syncHiddenInputs();
+
+        /* OFFICE TYPE */
+        if (!officeType.value) {
+            event.preventDefault();
+            officeType.focus();
+            alert('يرجى اختيار نوع المنشأة.');
+            return;
         }
-    );
+
+        /* SPECIALTY */
+        if (!specialty.value) {
+            event.preventDefault();
+            specialty.focus();
+            alert('يرجى اختيار التخصص.');
+            return;
+        }
+
+        /* MANUAL SPECIALTY */
+        if (specialty.value === 'other') {
+            if (!manualInput.value.trim()) {
+                event.preventDefault();
+                showManualSpecialty();
+                manualInput.focus();
+                alert('يرجى كتابة التخصص اليدوي.');
+                return;
+            }
+        }
+
+        /* PASSWORD */
+        if (!checkPasswordMatch()) {
+            event.preventDefault();
+            passwordConfirmation.focus();
+            alert('كلمتا المرور غير متطابقتين.');
+            return;
+        }
+
+        /* REQUIRED FILES */
+        const requiredFileIds = ['commercial_register_image', 'license_image'];
+        if (trademarkCertificate && trademarkCertificate.required) {
+            requiredFileIds.push('trademark_certificate');
+        }
+
+        for (const fileId of requiredFileIds) {
+            const input = document.getElementById(fileId);
+            if (!input || !input.files || !input.files.length) {
+                event.preventDefault();
+                const label = document.querySelector('label[for="' + fileId + '"]');
+                if (label) {
+                    label.classList.add('invalid');
+                    label.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                const config = fileInputs.find(item => item.id === fileId);
+                alert('يرجى إرفاق: ' + (config ? config.label : 'المرفق المطلوب'));
+                return;
+            }
+        }
+
+        /* SUBMIT */
+        submitButton.disabled = true;
+        submitButton.innerHTML = `
+            <i class="fas fa-spinner fa-spin"></i>
+            جاري إرسال الطلب...
+        `;
+    });
 
 });
 
 </script>
+
 
 </body>
 

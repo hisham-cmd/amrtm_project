@@ -204,6 +204,37 @@ protected static function booted()
     {
         return self::$typeLabels[$this->type]['en'] ?? $this->type;
     }
+
+    public function getDisplaySpecialtyArAttribute(): string
+    {
+        if ($this->relationLoaded('specialtiesRelation') && $this->specialtiesRelation->isNotEmpty()) {
+            return $this->specialtiesRelation->first()->name_ar;
+        }
+        $spec = $this->specialtiesRelation()->first();
+        if ($spec) {
+            return $spec->name_ar;
+        }
+        if (is_array($this->specialties) && count($this->specialties) > 0) {
+            return $this->specialties[0];
+        }
+        return self::$typeLabels[$this->type]['ar'] ?? 'تخصص معتمد';
+    }
+
+    public function getDisplaySpecialtyEnAttribute(): string
+    {
+        if ($this->relationLoaded('specialtiesRelation') && $this->specialtiesRelation->isNotEmpty()) {
+            return $this->specialtiesRelation->first()->name_en ?? $this->specialtiesRelation->first()->name_ar;
+        }
+        $spec = $this->specialtiesRelation()->first();
+        if ($spec) {
+            return $spec->name_en ?? $spec->name_ar;
+        }
+        if (is_array($this->specialties) && count($this->specialties) > 0) {
+            return $this->specialties[0];
+        }
+        return self::$typeLabels[$this->type]['en'] ?? 'Certified Specialty';
+    }
 }
+
     
 

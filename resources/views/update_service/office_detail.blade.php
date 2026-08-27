@@ -1,11 +1,20 @@
-﻿@php
+@php
 $typeConfig = [
-    'law'      => ['icon'=>'ti-scale',    'color'=>'#1A237E','bg'=>'rgba(26,35,126,.10)','gradient'=>'linear-gradient(135deg,#1A237E,#283593)','name_ar'=>'مكاتب المحاماة','name_en'=>'Law Firms'],
-    'services' => ['icon'=>'ti-briefcase','color'=>'#1565C0','bg'=>'rgba(21,101,192,.10)','gradient'=>'linear-gradient(135deg,#1565C0,#1E88E5)','name_ar'=>'مكاتب الخدمات والتعقيب','name_en'=>'Service & Expediting Offices'],
-    'customs'  => ['icon'=>'ti-truck',    'color'=>'#00695C','bg'=>'rgba(0,105,92,.10)','gradient'=>'linear-gradient(135deg,#00695C,#00897B)','name_ar'=>'شركات التخليص الجمركي','name_en'=>'Customs Clearance Companies'],
+    'law'         => ['icon'=>'ti-scale',      'color'=>'#1A237E','bg'=>'rgba(26,35,126,.10)','gradient'=>'linear-gradient(135deg,#1A237E,#283593)','name_ar'=>'مكاتب المحاماة','name_en'=>'Law Firms'],
+    'services'    => ['icon'=>'ti-briefcase',  'color'=>'#1565C0','bg'=>'rgba(21,101,192,.10)','gradient'=>'linear-gradient(135deg,#1565C0,#1E88E5)','name_ar'=>'مكاتب الخدمات والتعقيب','name_en'=>'Service & Expediting Offices'],
+    'customs'     => ['icon'=>'ti-truck',      'color'=>'#00695C','bg'=>'rgba(0,105,92,.10)','gradient'=>'linear-gradient(135deg,#00695C,#00897B)','name_ar'=>'شركات التخليص الجمركي','name_en'=>'Customs Clearance Companies'],
+    'accounting'  => ['icon'=>'ti-calculator', 'color'=>'#2E7D32','bg'=>'rgba(46,125,50,.10)','gradient'=>'linear-gradient(135deg,#2E7D32,#43A047)','name_ar'=>'مكاتب المحاسبة والاستشارات المالية والضريبية','name_en'=>'Accounting & Tax Consulting'],
+    'engineering' => ['icon'=>'ti-building',   'color'=>'#EF6C00','bg'=>'rgba(239,108,0,.10)','gradient'=>'linear-gradient(135deg,#EF6C00,#FB8C00)','name_ar'=>'الاستشارات الهندسية والتصميم والإشراف','name_en'=>'Engineering Consulting'],
+    'freelance'   => ['icon'=>'ti-user',       'color'=>'#6A1B9A','bg'=>'rgba(106,27,154,.10)','gradient'=>'linear-gradient(135deg,#6A1B9A,#8E24AA)','name_ar'=>'أصحاب المهن الحرة','name_en'=>'Freelance Professionals'],
 ];
-$cfg = $typeConfig[$type];
+$cfg = $typeConfig[$type] ?? [
+    'icon'=>'ti-briefcase','color'=>'#1A237E','bg'=>'rgba(26,35,126,.10)','gradient'=>'linear-gradient(135deg,#1A237E,#283593)',
+    'name_ar'=>\App\Models\Business\Office::$typeLabels[$type]['ar'] ?? $type,
+    'name_en'=>\App\Models\Business\Office::$typeLabels[$type]['en'] ?? $type
+];
 $user = auth('business')->user();
+$specAr = $office->display_specialty_ar;
+$specEn = $office->display_specialty_en;
 @endphp
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -13,8 +22,8 @@ $user = auth('business')->user();
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>{{ $office->name_ar }} | منصة آمر تم</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/new-logo1.png') }}">
+<title>{{ $specAr }} | منصة آمر تم</title>
+<link rel="icon" type="image/png" href="{{ asset('images/new-logo1.png') }}">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
 <style>
@@ -49,7 +58,7 @@ body.en,body.en *:not(i){font-family:'Inter',sans-serif;direction:ltr;}
 .bc-sep{font-size:11px;}
 .bc-cur{color:var(--t2);font-weight:700;}
 
-/* OFFICE HERO */
+/* HERO */
 .hero{padding:2.2rem 2rem 1.8rem;max-width:1100px;margin:0 auto;}
 .hero-inner{background:var(--sur);border-radius:22px;border:1.5px solid var(--bc);box-shadow:0 4px 20px var(--sh);padding:2rem;display:flex;gap:1.8rem;flex-wrap:wrap;align-items:flex-start;}
 .hero-av{width:80px;height:80px;border-radius:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:30px;font-weight:900;color:#fff;}
@@ -86,7 +95,7 @@ body.en,body.en *:not(i){font-family:'Inter',sans-serif;direction:ltr;}
 .svc-req-btn:hover{opacity:.88;}
 .svc-req-btn:disabled{opacity:.45;cursor:not-allowed;}
 
-/* LOGIN GATE (non-authenticated) */
+/* LOGIN GATE */
 .login-gate{background:var(--sur);border-radius:16px;border:1.5px dashed var(--bc);padding:1.8rem;text-align:center;margin-bottom:1.5rem;}
 .login-gate i{font-size:32px;color:var(--t4);margin-bottom:10px;display:block;}
 .login-gate h3{font-size:15px;font-weight:800;color:var(--t2);margin-bottom:6px;}
@@ -182,20 +191,20 @@ body.en,body.en *:not(i){font-family:'Inter',sans-serif;direction:ltr;}
     <span class="bc-sep"><i class="ti ti-chevron-left" style="font-size:11px;"></i></span>
     <a href="{{ route('amrtm.offices.directory', $type) }}">{{ $cfg['name_ar'] }}</a>
     <span class="bc-sep"><i class="ti ti-chevron-left" style="font-size:11px;"></i></span>
-    <span class="bc-cur">{{ $office->name_ar }}</span>
+    <span class="bc-cur">{{ $specAr }}</span>
   </div>
 </div>
 
-<!-- OFFICE HERO -->
+<!-- HERO -->
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-av" style="background:{{ $cfg['gradient'] }};">
-      {{ mb_substr($office->name_ar, 0, 1) }}
+      <i class="ti {{ $cfg['icon'] }}" style="font-size:36px;color:#fff;"></i>
     </div>
     <div class="hero-info">
-      <div class="hero-name">{{ $office->name_ar }}</div>
+      <div class="hero-name">{{ $specAr }}</div>
       <div class="hero-badges">
-        <span class="badge badge-ver"><i class="ti ti-shield-check"></i> موثّق ومعتمد</span>
+        <span class="badge badge-ver"><i class="ti ti-shield-check"></i> معتمد وموثّق من منصة آمر تم</span>
         <span class="badge badge-type">{{ $cfg['name_ar'] }}</span>
         @if($office->city)
           <span class="badge badge-city"><i class="ti ti-map-pin"></i> {{ $office->city }}</span>
@@ -203,14 +212,12 @@ body.en,body.en *:not(i){font-family:'Inter',sans-serif;direction:ltr;}
       </div>
       @if($office->description_ar)
         <div class="hero-desc">{{ $office->description_ar }}</div>
+      @else
+        <div class="hero-desc">خدمات واستشارات متخصصة ومعتمدة يتم إنجازها ومتابعتها بإشراف كامل وضمان من منصة آمر تم لقطاع الأعمال.</div>
       @endif
       <div class="hero-contacts">
-        @if($office->phone)
-          <div class="hero-contact"><i class="ti ti-phone"></i> {{ $office->phone }}</div>
-        @endif
-        @if($office->email)
-          <div class="hero-contact"><i class="ti ti-mail"></i> {{ $office->email }}</div>
-        @endif
+        <div class="hero-contact"><i class="ti ti-shield-check" style="color:#059669;"></i> تقديم ومتابعة مباشرة عبر المنصة</div>
+        <div class="hero-contact"><i class="ti ti-lock" style="color:var(--pri);"></i> سرية تامة وحماية لبيانات العميل</div>
       </div>
     </div>
   </div>
@@ -227,15 +234,15 @@ body.en,body.en *:not(i){font-family:'Inter',sans-serif;direction:ltr;}
   @if($office->services->isEmpty())
     <div class="empty">
       <div class="empty-ico"><i class="ti ti-list-details"></i></div>
-      <h3>لم يتم إضافة خدمات بعد</h3>
-      <p>لم يقم المكتب بإضافة خدماته حتى الآن. يمكنك التواصل معهم مباشرة.</p>
+      <h3>لم يتم إضافة خدمات تفصيلية بعد</h3>
+      <p>يمكنك طلب الخدمة والاستفسار مباشرة عبر منصة آمر تم.</p>
     </div>
   @else
     @if(!$user)
       <div class="login-gate">
         <i class="ti ti-lock"></i>
         <h3>سجّل دخولك لطلب الخدمة</h3>
-        <p>تحتاج إلى حساب في منصة آمر تم لإرسال طلبك إلى هذا المكتب.</p>
+        <p>تحتاج إلى حساب في منصة آمر تم لإرسال طلبك ومتابعته بكل سهولة.</p>
         <a href="{{ route('amrtm.login') }}?redirect={{ urlencode(request()->url()) }}" class="login-gate-btn">
           <i class="ti ti-login"></i> تسجيل الدخول أو إنشاء حساب
         </a>
@@ -311,13 +318,13 @@ body.en,body.en *:not(i){font-family:'Inter',sans-serif;direction:ltr;}
         </div>
       </div>
 
-      <!-- Success state (hidden initially) -->
+      <!-- Success state -->
       <div id="req-success" style="display:none;" class="success-box">
         <div class="success-ico"><i class="ti ti-circle-check"></i></div>
         <div style="font-size:16px;font-weight:800;color:var(--t1);margin-bottom:6px;">تم إرسال طلبك بنجاح!</div>
         <div style="font-size:13px;color:var(--t3);margin-bottom:10px;">رقم المرجع:</div>
         <div class="success-ref" id="success-ref"></div>
-        <div style="font-size:13px;color:var(--t3);margin-top:10px;line-height:1.7;">سيتواصل معك المكتب على رقم جوالك قريباً.</div>
+        <div style="font-size:13px;color:var(--t3);margin-top:10px;line-height:1.7;">تم استلام طلبك وستتم متابعته والتواصل معك عبر المنصة قريباً.</div>
       </div>
     </div>
     <div class="modal-foot" id="modal-foot">
