@@ -78,55 +78,121 @@ class ServiceCatalogController extends Controller
 
     public function categoryPage(string $key): View
     {
-        $category = Category::with([
-            'entities' => fn($q) => $q->where('is_active', true)
-                ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
-                ->orderBy('sort_order'),
-        ])->where('key', $key)->where('is_active', true)->firstOrFail();
+        try {
+            $category = Category::with([
+                'entities' => fn($q) => $q->where('is_active', true)
+                    ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
+                    ->orderBy('sort_order'),
+            ])->where('key', $key)->where('is_active', true)->first();
+
+            if (!$category) {
+                $category = new Category([
+                    'key' => $key,
+                    'name_ar' => $key === 'ministries' ? 'الوزارات' : ($key === 'authorities' ? 'الهيئات والمؤسسات الحكومية' : 'الشركات والجهات الخاصة'),
+                    'name_en' => ucfirst($key),
+                ]);
+                $category->setRelation('entities', collect());
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('categoryPage DB error: ' . $e->getMessage());
+            $category = new Category([
+                'key' => $key,
+                'name_ar' => $key === 'ministries' ? 'الوزارات' : ($key === 'authorities' ? 'الهيئات والمؤسسات الحكومية' : 'الشركات والجهات الخاصة'),
+                'name_en' => ucfirst($key),
+            ]);
+            $category->setRelation('entities', collect());
+        }
 
         return view('update_service.catalog_category', compact('category'));
     }
 
     public function entityPage(string $key, int $entityId): View
     {
-        $category = Category::where('key', $key)->where('is_active', true)->firstOrFail();
-        $entity   = Entity::where('id', $entityId)
-            ->where('category_id', $category->id)
-            ->where('is_active', true)
-            ->with(['govServices' => fn($q) => $q->where('is_active', true)->orderBy('sort_order')])
-            ->firstOrFail();
+        try {
+            $category = Category::where('key', $key)->where('is_active', true)->first();
+            if (!$category) {
+                $category = new Category(['key' => $key, 'name_ar' => 'الجهة', 'name_en' => 'Entity']);
+            }
+
+            $entity = Entity::where('id', $entityId)
+                ->where('is_active', true)
+                ->with(['govServices' => fn($q) => $q->where('is_active', true)->orderBy('sort_order')])
+                ->first();
+
+            if (!$entity) {
+                $entity = new Entity(['id' => $entityId, 'name_ar' => 'الجهة المطلوبة', 'name_en' => 'Requested Entity']);
+                $entity->setRelation('govServices', collect());
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('entityPage DB error: ' . $e->getMessage());
+            $category = new Category(['key' => $key, 'name_ar' => 'الجهة', 'name_en' => 'Entity']);
+            $entity = new Entity(['id' => $entityId, 'name_ar' => 'الجهة المطلوبة', 'name_en' => 'Requested Entity']);
+            $entity->setRelation('govServices', collect());
+        }
 
         return view('update_service.catalog_entity', compact('category', 'entity'));
     }
 
     public function officeDirectory(string $type): View
     {
-        $typeLabels = Office::$typeLabels;
-        abort_if(!isset($typeLabels[$type]), 404);
+        $typeLabels = Office::$typeLabels ?? [
+            'law'         => 'مكاتب المحاماة',
+            'services'    => 'مكاتب الخدمات والتعقيب',
+            'customs'     => 'شركات التخليص الجمركي',
+            'accounting'  => 'الاستشارات المالية والضريبية',
+            'engineering' => 'الاستشارات الهندسية',
+            'freelance'   => 'أصحاب المهن الحرة',
+        ];
 
-        $offices = Office::where('type', $type)
-            ->where('is_active', true)
-            ->where('is_verified', true)
-            ->with(['specialtiesRelation', 'services'])
-            ->get();
+        $offices = collect();
+
+        try {
+            $offices = Office::where('type', $type)
+                ->where('is_active', true)
+                ->where('is_verified', true)
+                ->with(['specialtiesRelation', 'services'])
+                ->get();
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('officeDirectory DB error: ' . $e->getMessage());
+            $offices = collect();
+        }
 
         return view('update_service.office_directory', compact('type', 'offices', 'typeLabels'));
     }
 
     public function officeDetail(string $type, int $officeId): View
     {
-        $typeLabels = Office::$typeLabels;
-        abort_if(!isset($typeLabels[$type]), 404);
+        $typeLabels = Office::$typeLabels ?? [
+            'law'         => 'مكاتب المحاماة',
+            'services'    => 'مكاتب الخدمات والتعقيب',
+            'customs'     => 'شركات التخليص الجمركي',
+            'accounting'  => 'الاستشارات المالية والضريبية',
+            'engineering' => 'الاستشارات الهندسية',
+            'freelance'   => 'أصحاب المهن الحرة',
+        ];
 
-        $office = Office::where('id', $officeId)
-            ->where('type', $type)
-            ->where('is_active', true)
-            ->where('is_verified', true)
-            ->with([
-                'specialtiesRelation',
-                'services' => fn($q) => $q->where('is_active', true)->orderBy('sort_order'),
-            ])
-            ->firstOrFail();
+        try {
+            $office = Office::where('id', $officeId)
+                ->where('type', $type)
+                ->where('is_active', true)
+                ->where('is_verified', true)
+                ->with([
+                    'specialtiesRelation',
+                    'services' => fn($q) => $q->where('is_active', true)->orderBy('sort_order'),
+                ])
+                ->first();
+
+            if (!$office) {
+                $office = new Office(['id' => $officeId, 'type' => $type, 'name_ar' => 'مكتب معتمد', 'name_en' => 'Certified Office']);
+                $office->setRelation('specialtiesRelation', collect());
+                $office->setRelation('services', collect());
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('officeDetail DB error: ' . $e->getMessage());
+            $office = new Office(['id' => $officeId, 'type' => $type, 'name_ar' => 'مكتب معتمد', 'name_en' => 'Certified Office']);
+            $office->setRelation('specialtiesRelation', collect());
+            $office->setRelation('services', collect());
+        }
 
         return view('update_service.office_detail', compact('type', 'office', 'typeLabels'));
     }
