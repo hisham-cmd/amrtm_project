@@ -1,0 +1,13 @@
+name: amrtm-app
+owner: hishamkassi
+package: php/php:8.2
+scaling:
+  mode: single_concurrency
+volumes:
+  - name: storage
+    mount: /app/storage
+env:
+  APP_ENV: production
+  APP_DEBUG: "false"
+  APP_URL: https://amrtm-app.wasmer.app
+  LOG_CHANNEL: stderr
