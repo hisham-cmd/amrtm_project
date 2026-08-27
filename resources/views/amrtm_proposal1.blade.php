@@ -2722,7 +2722,7 @@ body{display:block!important;background:transparent!important}
 .about-one__call-text{font-size:11px;color:#7A82B8;margin:0}
 .about-one__call-number{font-size:15px;font-weight:900;color:#006C35;margin:0}
 .about-one__call-number a{color:inherit;text-decoration:none}
-.about-one__right{flex:1;max-width:800px;overflow:hidden}
+.about-one__right{flex:1;max-width:900px;overflow:hidden}
 .section-title{margin-bottom:18px}
 .section-title__icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:rgba(0,108,53,.08);margin-bottom:8px}
 .section-title__icon .fa{font-size:14px;color:#006C35}
@@ -2733,7 +2733,7 @@ body{display:block!important;background:transparent!important}
 .about-one__cards-grid{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:10px!important;margin-bottom:20px}
 .ao-card{display:block!important;padding:0!important;border-radius:16px!important;background:#fff!important;border:1px solid rgba(0,108,53,.08)!important;box-shadow:0 4px 15px rgba(0,108,53,.08)!important;cursor:pointer!important;transition:all .3s!important;overflow:hidden!important;text-decoration:none!important;color:inherit!important}
 .ao-card:hover{transform:translateY(-5px)!important;box-shadow:0 12px 30px rgba(0,108,53,.15)!important;border-color:#00843D!important}
-.ao-card-body{padding:14px 12px 8px!important;text-align:center!important}
+.ao-card-body{padding:14px 12px 8px!important;text-align:center!important; min-height: 145px;}
 .ao-card-ico{width:42px!important;height:42px!important;border-radius:12px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:18px!important;margin:0 auto 8px!important}
 .ao-card-nm{font-size:12px!important;font-weight:800!important;color:#002A15!important;margin-bottom:4px!important}
 .ao-card-desc{font-size:10px!important;color:#7A82B8!important;line-height:1.4!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important}

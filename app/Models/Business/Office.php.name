@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Models\Business;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Office extends Model
+{
+    protected $connection = 'business';
+    protected $table = 'bs_offices';
+
+    protected $fillable = [
+        'type', 'name_ar', 'name_en', 'description_ar', 'description_en',
+        'phone', 'email', 'city', 'cr_number', 'logo',
+        'specialties', 'is_active', 'is_verified', 'commission_rate',
+    ];
+
+    protected $casts = [
+        'specialties'     => 'array',
+        'is_active'       => 'boolean',
+        'is_verified'     => 'boolean',
+        'commission_rate' => 'decimal:2',
+    ];
+   public static array $typeLabels = [
+    'law' => [
+        'ar' => 'شركة/مكتب محاماة',
+        'en' => 'Law Firm'
+    ],
+
+    'services' => [
+        'ar' => 'مكتب خدمات وتعقيب',
+        'en' => 'Service & Expediting Office'
+    ],
+
+    'customs' => [
+        'ar' => 'شركة/مكتب تخليص جمركي',
+        'en' => 'Customs Clearance'
+    ],
+
+    'accounting' => [
+        'ar' => 'مكاتب المحاسبة والاستشارات المالية والضريبية',
+        'en' => 'Accounting & Tax Consulting'
+    ],
+
+    'engineering' => [
+        'ar' => 'الاستشارات الهندسية والتصميم والإشراف',
+        'en' => 'Engineering Consulting'
+    ],
+
+    'freelance' => [
+        'ar' => 'أصحاب المهن الحرة',
+        'en' => 'Freelance Professionals'
+    ],
+];
+
+    public function users(): HasMany
+    {
+        return $this->hasMany(OfficeUser::class, 'office_id');
+    }
+
+    public function requests(): HasMany
+    {
+        return $this->hasMany(OfficeRequest::class, 'office_id');
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(OfficeMessage::class, 'office_id');
+    }
+
+    public function services(): HasMany
+    {
+        return $this->hasMany(OfficeService::class, 'office_id');
+    }
+
+    public function directRequests(): HasMany
+    {
+        return $this->hasMany(OfficeRequest::class, 'office_id');
+    }
+
+    public function typeLabelAr(): string
+    {
+        return self::$typeLabels[$this->type]['ar'] ?? $this->type;
+    }
+
+    public function typeLabelEn(): string
+    {
+        return self::$typeLabels[$this->type]['en'] ?? $this->type;
+    }
+}

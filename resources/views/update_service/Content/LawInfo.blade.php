@@ -1255,11 +1255,10 @@ RESPONSIVE
 
             </h2>
 
-            <a href="" class="btn-primary">
 
-                استعرض المكاتب
-
-            </a>
+<a href="{{ route('amrtm.offices.directory', ['type' => 'law']) }}" class="btn-primary">
+    استعرض المكاتب
+</a>
 
         </div>
 

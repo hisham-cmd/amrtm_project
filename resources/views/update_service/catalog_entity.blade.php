@@ -8,7 +8,6 @@
     <link rel="icon" type="image/png" href="{{ asset('images/new-logo1.png') }}">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{--pri:#1A237E;--pri2:#283593;--pri3:#1565C0;--bg:#F4F6FB;--sur:#fff;--sur2:#F0F3FF;--b1:rgba(26,35,126,.1);--b2:rgba(26,35,126,.28);--bc:rgba(26,35,126,.07);--t1:#0D1257;--t2:#3A4490;--t3:#7A82B8;--t4:#BDC2E0;--pd:rgba(26,35,126,.08);--pd2:rgba(26,35,126,.15);--sh:rgba(26,35,126,.08);--sh2:rgba(26,35,126,.18);}
@@ -684,12 +683,7 @@ body.en .ec:hover .ec-arr{transform:translateX(4px);}
 .ec-price{font-size:11.5px;font-weight:700;color:var(--pri3);}
 
 /* FORM CARD */
-.form-wrap{
-    width:min(1320px,94%);
-    margin:35px auto;
-    padding:2rem;
-}
-
+.form-wrap{max-width:750px;margin:0 auto;padding:2rem;}
 .form-card{background:var(--sur);border-radius:20px;box-shadow:0 8px 32px var(--sh);overflow:hidden;border:1.5px solid var(--bc);}
 .ec.active{
     border:2px solid var(--ecc);
@@ -742,7 +736,202 @@ body.en .ec:hover .ec-arr{transform:translateX(4px);}
 .bal-bar{display:flex;align-items:center;justify-content:space-between;padding:.6rem 1.5rem;background:#fff;border-bottom:1px solid var(--b1);font-size:13px;flex-wrap:wrap;gap:.4rem;margin:8px;border-radius:10px;}
 .bal-lbl{color:var(--t2);font-weight:600;}
 .bal-val{font-weight:800;color:var(--pri);}
+ 
+/**Account Info */
 
+.verify-wrap{
+    display:flex;
+    justify-content:flex-start; /* في اليسار */
+    margin:15px 0;
+}
+
+.verify-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 14px;
+    border-radius:8px;
+    text-decoration:none;
+    color:#0f2d5c;
+    font-size:15px;
+    font-weight:600;
+    background:#f8fbff;
+    border:1px solid #d8e4f1;
+    transition:all .25s ease;
+}
+
+.verify-link i{
+    font-size:18px;
+    color:#0f2d5c;
+}
+
+.verify-link:hover{
+    background:#eef5fc;
+    border-color:#0f2d5c;
+    color:#0f2d5c;
+    box-shadow:0 4px 12px rgba(15,45,92,.08);
+}
+
+
+/** Are you company? */
+.company-check input{
+    display:none;
+}
+
+.company-label{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:16px 18px;
+    border:1px solid #dbe4ef;
+    border-radius:14px;
+    background:#fff;
+    cursor:pointer;
+    transition:.3s;
+    user-select:none;
+}
+
+.company-label:hover{
+    border-color:#0f2d5c;
+    box-shadow:0 8px 20px rgba(15,45,92,.08);
+}
+
+.company-icon{
+    width:48px;
+    height:48px;
+    border-radius:12px;
+    background:#f4f8fc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.company-icon i{
+    font-size:24px;
+    color:#0f2d5c;
+}
+
+.company-text{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.company-text strong{
+    color:#0f2d5c;
+    font-size:16px;
+    font-weight:700;
+}
+
+.company-text small{
+    color:#6b7280;
+    font-size:13px;
+    margin-top:2px;
+}
+
+/* زر التفعيل */
+.company-switch{
+    width:48px;
+    height:26px;
+    background:#d1d5db;
+    border-radius:30px;
+    position:relative;
+    transition:.3s;
+}
+
+
+
+.company-switch::before{
+    content:'';
+    width:20px;
+    height:20px;
+    background:#fff;
+    border-radius:50%;
+    position:absolute;
+    top:3px;
+    left:3px;
+    transition:.3s;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+
+.company-check input:checked + .company-label{
+    border-color:#0f2d5c;
+    background:#f8fbff;
+}
+
+.company-check input:checked + .company-label .company-switch{
+    background:#0f2d5c;
+}
+
+.company-check input:checked + .company-label .company-switch::before{
+    left:25px;
+}
+
+.company-card{
+    margin-top:20px;
+    padding:22px;
+    background:#fbfdff;
+    border:1px solid #dbe4ef;
+    border-right:5px solid #0f2d5c;
+    border-radius:14px;
+    animation:fadeIn .35s ease;
+}
+
+.company-card-header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+    color:#0f2d5c;
+    font-size:18px;
+    font-weight:700;
+}
+
+.company-card-header i{
+    width:42px;
+    height:42px;
+    border-radius:10px;
+    background:#eef4fb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+}
+
+.company-card .fld label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:#0f2d5c;
+}
+
+.company-card .fld input{
+    width:100%;
+    height:48px;
+    border:1px solid #d8e2ee;
+    border-radius:10px;
+    padding:0 14px;
+    transition:.25s;
+    background:#fff;
+}
+
+.company-card .fld input:focus{
+    border-color:#0f2d5c;
+    box-shadow:0 0 0 4px rgba(15,45,92,.08);
+    outline:none;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(-10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
 /* FORM FIELDS */
 .fm-body{padding:1.5rem;}
 .fm-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
@@ -796,27 +985,10 @@ body.en .req{margin-right:0;margin-left:3px;}
 /* TOAST */
 #amrtm-toast{display:none;}
 
+/* FOOTER */
+.footer{background:linear-gradient(135deg,#1A237E,#1565C0);margin-top:2rem;padding:1.2rem 2rem;text-align:center;}
+.f-cp{font-size:12px;color:rgba(255,255,255,.55);}
 
-.footer{
-
-    width:100%;
-
-    background:#fff;
-
-    border-top:1px solid rgba(26,35,126,.08);
-
-    padding:22px 0;
-
-    margin-top:40px;
-}
-.f-cp{
-
-    text-align:center;
-
-    font-size:13px;
-
-    color:#6E77A8;
-}
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-thumb{background:rgba(26,35,126,.2);border-radius:4px;}
 @media(max-width:600px){
@@ -1010,6 +1182,33 @@ body.en .req{margin-right:0;margin-left:3px;}
     animation:pop .25s ease;
 }
 
+.form-check{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:14px 16px;
+}
+
+.form-check-input{
+    margin-top:.3rem;
+}
+
+.form-check-label{
+    font-size:14px;
+    line-height:1.9;
+    color:#374151;
+}
+
+.form-check-label a{
+    color:#0f2d5c;
+    font-weight:700;
+    text-decoration:none;
+}
+
+.form-check-label a:hover{
+    text-decoration:underline;
+}
+
 @keyframes pop{
     from{
         transform:translateY(20px) scale(.96);
@@ -1118,6 +1317,65 @@ body.en .req{margin-right:0;margin-left:3px;}
 .verify-link i{
     font-size:18px;
 }
+
+.agreement-box{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    padding:18px;
+    margin-top:20px;
+    background:#fbfdff;
+    border:1px solid #dbe4ef;
+    border-right:5px solid #0f2d5c;
+    border-radius:14px;
+}
+
+.agreement-icon{
+    width:48px;
+    height:48px;
+    min-width:48px;
+    border-radius:12px;
+    background:#eef4fb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.agreement-icon i{
+    font-size:24px;
+    color:#0f2d5c;
+}
+
+.agreement-label{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    margin:0;
+    cursor:pointer;
+    line-height:1.9;
+    color:#374151;
+    font-size:14px;
+}
+
+.agreement-label input[type="checkbox"]{
+    width:20px;
+    height:20px;
+    margin-top:4px;
+    accent-color:#0f2d5c;
+    cursor:pointer;
+    flex-shrink:0;
+}
+
+.agreement-label a{
+    color:#0f2d5c;
+    font-weight:700;
+    text-decoration:none;
+}
+
+.agreement-label a:hover{
+    text-decoration:underline;
+}
+
 
 /* ==========================================
    Responsive
@@ -1299,14 +1557,11 @@ body.en .req{margin-right:0;margin-left:3px;}
 
 </style>
 </head>
-
 <body class="ar">
 
 <!-- NAVBAR -->
 <nav class="nb">
   <a class="nb-logo" href="{{ route('amrtm.index') }}">
-    <img src="{{ asset('images/new-logo1.png') }}" alt="Logo" class="nb-logo-img">
-
     <div><div class="nb-logo-nm">آمر تم</div></div>
   </a>
   <div class="nb-mid"></div>
@@ -1462,7 +1717,9 @@ body.en .req{margin-right:0;margin-left:3px;}
 
         @endforeach
 
-    </div> </div>
+    </div> 
+</div>
+
 
 <!-- End maram -->
 
@@ -1490,7 +1747,7 @@ body.en .req{margin-right:0;margin-left:3px;}
         <span id="lg-reg-lbl">إنشاء حساب جديد</span>
     </a>
 
-       <a class="lg-btn-nafath" href="{{ route('amrtm.nafath.show') }}">
+   <!--    <a class="lg-btn-nafath" href="">
     <span class="nf-icon">
         <i class="ti ti-shield-lock"></i>
     </span>
@@ -1502,7 +1759,7 @@ body.en .req{margin-right:0;margin-left:3px;}
     <span class="nf-arrow">
         <i class="ti ti-chevron-left"></i>
     </span>
-</a>
+</a>-->
 </div>
     </div>
     @else
@@ -1586,7 +1843,7 @@ body.en .req{margin-right:0;margin-left:3px;}
 <div class="verify-wrap">
     <a href="javascript:void(0)" class="verify-link" onclick="openUserModal()">
         <i class="ti ti-user-check"></i>
-         بيانات الحساب
+        <span>بيانات الحساب</span>
     </a>
 </div>
 
@@ -1637,7 +1894,10 @@ body.en .req{margin-right:0;margin-left:3px;}
 
       <!-- Fields -->
       <div class="fm-body">
-        <div class="fm-row">
+         <input type="hidden" id="fn" name="name">
+        <input type="hidden" id="fph" name="phone">
+        <input type="hidden" id="fem" name="email">
+      
           <!--<div class="fld">
             <label><span class="req">*</span><span id="ln">الاسم الكامل</span></label>
             <input type="text" id="fn" value="{{ auth('business')->user()->name ?? '' }}"/>
@@ -1648,10 +1908,8 @@ body.en .req{margin-right:0;margin-left:3px;}
             <input type="text" id="fid" maxlength="10"/>
             <div class="ferr" id="eid"><i class="ti ti-alert-circle"></i><span id="eidt">غير صحيح</span></div>
           </div>
-        </div>
-        <input type="hidden" id="fn" name="name">
-        <input type="hidden" id="fph" name="phone">
-        <input type="hidden" id="fem" name="email">
+       
+       
        <!-- <div class="fm-row">
           <div class="fld">
             <label><span class="req">*</span><span id="lph">رقم الجوال</span></label>
@@ -1664,10 +1922,47 @@ body.en .req{margin-right:0;margin-left:3px;}
             <div class="ferr" id="eem"><i class="ti ti-alert-circle"></i><span id="eemt">غير صحيح</span></div>
           </div>
         </div>-->
-        <div class="fm-row">
-          <div class="fld"><label><span id="lco">اسم الشركة</span></label><input type="text" id="fco"/></div>
-          <div class="fld"><label><span id="lcr">السجل التجاري</span></label><input type="text" id="fcr"/></div>
+      
+
+<div class="company-check">
+    <input type="checkbox" id="isCompany">
+    <label for="isCompany" class="company-label">
+        <span class="company-icon">
+            <i class="ti ti-building"></i>
+        </span>
+
+        <span class="company-text">
+            <strong>هل تمثل شركة؟</strong>
+            <small>حدد هذا الخيار إذا كنت تسجل نيابةً عن شركة أو مؤسسة.</small>
+        </span>
+
+        <span class="company-switch"></span>
+    </label>
+</div>
+
+<div id="companyFields" class="company-card" style="display:none;">
+
+    <div class="company-card-header">
+        <i class="ti ti-building"></i>
+        <span>بيانات الشركة</span>
+    </div>
+
+    <div class="fm-row">
+
+        <div class="fld">
+            <label>اسم الشركة</label>
+            <input type="text" id="fco" placeholder="أدخل اسم الشركة">
         </div>
+
+        <div class="fld">
+            <label>السجل التجاري</label>
+            <input type="text" id="fcr" placeholder="أدخل رقم السجل التجاري">
+        </div>
+
+    </div>
+
+</div>
+<BR>
         <div class="fld">
           <label><span id="lno">ملاحظات</span></label>
           <textarea id="fno"></textarea>
@@ -1686,6 +1981,35 @@ body.en .req{margin-right:0;margin-left:3px;}
        
         <div class="prv"><i class="ti ti-shield-check"></i><span id="prv-t">بياناتك محمية ومشفرة. لن يتم مشاركتها مع أي جهة خارجية دون موافقتك.</span></div>
         
+      <div class="agreement-box">
+
+    <div class="agreement-icon">
+        <i class="ti ti-shield-check"></i>
+    </div>
+
+    <div class="agreement-content">
+
+        <label for="agreeTerms" class="agreement-label">
+
+            <input type="checkbox"
+                   id="agreeTerms"
+                   name="agree_terms"
+                   required>
+
+            <span>
+                أتعهد بأن جميع البيانات والمعلومات التي قمت بإدخالها صحيحة ودقيقة وتخصني، وأتحمل كامل المسؤولية عن صحتها. كما أقر بأن المنصة غير مسؤولة عن أي بيانات غير صحيحة أو مضللة يتم تقديمها من قبلي، وأوافق على
+                <a href="" target="_blank">سياسة الخصوصية</a>
+                و
+                <a href="" target="_blank">الشروط والأحكام</a>.
+            </span>
+
+        </label>
+
+    </div>
+
+</div>
+<BR>
+<BR>
         <button class="fm-sub" id="fm-sub" type="button" onclick="openInvoiceModal()">
 
 
@@ -1806,9 +2130,7 @@ body.en .req{margin-right:0;margin-left:3px;}
 
 <!-- FOOTER -->
 <footer class="footer">
-<div class="f-cp">
-© 2025 <b style="color:#1A237E;">آمر تم</b> — جميع الحقوق محفوظة
-</div>
+  <div class="f-cp" id="fcp">© 2025 <b style="color:rgba(255,255,255,.85);">آمر تم</b> — جميع الحقوق محفوظة</div>
 </footer>
 
 <script>
@@ -1849,17 +2171,19 @@ const T = {
     fat:'اضغط لرفع الملفات أو اسحبها هنا',fas:'PDF, JPG, PNG — حد أقصى 10MB',
     prv:'بياناتك محمية ومشفرة. لن يتم مشاركتها مع أي جهة خارجية دون موافقتك.',
     chngsvc:'تغيير الخدمة',
+     search:"ابحث عن خدمتك الآن",
     sub:'تقديم الطلب',erq:'مطلوب',eid:'غير صحيح',eph:'غير صحيح',eem:'غير صحيح',
     sct:'تم تقديم طلبك بنجاح!',scs:'سيتم مراجعة طلبك والتواصل معك خلال المدة المحددة.',
     scr:'رقم الطلب: ',scd:'تابع طلبك',scn:'طلب جديد',
     noSvc:'اختر الخدمة أولاً',noBal:'رصيدك غير كافٍ — اشحن رصيدك من حسابك.',
     lgTtl:'تسجيل الدخول مطلوب',lgSub:'لتقديم طلب خدمة يجب أن يكون لديك حساب مسجل في المنصة.',
-    lgLogin:'تسجيل الدخول',lgReg:'إنشاء حساب جديد', search:"ابحث عن خدمتك الآن",
+    lgLogin:'تسجيل الدخول',lgReg:'إنشاء حساب جديد',
   },
   en:{
     home:'Home',li:'Sign In',re:'Register',da:'My Account',dash:'Dashboard',
     sel:'Select required service...',days:'Completion time:',dayUnit:' days',
     bl:'Your balance:',sar:'SAR',
+    search:"Search for your service...",
     ln:'Full Name',lid:'ID / Residency Number',lph:'Mobile Number',lem:'Email Address',
     lco:'Company Name',lcr:'Commercial Registration',lno:'Notes',lfi:'Attach Files',
     fat:'Click to upload or drag & drop',fas:'PDF, JPG, PNG — Max 10MB',
@@ -1870,7 +2194,7 @@ const T = {
     scr:'Reference: ',scd:'Track Request',scn:'New Request',
     noSvc:'Select a service first',noBal:'Insufficient balance — top up from your account.',
     lgTtl:'Login Required',lgSub:'You need a registered account to submit a service request.',
-    lgLogin:'Sign In',lgReg:'Create New Account',    search:"Search for your service...",
+    lgLogin:'Sign In',lgReg:'Create New Account',
   },
 };
 
@@ -1886,6 +2210,7 @@ function setLang(l) {
   document.getElementById('le').className = 'lt' + (l==='en'?' on':'');
   applyLang();
 }
+
 
 function applyLang() {
   const t = T[lang];
@@ -2406,9 +2731,19 @@ document.getElementById("invoiceModal")
     }
 
 });
-const searchInput = document.getElementById("searchInput");
-const clearBtn = document.getElementById("clearSearch");
-const suggestions = document.getElementById("searchSuggestions");
+
+const isCompany = document.getElementById('isCompany');
+const companyFields = document.getElementById('companyFields');
+
+isCompany.addEventListener('change', function () {
+    if (this.checked) {
+        companyFields.style.display = 'block';
+    } else {
+        companyFields.style.display = 'none';
+    }
+});
+
+
 
 function searchServices(value){
 
@@ -2525,6 +2860,8 @@ document.addEventListener("click",function(e){
     }
 
 });
+
+
 </script>
 </body>
 </html>

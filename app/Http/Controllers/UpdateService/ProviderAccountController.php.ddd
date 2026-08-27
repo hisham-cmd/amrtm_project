@@ -1,0 +1,1815 @@
+<?php
+
+namespace App\Http\Controllers\UpdateService;
+
+use App\Http\Controllers\Controller;
+use App\Models\Business\Office;
+use App\Models\Business\OfficeUser;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+
+class ProviderAccountController extends Controller
+{
+    /*
+    |--------------------------------------------------------------------------
+    | أنواع المكاتب المسموح بها
+    |--------------------------------------------------------------------------
+    */
+
+    private const OFFICE_TYPES = [
+        'law',
+        'services',
+        'customs',
+        'accounting',
+        'engineering',
+        'freelance',
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | أقصى حجم للملف
+    |--------------------------------------------------------------------------
+    |
+    | 20 MB
+    |
+    */
+
+    private const MAX_FILE_SIZE = 20 * 1024;
+
+    /*
+    |--------------------------------------------------------------------------
+    | أقصى عدد للملفات
+    |--------------------------------------------------------------------------
+    */
+
+    private const MAX_CERTIFICATES = 10;
+
+    private const MAX_APPRECIATION_CERTIFICATES = 10;
+
+    /*
+    |--------------------------------------------------------------------------
+    | الامتدادات المسموحة
+    |--------------------------------------------------------------------------
+    */
+
+    private const ALLOWED_EXTENSIONS = [
+        'pdf',
+        'jpg',
+        'jpeg',
+        'png',
+        'webp',
+        'doc',
+        'docx',
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | MIME Types المسموحة
+    |--------------------------------------------------------------------------
+    */
+
+    private const ALLOWED_MIMES = [
+        'application/pdf',
+
+        'image/jpeg',
+        'image/png',
+        'image/webp',
+
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | صفحة التسجيل
+    |--------------------------------------------------------------------------
+    */
+
+    public function create()
+    {
+        return view('update_service.provider-account');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | جلب التخصصات حسب نوع المكتب
+    |--------------------------------------------------------------------------
+    */
+
+    public function specialties(Request $request)
+    {
+        $validated = $request->validate([
+            'office_type' => [
+                'required',
+                Rule::in(self::OFFICE_TYPES),
+            ],
+        ], [
+            'office_type.required' =>
+                'نوع المكتب مطلوب.',
+
+            'office_type.in' =>
+                'نوع المكتب غير صحيح.',
+        ]);
+
+        $specialties = DB::connection('business')
+            ->table('bs_specialties')
+            ->where(
+                'office_type',
+                $validated['office_type']
+            )
+            ->where('is_active', 1)
+            ->orderBy('name_ar')
+            ->get([
+                'id',
+                'name_ar',
+                'name_en',
+            ]);
+
+        return response()->json([
+            'success' => true,
+            'specialties' => $specialties,
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | تسجيل المكتب
+    |--------------------------------------------------------------------------
+    */
+
+    public function store(Request $request)
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | Validation
+        |--------------------------------------------------------------------------
+        */
+
+        $validated = $request->validate([
+
+            /*
+            |--------------------------------------------------------------------------
+            | بيانات المكتب
+            |--------------------------------------------------------------------------
+            */
+
+            'name_ar' => [
+                'required',
+                'string',
+                'max:191',
+            ],
+
+            'name_en' => [
+                'required',
+                'string',
+                'max:191',
+            ],
+
+            'manager_name' => [
+                'required',
+                'string',
+                'max:191',
+            ],
+
+            'office_type' => [
+                'required',
+                Rule::in(self::OFFICE_TYPES),
+            ],
+
+            'phone' => [
+                'required',
+                'string',
+                'regex:/^05[0-9]{8}$/',
+            ],
+
+            'email' => [
+                'required',
+                'email:rfc,dns',
+                'max:191',
+            ],
+
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'max:191',
+                'confirmed',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | العنوان
+            |--------------------------------------------------------------------------
+            */
+
+            'country' => [
+                'required',
+                'string',
+                'max:191',
+            ],
+
+            'governorate' => [
+                'required',
+                'string',
+                'max:191',
+            ],
+
+            'city' => [
+                'required',
+                'string',
+                'max:191',
+            ],
+
+            'district' => [
+                'required',
+                'string',
+                'max:191',
+            ],
+
+            'street' => [
+                'required',
+                'string',
+                'max:191',
+            ],
+
+            'building_number' => [
+                'required',
+                'string',
+                'max:50',
+            ],
+
+            'office_number' => [
+                'nullable',
+                'string',
+                'max:50',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | أرقام المكتب
+            |--------------------------------------------------------------------------
+            */
+
+            'cr_number' => [
+                'required',
+                'string',
+                'max:100',
+            ],
+
+            'license_number' => [
+                'required',
+                'string',
+                'max:100',
+            ],
+
+            'trademark_registration_number' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | التخصص
+            |--------------------------------------------------------------------------
+            */
+
+            'specialty' => [
+                'required',
+                'string',
+            ],
+
+            'manual_specialty' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | المستندات
+            |--------------------------------------------------------------------------
+            |
+            | السجل والترخيص إجباريان لأن أرقامهما إجبارية.
+            |
+            */
+
+            'commercial_register_image' => [
+                'required_with:cr_number',
+                'file',
+                'max:' . self::MAX_FILE_SIZE,
+                'mimes:pdf,jpg,jpeg,png,webp,doc,docx',
+            ],
+
+            'license_image' => [
+                'required_with:license_number',
+                'file',
+                'max:' . self::MAX_FILE_SIZE,
+                'mimes:pdf,jpg,jpeg,png,webp,doc,docx',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | العلامة التجارية اختيارية
+            |--------------------------------------------------------------------------
+            */
+
+            'trademark_certificate' => [
+                'nullable',
+                'file',
+                'max:' . self::MAX_FILE_SIZE,
+                'mimes:pdf,jpg,jpeg,png,webp,doc,docx',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | السيرة الذاتية اختيارية
+            |--------------------------------------------------------------------------
+            */
+
+            'cv' => [
+                'nullable',
+                'file',
+                'max:' . self::MAX_FILE_SIZE,
+                'mimes:pdf,jpg,jpeg,png,webp,doc,docx',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | الشهادات العملية اختيارية
+            |--------------------------------------------------------------------------
+            */
+
+            'certificates' => [
+                'nullable',
+                'array',
+                'max:' . self::MAX_CERTIFICATES,
+            ],
+
+            'certificates.*' => [
+                'file',
+                'max:' . self::MAX_FILE_SIZE,
+                'mimes:pdf,jpg,jpeg,png,webp,doc,docx',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | شهادات التقدير اختيارية
+            |--------------------------------------------------------------------------
+            */
+
+            'appreciation_certificates' => [
+                'nullable',
+                'array',
+                'max:' . self::MAX_APPRECIATION_CERTIFICATES,
+            ],
+
+            'appreciation_certificates.*' => [
+                'file',
+                'max:' . self::MAX_FILE_SIZE,
+                'mimes:pdf,jpg,jpeg,png,webp,doc,docx',
+            ],
+
+        ], [
+
+            /*
+            |--------------------------------------------------------------------------
+            | بيانات المكتب
+            |--------------------------------------------------------------------------
+            */
+
+            'name_ar.required' =>
+                'اسم المكتب بالعربية مطلوب.',
+
+            'name_ar.max' =>
+                'اسم المكتب بالعربية طويل جداً.',
+
+            'name_en.required' =>
+                'اسم المكتب بالإنجليزية مطلوب.',
+
+            'name_en.max' =>
+                'اسم المكتب بالإنجليزية طويل جداً.',
+
+            'manager_name.required' =>
+                'اسم مدير المكتب مطلوب.',
+
+            'manager_name.max' =>
+                'اسم مدير المكتب طويل جداً.',
+
+            'office_type.required' =>
+                'نوع المكتب مطلوب.',
+
+            'office_type.in' =>
+                'نوع المكتب غير صحيح.',
+
+            /*
+            |--------------------------------------------------------------------------
+            | الهاتف
+            |--------------------------------------------------------------------------
+            */
+
+            'phone.required' =>
+                'رقم الجوال مطلوب.',
+
+            'phone.regex' =>
+                'رقم الجوال يجب أن يكون رقم جوال سعودي صحيح مثل 05xxxxxxxx.',
+
+            /*
+            |--------------------------------------------------------------------------
+            | البريد
+            |--------------------------------------------------------------------------
+            */
+
+            'email.required' =>
+                'البريد الإلكتروني مطلوب.',
+
+            'email.email' =>
+                'البريد الإلكتروني غير صحيح.',
+
+            /*
+            |--------------------------------------------------------------------------
+            | كلمة المرور
+            |--------------------------------------------------------------------------
+            */
+
+            'password.required' =>
+                'كلمة المرور مطلوبة.',
+
+            'password.min' =>
+                'كلمة المرور يجب ألا تقل عن 8 أحرف.',
+
+            'password.confirmed' =>
+                'تأكيد كلمة المرور غير مطابق.',
+
+            /*
+            |--------------------------------------------------------------------------
+            | العنوان
+            |--------------------------------------------------------------------------
+            */
+
+            'country.required' =>
+                'الدولة مطلوبة.',
+
+            'governorate.required' =>
+                'المنطقة مطلوبة.',
+
+            'city.required' =>
+                'المدينة مطلوبة.',
+
+            'district.required' =>
+                'الحي مطلوب.',
+
+            'street.required' =>
+                'الشارع مطلوب.',
+
+            'building_number.required' =>
+                'رقم المبنى مطلوب.',
+
+            /*
+            |--------------------------------------------------------------------------
+            | الأرقام
+            |--------------------------------------------------------------------------
+            */
+
+            'cr_number.required' =>
+                'رقم السجل التجاري مطلوب.',
+
+            'license_number.required' =>
+                'رقم ترخيص المزاولة المهنية مطلوب.',
+
+            /*
+            |--------------------------------------------------------------------------
+            | التخصص
+            |--------------------------------------------------------------------------
+            */
+
+            'specialty.required' =>
+                'يرجى اختيار التخصص.',
+
+            'manual_specialty.string' =>
+                'التخصص اليدوي غير صحيح.',
+
+            /*
+            |--------------------------------------------------------------------------
+            | السجل التجاري
+            |--------------------------------------------------------------------------
+            */
+
+            'commercial_register_image.required' =>
+                'يجب إرفاق صورة السجل التجاري.',
+
+            'commercial_register_image.required_with' =>
+                'يجب إرفاق صورة السجل التجاري عند إدخال رقم السجل التجاري.',
+
+            'commercial_register_image.file' =>
+                'ملف السجل التجاري غير صالح.',
+
+            'commercial_register_image.max' =>
+                'حجم ملف السجل التجاري يجب ألا يتجاوز 20MB.',
+
+            'commercial_register_image.mimes' =>
+                'صيغة ملف السجل التجاري غير مسموحة.',
+
+            /*
+            |--------------------------------------------------------------------------
+            | الترخيص
+            |--------------------------------------------------------------------------
+            */
+
+            'license_image.required' =>
+                'يجب إرفاق صورة ترخيص المزاولة المهنية.',
+
+            'license_image.required_with' =>
+                'يجب إرفاق صورة ترخيص المزاولة المهنية عند إدخال رقم الترخيص.',
+
+            'license_image.file' =>
+                'ملف ترخيص المزاولة غير صالح.',
+
+            'license_image.max' =>
+                'حجم ملف ترخيص المزاولة يجب ألا يتجاوز 20MB.',
+
+            'license_image.mimes' =>
+                'صيغة ملف ترخيص المزاولة غير مسموحة.',
+
+            /*
+            |--------------------------------------------------------------------------
+            | العلامة التجارية
+            |--------------------------------------------------------------------------
+            */
+
+            'trademark_certificate.file' =>
+                'شهادة العلامة التجارية غير صالحة.',
+
+            'trademark_certificate.max' =>
+                'حجم شهادة العلامة التجارية يجب ألا يتجاوز 20MB.',
+
+            'trademark_certificate.mimes' =>
+                'صيغة شهادة العلامة التجارية غير مسموحة.',
+
+            /*
+            |--------------------------------------------------------------------------
+            | السيرة الذاتية
+            |--------------------------------------------------------------------------
+            */
+
+            'cv.file' =>
+                'ملف السيرة الذاتية غير صالح.',
+
+            'cv.max' =>
+                'حجم السيرة الذاتية يجب ألا يتجاوز 20MB.',
+
+            'cv.mimes' =>
+                'صيغة السيرة الذاتية غير مسموحة.',
+
+            /*
+            |--------------------------------------------------------------------------
+            | الشهادات العملية
+            |--------------------------------------------------------------------------
+            */
+
+            'certificates.array' =>
+                'صيغة الشهادات العملية غير صحيحة.',
+
+            'certificates.max' =>
+                'لا يمكن رفع أكثر من 10 شهادات عملية.',
+
+            'certificates.*.file' =>
+                'أحد ملفات الشهادات العملية غير صالح.',
+
+            'certificates.*.max' =>
+                'حجم أحد ملفات الشهادات العملية يتجاوز 20MB.',
+
+            'certificates.*.mimes' =>
+                'صيغة أحد ملفات الشهادات العملية غير مسموحة.',
+
+            /*
+            |--------------------------------------------------------------------------
+            | شهادات التقدير
+            |--------------------------------------------------------------------------
+            */
+
+            'appreciation_certificates.array' =>
+                'صيغة شهادات التقدير غير صحيحة.',
+
+            'appreciation_certificates.max' =>
+                'لا يمكن رفع أكثر من 10 شهادات تقدير.',
+
+            'appreciation_certificates.*.file' =>
+                'أحد ملفات شهادات التقدير غير صالح.',
+
+            'appreciation_certificates.*.max' =>
+                'حجم أحد ملفات شهادات التقدير يتجاوز 20MB.',
+
+            'appreciation_certificates.*.mimes' =>
+                'صيغة أحد ملفات شهادات التقدير غير مسموحة.',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | تنظيف البيانات
+        |--------------------------------------------------------------------------
+        */
+
+        $email = strtolower(
+            trim($validated['email'])
+        );
+
+        $crNumber = $this->normalizeNumber(
+            $validated['cr_number']
+        );
+
+        $licenseNumber = $this->normalizeNumber(
+            $validated['license_number']
+        );
+
+        $trademarkNumber = !empty(
+            $validated['trademark_registration_number']
+        )
+            ? $this->normalizeNumber(
+                $validated['trademark_registration_number']
+            )
+            : null;
+
+        /*
+        |--------------------------------------------------------------------------
+        | التخصص اليدوي
+        |--------------------------------------------------------------------------
+        */
+
+        $manualSpecialty = trim(
+            (string) ($validated['manual_specialty'] ?? '')
+        );
+
+        if (
+            $validated['specialty'] === 'other'
+            && $manualSpecialty === ''
+        ) {
+            return back()
+                ->withErrors([
+                    'manual_specialty' =>
+                        'يرجى كتابة التخصص اليدوي.',
+                ])
+                ->withInput(
+                    $request->except([
+                        'password',
+                        'password_confirmation',
+                        'commercial_register_image',
+                        'license_image',
+                        'trademark_certificate',
+                        'cv',
+                        'certificates',
+                        'appreciation_certificates',
+                    ])
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | اتصال Business Database
+        |--------------------------------------------------------------------------
+        */
+
+        $connection = DB::connection('business');
+
+        /*
+        |--------------------------------------------------------------------------
+        | الملفات التي تم تخزينها
+        |--------------------------------------------------------------------------
+        */
+
+        $storedFiles = [];
+
+        try {
+
+            /*
+            |--------------------------------------------------------------------------
+            | فحص البريد
+            |--------------------------------------------------------------------------
+            */
+
+            $emailExistsInOffice =
+                $connection
+                    ->table('bs_offices')
+                    ->whereRaw(
+                        'LOWER(email) = ?',
+                        [$email]
+                    )
+                    ->exists();
+
+            if ($emailExistsInOffice) {
+
+                return back()
+                    ->withErrors([
+                        'email' =>
+                            'هذا البريد الإلكتروني مسجل بالفعل لمكتب آخر.',
+                    ])
+                    ->withInput(
+                        $request->except([
+                            'password',
+                            'password_confirmation',
+                            'commercial_register_image',
+                            'license_image',
+                            'trademark_certificate',
+                            'cv',
+                            'certificates',
+                            'appreciation_certificates',
+                        ])
+                    );
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | فحص بريد المستخدم
+            |--------------------------------------------------------------------------
+            */
+
+            $emailExistsInUser =
+                $connection
+                    ->table('bs_office_users')
+                    ->whereRaw(
+                        'LOWER(email) = ?',
+                        [$email]
+                    )
+                    ->exists();
+
+            if ($emailExistsInUser) {
+
+                return back()
+                    ->withErrors([
+                        'email' =>
+                            'هذا البريد الإلكتروني مستخدم بالفعل.',
+                    ])
+                    ->withInput(
+                        $request->except([
+                            'password',
+                            'password_confirmation',
+                            'commercial_register_image',
+                            'license_image',
+                            'trademark_certificate',
+                            'cv',
+                            'certificates',
+                            'appreciation_certificates',
+                        ])
+                    );
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | فحص السجل التجاري
+            |--------------------------------------------------------------------------
+            */
+
+            $crExistsInOffice =
+                $connection
+                    ->table('bs_offices')
+                    ->where(
+                        'cr_number',
+                        $crNumber
+                    )
+                    ->exists();
+
+            $crExistsInProfile =
+                $connection
+                    ->table('bs_office_profiles')
+                    ->where(
+                        'cr_number',
+                        $crNumber
+                    )
+                    ->exists();
+
+            if (
+                $crExistsInOffice
+                || $crExistsInProfile
+            ) {
+
+                return back()
+                    ->withErrors([
+                        'cr_number' =>
+                            'رقم السجل التجاري هذا موجود بالفعل في النظام.',
+                    ])
+                    ->withInput(
+                        $request->except([
+                            'password',
+                            'password_confirmation',
+                            'commercial_register_image',
+                            'license_image',
+                            'trademark_certificate',
+                            'cv',
+                            'certificates',
+                            'appreciation_certificates',
+                        ])
+                    );
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | فحص الترخيص
+            |--------------------------------------------------------------------------
+            */
+
+            $licenseExists =
+                $connection
+                    ->table('bs_office_profiles')
+                    ->where(
+                        'license_number',
+                        $licenseNumber
+                    )
+                    ->exists();
+
+            if ($licenseExists) {
+
+                return back()
+                    ->withErrors([
+                        'license_number' =>
+                            'رقم ترخيص المزاولة المهنية هذا موجود بالفعل.',
+                    ])
+                    ->withInput(
+                        $request->except([
+                            'password',
+                            'password_confirmation',
+                            'commercial_register_image',
+                            'license_image',
+                            'trademark_certificate',
+                            'cv',
+                            'certificates',
+                            'appreciation_certificates',
+                        ])
+                    );
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | فحص العلامة التجارية
+            |--------------------------------------------------------------------------
+            */
+
+            if ($trademarkNumber !== null) {
+
+                if (
+                    Schema::connection('business')
+                        ->hasColumn(
+                            'bs_office_profiles',
+                            'trademark_registration_number'
+                        )
+                ) {
+
+                    $trademarkExists =
+                        $connection
+                            ->table('bs_office_profiles')
+                            ->where(
+                                'trademark_registration_number',
+                                $trademarkNumber
+                            )
+                            ->exists();
+
+                    if ($trademarkExists) {
+
+                        return back()
+                            ->withErrors([
+                                'trademark_registration_number' =>
+                                    'رقم تسجيل العلامة التجارية هذا موجود بالفعل.',
+                            ])
+                            ->withInput(
+                                $request->except([
+                                    'password',
+                                    'password_confirmation',
+                                    'commercial_register_image',
+                                    'license_image',
+                                    'trademark_certificate',
+                                    'cv',
+                                    'certificates',
+                                    'appreciation_certificates',
+                                ])
+                            );
+                    }
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | التحقق من التخصص
+            |--------------------------------------------------------------------------
+            */
+
+            $specialtyId = null;
+
+            if ($validated['specialty'] !== 'other') {
+
+                $specialtyId =
+                    $connection
+                        ->table('bs_specialties')
+                        ->where(
+                            'id',
+                            $validated['specialty']
+                        )
+                        ->where(
+                            'office_type',
+                            $validated['office_type']
+                        )
+                        ->where(
+                            'is_active',
+                            1
+                        )
+                        ->value('id');
+
+                if (!$specialtyId) {
+
+                    return back()
+                        ->withErrors([
+                            'specialty' =>
+                                'التخصص المحدد غير متاح لنوع المكتب المختار.',
+                        ])
+                        ->withInput(
+                            $request->except([
+                                'password',
+                                'password_confirmation',
+                                'commercial_register_image',
+                                'license_image',
+                                'trademark_certificate',
+                                'cv',
+                                'certificates',
+                                'appreciation_certificates',
+                            ])
+                        );
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | بدء Transaction
+            |--------------------------------------------------------------------------
+            */
+
+            $connection->beginTransaction();
+
+            /*
+            |--------------------------------------------------------------------------
+            | إنشاء المكتب
+            |--------------------------------------------------------------------------
+            */
+
+            $office = Office::create([
+
+                'type' =>
+                    $validated['office_type'],
+
+                'name_ar' =>
+                    trim($validated['name_ar']),
+
+                'name_en' =>
+                    trim($validated['name_en']),
+
+                'phone' =>
+                    trim($validated['phone']),
+
+                'email' =>
+                    $email,
+
+                'city' =>
+                    trim($validated['city']),
+
+                'cr_number' =>
+                    $crNumber,
+
+                'is_active' =>
+                    true,
+
+                'is_verified' =>
+                    false,
+
+                'commission_rate' =>
+                    0,
+            ]);
+
+            $officeCode = $office->office_code;
+
+            /*
+            |--------------------------------------------------------------------------
+            | إنشاء مستخدم المكتب
+            |--------------------------------------------------------------------------
+            */
+
+            OfficeUser::create([
+
+                'office_id' =>
+                    $office->id,
+
+                'name' =>
+                    trim($validated['manager_name']),
+
+                'email' =>
+                    $email,
+
+                'password' =>
+                    Hash::make(
+                        $validated['password']
+                    ),
+
+                'role' =>
+                    'owner',
+
+                'is_active' =>
+                    1,
+            ]);
+
+            /*
+            |--------------------------------------------------------------------------
+            | التخصص اليدوي
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                $validated['specialty'] === 'other'
+                && $manualSpecialty !== ''
+            ) {
+
+                $existingManualSpecialty =
+                    $connection
+                        ->table('bs_specialties')
+                        ->where(
+                            'office_type',
+                            $validated['office_type']
+                        )
+                        ->whereRaw(
+                            'LOWER(TRIM(name_ar)) = ?',
+                            [
+                                mb_strtolower(
+                                    $manualSpecialty
+                                )
+                            ]
+                        )
+                        ->first();
+
+                if ($existingManualSpecialty) {
+
+                    $specialtyId =
+                        $existingManualSpecialty->id;
+
+                } else {
+
+                    $specialtyInsert = [
+
+                        'office_type' =>
+                            $validated['office_type'],
+
+                        'name_ar' =>
+                            $manualSpecialty,
+
+                        'name_en' =>
+                            $manualSpecialty,
+
+                        /*
+                        | التخصص يظل Pending
+                        */
+
+                        'is_active' =>
+                            0,
+
+                        'created_at' =>
+                            now(),
+
+                        'updated_at' =>
+                            now(),
+                    ];
+
+                    if (
+                        Schema::connection('business')
+                            ->hasColumn(
+                                'bs_specialties',
+                                'office_id'
+                            )
+                    ) {
+
+                        $specialtyInsert['office_id'] =
+                            $office->id;
+                    }
+
+                    $specialtyId =
+                        $connection
+                            ->table('bs_specialties')
+                            ->insertGetId(
+                                $specialtyInsert
+                            );
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | بيانات Profile
+            |--------------------------------------------------------------------------
+            */
+
+            $profileData = [
+
+                'office_id' =>
+                    $office->id,
+
+                'license_number' =>
+                    $licenseNumber,
+
+                'cr_number' =>
+                    $crNumber,
+
+                'mobile' =>
+                    trim($validated['phone']),
+
+                'country' =>
+                    trim($validated['country']),
+
+                'governorate' =>
+                    trim($validated['governorate']),
+
+                'city' =>
+                    trim($validated['city']),
+
+                'district' =>
+                    trim($validated['district']),
+
+                'street' =>
+                    trim($validated['street']),
+
+                'building_number' =>
+                    trim($validated['building_number']),
+
+                'office_number' =>
+                    !empty($validated['office_number'])
+                        ? trim($validated['office_number'])
+                        : null,
+
+                'description_ar' =>
+                    null,
+
+                'description_en' =>
+                    null,
+
+                'custom_specialty' =>
+                    $validated['specialty'] === 'other'
+                        ? $manualSpecialty
+                        : null,
+
+                'handled_cases' =>
+                    0,
+
+                'profile_completed' =>
+                    1,
+
+                'verification_status' =>
+                    'pending',
+
+                'submitted_at' =>
+                    now(),
+
+                'approved_at' =>
+                    null,
+
+                'office_code' =>
+                    $officeCode,
+
+                'qr_code' =>
+                    null,
+
+                'created_at' =>
+                    now(),
+
+                'updated_at' =>
+                    now(),
+            ];
+
+            /*
+            |--------------------------------------------------------------------------
+            | رقم العلامة التجارية
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                Schema::connection('business')
+                    ->hasColumn(
+                        'bs_office_profiles',
+                        'trademark_registration_number'
+                    )
+            ) {
+
+                $profileData[
+                    'trademark_registration_number'
+                ] = $trademarkNumber;
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | specialty_id
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                Schema::connection('business')
+                    ->hasColumn(
+                        'bs_office_profiles',
+                        'specialty_id'
+                    )
+            ) {
+
+                $profileData['specialty_id'] =
+                    $validated['specialty'] !== 'other'
+                        ? $specialtyId
+                        : null;
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | إدخال Profile
+            |--------------------------------------------------------------------------
+            */
+
+            $connection
+                ->table('bs_office_profiles')
+                ->insert(
+                    $profileData
+                );
+
+            /*
+            |--------------------------------------------------------------------------
+            | ربط التخصص بالمكتب
+            |--------------------------------------------------------------------------
+            */
+
+            if ($specialtyId) {
+
+                $alreadyLinked =
+                    $connection
+                        ->table('bs_office_specialties')
+                        ->where(
+                            'office_id',
+                            $office->id
+                        )
+                        ->where(
+                            'specialty_id',
+                            $specialtyId
+                        )
+                        ->exists();
+
+                if (!$alreadyLinked) {
+
+                    $connection
+                        ->table('bs_office_specialties')
+                        ->insert([
+
+                            'office_id' =>
+                                $office->id,
+
+                            'specialty_id' =>
+                                $specialtyId,
+
+                            'created_at' =>
+                                now(),
+
+                            'updated_at' =>
+                                now(),
+                        ]);
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | دالة حفظ المستند
+            |--------------------------------------------------------------------------
+            */
+
+            $saveDocument = function (
+                ?UploadedFile $file,
+                string $documentType,
+                string $folder
+            ) use (
+                $office,
+                $connection,
+                &$storedFiles
+            ) {
+
+                /*
+                | المستند اختياري
+                */
+
+                if ($file === null) {
+                    return;
+                }
+
+                if (
+                    !$file instanceof UploadedFile
+                    || !$file->isValid()
+                ) {
+
+                    throw new \RuntimeException(
+                        'تعذر قراءة الملف.'
+                    );
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | الحجم
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+                    $file->getSize()
+                    > self::MAX_FILE_SIZE * 1024
+                ) {
+
+                    throw new \RuntimeException(
+                        'حجم الملف أكبر من 20MB.'
+                    );
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | الامتداد
+                |--------------------------------------------------------------------------
+                */
+
+                $extension =
+                    strtolower(
+                        $file->getClientOriginalExtension()
+                    );
+
+                if (
+                    !in_array(
+                        $extension,
+                        self::ALLOWED_EXTENSIONS,
+                        true
+                    )
+                ) {
+
+                    throw new \RuntimeException(
+                        'امتداد الملف غير مسموح.'
+                    );
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | MIME الحقيقي
+                |--------------------------------------------------------------------------
+                */
+
+                $mime =
+                    $file->getMimeType();
+
+                if (
+                    !in_array(
+                        $mime,
+                        self::ALLOWED_MIMES,
+                        true
+                    )
+                ) {
+
+                    throw new \RuntimeException(
+                        'نوع الملف غير مسموح.'
+                    );
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | اسم الملف الأصلي
+                |--------------------------------------------------------------------------
+                */
+
+                $originalName =
+                    $file->getClientOriginalName();
+
+                /*
+                |--------------------------------------------------------------------------
+                | اسم آمن
+                |--------------------------------------------------------------------------
+                */
+
+                $safeName =
+                    Str::uuid()->toString()
+                    . '.'
+                    . $extension;
+
+                /*
+                |--------------------------------------------------------------------------
+                | المجلد
+                |--------------------------------------------------------------------------
+                */
+
+                $directory =
+                    'office-documents/'
+                    . $office->id
+                    . '/'
+                    . $folder;
+
+                /*
+                |--------------------------------------------------------------------------
+                | التخزين
+                |--------------------------------------------------------------------------
+                */
+
+                $path =
+                    $file->storeAs(
+                        $directory,
+                        $safeName,
+                        'public'
+                    );
+
+                if (!$path) {
+
+                    throw new \RuntimeException(
+                        'فشل حفظ الملف.'
+                    );
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | تسجيل الملف للـ rollback
+                |--------------------------------------------------------------------------
+                */
+
+                $storedFiles[] = $path;
+
+                /*
+                |--------------------------------------------------------------------------
+                | تسجيل المستند في DB
+                |--------------------------------------------------------------------------
+                */
+
+                $connection
+                    ->table('bs_office_documents')
+                    ->insert([
+
+                        'office_id' =>
+                            $office->id,
+
+                        'document_type' =>
+                            $documentType,
+
+                        'file' =>
+                            $path,
+
+                        'file_name' =>
+                            $originalName,
+
+                        'is_verified' =>
+                            0,
+
+                        'created_at' =>
+                            now(),
+
+                        'updated_at' =>
+                            now(),
+                    ]);
+            };
+
+            /*
+            |--------------------------------------------------------------------------
+            | السجل التجاري
+            |--------------------------------------------------------------------------
+            */
+
+            $saveDocument(
+                $request->file(
+                    'commercial_register_image'
+                ),
+                'commercial_register',
+                'commercial-register'
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | ترخيص المزاولة
+            |--------------------------------------------------------------------------
+            */
+
+            $saveDocument(
+                $request->file(
+                    'license_image'
+                ),
+                'license',
+                'license'
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | العلامة التجارية - اختيارية
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                $request->hasFile(
+                    'trademark_certificate'
+                )
+            ) {
+
+                $saveDocument(
+                    $request->file(
+                        'trademark_certificate'
+                    ),
+                    'trademark_certificate',
+                    'trademark'
+                );
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | الشهادات العملية - اختيارية
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                $request->hasFile('certificates')
+            ) {
+
+                foreach (
+                    $request->file('certificates')
+                    as $file
+                ) {
+
+                    $saveDocument(
+                        $file,
+                        'certificate',
+                        'certificates'
+                    );
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | شهادات التقدير - اختيارية
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                $request->hasFile(
+                    'appreciation_certificates'
+                )
+            ) {
+
+                foreach (
+                    $request->file(
+                        'appreciation_certificates'
+                    ) as $file
+                ) {
+
+                    $saveDocument(
+                        $file,
+                        'appreciation_certificate',
+                        'appreciation-certificates'
+                    );
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | السيرة الذاتية - اختيارية
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                $request->hasFile('cv')
+            ) {
+
+                $saveDocument(
+                    $request->file('cv'),
+                    'cv',
+                    'cv'
+                );
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Commit
+            |--------------------------------------------------------------------------
+            */
+
+            $connection->commit();
+
+            /*
+            |--------------------------------------------------------------------------
+            | نجاح
+            |--------------------------------------------------------------------------
+            */
+
+            return redirect()
+                ->route(
+                    'amrtm.provider.account.create'
+                )
+                ->with(
+                    'success',
+                    'تم إرسال طلب تسجيل المكتب بنجاح، وسيتم مراجعته من الإدارة قبل تفعيله.'
+                );
+
+        } catch (\Throwable $e) {
+
+            /*
+            |--------------------------------------------------------------------------
+            | Rollback Database
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                $connection->transactionLevel() > 0
+            ) {
+
+                $connection->rollBack();
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | حذف الملفات المرفوعة
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                !empty($storedFiles)
+                && is_array($storedFiles)
+            ) {
+
+                foreach ($storedFiles as $path) {
+
+                    try {
+
+                        Storage::disk('public')
+                            ->delete($path);
+
+                    } catch (\Throwable $deleteException) {
+
+                        Log::warning(
+                            'Failed to delete uploaded office file after registration rollback.',
+                            [
+                                'path' =>
+                                    $path,
+
+                                'error' =>
+                                    $deleteException->getMessage(),
+                            ]
+                        );
+                    }
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | تسجيل الخطأ
+            |--------------------------------------------------------------------------
+            */
+
+            Log::error(
+                'Provider office registration failed.',
+                [
+                    'message' =>
+                        $e->getMessage(),
+
+                    'file' =>
+                        $e->getFile(),
+
+                    'line' =>
+                        $e->getLine(),
+
+                    'office_type' =>
+                        $request->input('office_type'),
+
+                    'email' =>
+                        $request->input('email'),
+
+                    'cr_number' =>
+                        $request->input('cr_number'),
+
+                    'license_number' =>
+                        $request->input('license_number'),
+                ]
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | الرسالة للمستخدم
+            |--------------------------------------------------------------------------
+            */
+
+            $message =
+                'حدث خطأ أثناء حفظ بيانات المكتب. يرجى المحاولة مرة أخرى.';
+
+            /*
+            |--------------------------------------------------------------------------
+            | Duplicate
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                str_contains(
+                    strtolower(
+                        $e->getMessage()
+                    ),
+                    'duplicate'
+                )
+            ) {
+
+                $message =
+                    'بعض البيانات التي أدخلتها موجودة بالفعل في النظام. يرجى مراجعة رقم السجل أو الترخيص أو العلامة التجارية أو البريد الإلكتروني.';
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | العودة للصفحة
+            |--------------------------------------------------------------------------
+            */
+
+            return back()
+                ->withErrors([
+                    'registration' =>
+                        $message,
+                ])
+                ->withInput(
+                    $request->except([
+                        'password',
+                        'password_confirmation',
+                        'commercial_register_image',
+                        'license_image',
+                        'trademark_certificate',
+                        'cv',
+                        'certificates',
+                        'appreciation_certificates',
+                    ])
+                );
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | توحيد الأرقام
+    |--------------------------------------------------------------------------
+    */
+
+    private function normalizeNumber(
+        ?string $value
+    ): string {
+
+        $value =
+            trim(
+                (string) $value
+            );
+
+        /*
+        | إزالة المسافات
+        */
+
+        $value =
+            preg_replace(
+                '/\s+/',
+                '',
+                $value
+            );
+
+        /*
+        | إزالة بعض الفواصل والرموز
+        */
+
+        $value =
+            preg_replace(
+                '/[-_\/]/',
+                '',
+                $value
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | تحويل الأرقام العربية
+        |--------------------------------------------------------------------------
+        */
+
+        $arabic = [
+            '٠',
+            '١',
+            '٢',
+            '٣',
+            '٤',
+            '٥',
+            '٦',
+            '٧',
+            '٨',
+            '٩',
+        ];
+
+        $english = [
+            '0',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+        ];
+
+        return str_replace(
+            $arabic,
+            $english,
+            $value
+        );
+    }
+}

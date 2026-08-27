@@ -16,8 +16,7 @@ class HallSeeder extends Seeder
         User::firstOrCreate(['email' => 'admin@amrtm.com.sa'], [
             'name'     => 'مدير النظام',
             'phone'    => '0500000001',
-          #  'role'     => UserRole::Admin,
-              'role'     => UserRole::Supervisor,
+            'role'     => UserRole::Admin,
             'password' => Hash::make('Admin@1234'),
         ]);
 

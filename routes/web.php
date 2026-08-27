@@ -119,22 +119,6 @@ Route::prefix('amrtm')->name('amrtm.')->group(function () {
         [ServiceCatalogController::class, 'index']
     )->name('index');
 
-    // ── Design Proposals ────────────────────────────────────────────────────
-    Route::get('/proposals', function () {
-        return view('amrtm_proposals_chooser');
-    })->name('proposals');
-
-    Route::get('/proposal/{id}', function (int $id) {
-        $views = [
-            1 => 'amrtm_proposal1',
-            2 => 'amrtm_proposal2',
-            3 => 'amrtm_proposal3',
-            4 => 'amrtm_proposal4',
-        ];
-        abort_unless(isset($views[$id]), 404);
-        return view($views[$id]);
-    })->name('proposal');
-
     Route::get('/catalog/{key}',
         [ServiceCatalogController::class, 'categoryPage']
     )->name('catalog.category');
@@ -788,21 +772,6 @@ Route::get('/', function () {
     return view('home');
 });
 
-
-
-Route::get('/amrtm_proposal/{id}', function (int $id) {
-    $views = [
-        1 => 'amrtm_proposal1',
-        2 => 'amrtm_proposal2',
-        3 => 'amrtm_proposal3',
-        4 => 'amrtm_proposal4',
-    ];
-
-    abort_unless(isset($views[$id]), 404);
-
-    return view($views[$id]);
-});
-
 // ── Jobs Platform ─────────────────────────────────────────────────────────────
 Route::prefix('jobs')->name('jobs.')->group(function () {
 
@@ -1399,7 +1368,7 @@ Route::middleware(['auth', 'role:manager'])
         Route::delete('/partner-accounts/{partner}',       [SupervisorPartnerController::class, 'destroy'])->name('partner-accounts.destroy');
     });
 
-
+    
     //More info about Offices
 Route::view('/law-info', 'update_service.Content.LawInfo')
     ->name('law.info');
@@ -1418,3 +1387,30 @@ Route::view('/services-info', 'update_service.Content.ServicesInfo')
 
 Route::view('/freelance-info', 'update_service.Content.FreelanceInfo')
     ->name('freelance.info');
+
+
+Route::get('/amrtm/amrtm_proposal/{id}', function (int $id) {
+    $views = [
+        1 => 'amrtm_proposal1',
+        2 => 'amrtm_proposal2',
+        3 => 'amrtm_proposal3',
+        4 => 'amrtm_proposal4',
+    ];
+
+    abort_unless(isset($views[$id]) && view()->exists($views[$id]), 404);
+
+    return view($views[$id]);
+})->name('amrtm.proposal');
+
+Route::get('/amrtm_proposal/{id}', function (int $id) {
+    $views = [
+        1 => 'amrtm_proposal1',
+        2 => 'amrtm_proposal2',
+        3 => 'amrtm_proposal3',
+        4 => 'amrtm_proposal4',
+    ];
+
+    abort_unless(isset($views[$id]) && view()->exists($views[$id]), 404);
+
+    return view($views[$id]);
+})->name('proposal.show');

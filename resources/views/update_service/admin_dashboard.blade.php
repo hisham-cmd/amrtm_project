@@ -675,9 +675,6 @@ body.en .perm-toggle input:checked+.perm-slider::before{transform:translateX(18p
         </span>
     </div>
 
-
-
-
     <div class="sb-item" id="si-office-specialties-item"
          onclick="showPage('office-specialties')">
 

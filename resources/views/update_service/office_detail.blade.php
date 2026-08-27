@@ -3,40 +3,6 @@ $typeConfig = [
     'law'      => ['icon'=>'ti-scale',    'color'=>'#1A237E','bg'=>'rgba(26,35,126,.10)','gradient'=>'linear-gradient(135deg,#1A237E,#283593)','name_ar'=>'مكاتب المحاماة','name_en'=>'Law Firms'],
     'services' => ['icon'=>'ti-briefcase','color'=>'#1565C0','bg'=>'rgba(21,101,192,.10)','gradient'=>'linear-gradient(135deg,#1565C0,#1E88E5)','name_ar'=>'مكاتب الخدمات والتعقيب','name_en'=>'Service & Expediting Offices'],
     'customs'  => ['icon'=>'ti-truck',    'color'=>'#00695C','bg'=>'rgba(0,105,92,.10)','gradient'=>'linear-gradient(135deg,#00695C,#00897B)','name_ar'=>'شركات التخليص الجمركي','name_en'=>'Customs Clearance Companies'],
-   
-
-    'accounting' => [
-        'icon'=>'ti-calculator',
-        'color'=>'#2E7D32',
-        'bg'=>'rgba(46,125,50,.10)',
-        'gradient'=>'linear-gradient(135deg,#2E7D32,#43A047)',
-        'name_ar'=>'مكاتب المحاسبة والاستشارات المالية والضريبية',
-        'name_en'=>'Accounting & Tax Consulting',
-        'desc_ar'=>'خدمات المحاسبة والاستشارات المالية والضريبية للشركات والأفراد',
-        'desc_en'=>'Accounting, financial and tax consulting services',
-    ],
-
-    'engineering' => [
-        'icon'=>'ti-building',
-        'color'=>'#EF6C00',
-        'bg'=>'rgba(239,108,0,.10)',
-        'gradient'=>'linear-gradient(135deg,#EF6C00,#FB8C00)',
-        'name_ar'=>'الاستشارات الهندسية والتصميم والإشراف',
-        'name_en'=>'Engineering Consulting',
-        'desc_ar'=>'خدمات التصميم الهندسي والإشراف وإدارة المشاريع',
-        'desc_en'=>'Engineering design, supervision and project management services',
-    ],
-
-    'freelance' => [
-        'icon'=>'ti-user',
-        'color'=>'#6A1B9A',
-        'bg'=>'rgba(106,27,154,.10)',
-        'gradient'=>'linear-gradient(135deg,#6A1B9A,#8E24AA)',
-        'name_ar'=>'أصحاب المهن الحرة',
-        'name_en'=>'Freelance Professionals',
-        'desc_ar'=>'مقدمو الخدمات المهنية المستقلون في مختلف التخصصات',
-        'desc_en'=>'Independent professionals in various fields',
-    ],
 ];
 $cfg = $typeConfig[$type];
 $user = auth('business')->user();

@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Http\Controllers\UpdateService;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Business\LoginRequest;
+use App\Http\Requests\Business\RegisterRequest;
+use App\Models\Business\BusinessUser;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
+
+class AmrtmAuthController extends Controller
+{
+    public function showLoginForm(): View
+    {
+        return view('amrtm.auth.login');
+    }
+
+    public function login(LoginRequest $request): RedirectResponse
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (! Auth::guard('business')->attempt($credentials, $request->boolean('remember'))) {
+            return back()->withErrors([
+                'email' => 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+            ])->withInput();
+        }
+
+        $user = Auth::guard('business')->user();
+
+        if (! ($user->is_active ?? true)) {
+            Auth::guard('business')->logout();
+            return back()->withErrors([
+                'email' => 'حسابك موقوف. تواصل مع الإدارة.',
+            ])->withInput();
+        }
+
+        $request->session()->regenerate();
+
+        if ($user->isAdmin()) {
+            return redirect()->route('amrtm.admin.dashboard');
+        }
+
+        return redirect()->route('amrtm.index');
+    }
+
+    public function showRegisterForm(): RedirectResponse
+    {
+        return redirect(route('amrtm.login') . '?mode=register');
+    }
+
+    public function register(RegisterRequest $request): RedirectResponse
+    {
+        $user = BusinessUser::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'phone'    => $request->phone,
+            'role'     => 'user',
+            'password' => Hash::make($request->password),
+        ]);
+
+        Auth::guard('business')->login($user);
+        $request->session()->regenerate();
+
+        return redirect()->route('amrtm.index')
+            ->with('success', 'تم إنشاء حسابك بنجاح. مرحباً بك في منصة آمر تم!');
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::guard('business')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('amrtm.login');
+    }
+}
