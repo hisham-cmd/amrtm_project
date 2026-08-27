@@ -2987,9 +2987,16 @@ body{display:block!important;background:transparent!important}
                 <div class="about-one__shape-1">
                     <i class="fa fa-shapes"></i>
                 </div>
-                <div class="about-one__img">
-                    <img src="{{ asset('images/hero-about.jpeg') }}" alt="" loading="lazy">
-                    <div class="about-one__video-link" onclick="openVid()">
+                <div class="about-one__img" onclick="openVid()" style="cursor:pointer; position:relative; overflow:hidden;">
+                    <iframe
+                        src="https://www.youtube-nocookie.com/embed/Z0oYp28dDug?autoplay=1&mute=1&loop=1&playlist=Z0oYp28dDug&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1"
+                        title="فيديو رؤية المملكة 2030 الرسمي"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        style="width:170%; height:170%; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); pointer-events:none; border:none;">
+                    </iframe>
+                    <div class="about-one__video-link" style="pointer-events:auto;">
                         <div class="about-one__video-icon">
                             <span class="fa fa-play" style="font-size:16px;color:#fff;margin-right:-2px"></span>
                             <i class="ripple"></i>
@@ -4322,7 +4329,7 @@ function rstFm() {
 /* ══ VIDEO ══ */
 function openVid() {
     document.getElementById("vm").classList.add("open");
-    document.getElementById("vmf").src = "/";
+    document.getElementById("vmf").src = "https://www.youtube-nocookie.com/embed/Z0oYp28dDug?autoplay=1&rel=0";
     document.body.style.overflow = "hidden";
 }
 function closeVid() {
