@@ -2702,7 +2702,7 @@ body{display:block!important;background:transparent!important}
 
 /* About-One Section */
 .about-one-wrap{width:100%;max-width:1400px;margin:0 auto;padding:30px 40px 20px;display:flex;align-items:center;gap:24px;position:relative;z-index:2;overflow:hidden;background:rgba(255,255,255,.82);backdrop-filter:blur(18px);border-radius:20px;margin-top:100px}
-.about-one__left{flex:1;position:relative;display:flex;align-items:center;justify-content:center;}
+.about-one__left{flex:1;position:relative;display:flex;align-items:center;justify-content:center; max-width:400px}
 .about-one__img-box{position:relative;width:100%;max-width:460px;display:flex;align-items:center;justify-content:center}
 .about-one__img{width:260px;height:260px;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,108,53,.15);position:relative;z-index:2}
 .about-one__img img{width:100%;height:100%;object-fit:cover}
@@ -2722,7 +2722,7 @@ body{display:block!important;background:transparent!important}
 .about-one__call-text{font-size:11px;color:#7A82B8;margin:0}
 .about-one__call-number{font-size:15px;font-weight:900;color:#006C35;margin:0}
 .about-one__call-number a{color:inherit;text-decoration:none}
-.about-one__right{flex:1;max-width:600px;overflow:hidden}
+.about-one__right{flex:1;max-width:800px;overflow:hidden}
 .section-title{margin-bottom:18px}
 .section-title__icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:rgba(0,108,53,.08);margin-bottom:8px}
 .section-title__icon .fa{font-size:14px;color:#006C35}
@@ -2730,7 +2730,7 @@ body{display:block!important;background:transparent!important}
 .section-title__tagline{display:block;font-size:13px;font-weight:700;color:#00843D;margin-bottom:4px}
 .section-title__title{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:#002A15;line-height:1.3;margin:0}
 .about-one__text{font-size:15px;color:#004D28;line-height:1.8;margin-bottom:16px}
-.about-one__cards-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:10px!important;margin-bottom:20px}
+.about-one__cards-grid{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:10px!important;margin-bottom:20px}
 .ao-card{display:block!important;padding:0!important;border-radius:16px!important;background:#fff!important;border:1px solid rgba(0,108,53,.08)!important;box-shadow:0 4px 15px rgba(0,108,53,.08)!important;cursor:pointer!important;transition:all .3s!important;overflow:hidden!important;text-decoration:none!important;color:inherit!important}
 .ao-card:hover{transform:translateY(-5px)!important;box-shadow:0 12px 30px rgba(0,108,53,.15)!important;border-color:#00843D!important}
 .ao-card-body{padding:14px 12px 8px!important;text-align:center!important}
@@ -2774,7 +2774,7 @@ body{display:block!important;background:transparent!important}
 /* Responsive */
 @media(max-width:992px){
   .about-one-wrap{flex-direction:column;gap:12px;padding:8px 20px}
-  .about-one__left{min-height:0}
+  .about-one__left{min-height:0 ;max-width:400px}
   .about-one__img{width:180px;height:180px}
   .about-one__right{text-align:center}
   .section-title{text-align:center}
@@ -2787,7 +2787,7 @@ body{display:block!important;background:transparent!important}
 @media(max-width:768px){
   .hero{padding:0!important}
   .about-one-wrap{padding:6px 15px}
-  .about-one__left{min-height:0}
+  .about-one__left{min-height:0 ; max-width:400px}
   .about-one__img{width:140px;height:140px;border-radius:18px}
   .about-one__shape-1,.about-one__shape-3{display:none}
   .cards-grid{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
@@ -2886,18 +2886,16 @@ body{display:block!important;background:transparent!important}
 
     <!-- Hero Slider -->
     <div class="hero-slider" id="heroSlider">
-        <div class="hero-slide active" style="background-image:url('{{ asset('images/ChatGPT Image Jul 28, 2026, 10_23_54 AM.png') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/ChatGPT Image Jul 28, 2026, 10_25_17 AM.png') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/ChatGPT Image Jul 28, 2026, 10_27_09 AM.png') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/ChatGPT Image Jul 28, 2026, 10_28_24 AM.png') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/hero-about.jpeg') }}')"></div>
+        <div class="hero-slide active" style="background-image:url('{{ asset('images/slide-kingdom.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-skyline.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-kafd.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-skyscrapers.jpg') }}')"></div>
     </div>
     <div class="hero-slider-dots" id="heroSliderDots">
         <div class="hero-slider-dot active" data-index="0"></div>
         <div class="hero-slider-dot" data-index="1"></div>
         <div class="hero-slider-dot" data-index="2"></div>
         <div class="hero-slider-dot" data-index="3"></div>
-        <div class="hero-slider-dot" data-index="4"></div>
     </div>
     <div class="hero-slider-arrow prev" onclick="heroSliderPrev()"><i class="fa fa-chevron-right"></i></div>
     <div class="hero-slider-arrow next" onclick="heroSliderNext()"><i class="fa fa-chevron-left"></i></div>
@@ -2910,7 +2908,7 @@ body{display:block!important;background:transparent!important}
             <div class="section-title text-left">
       
                 <span class="section-title__tagline" id="ao-tagline">مرحباً بكم في منصة آمر تم</span>
-                <h2 class="section-title__title" id="ao-title">آمر تم شريكك الموثوق في الخدمات الحكومية</h2>
+                <h2 class="section-title__title" id="ao-title">منصة آمر تم لخدمات قطاع الأعمال</h2>
             </div>
             <p class="about-one__text" id="ao-desc">مكان واحد لإنجاز كافة إجراءات الخدمات الحكومية والخاصة. نضمن لك خدمات احترافية تجعل تعاملك مع الجهات الرسمية سهلاً.</p>
             <div class="about-one__cards-grid">
@@ -3566,7 +3564,7 @@ const T = {
         fb2: "شروط الاستخدام",
         fb3: "تواصل معنا",
         ao_tagline: "مرحباً بكم في منصة آمر تم",
-        ao_title: "آمر تم شريكك الموثوق في الخدمات الحكومية",
+        ao_title: "منصة آمر تم لخدمات قطاع الأعمال",
         ao_desc: "مكان واحد لإنجاز كافة إجراءات الخدمات الحكومية والخاصة. نضمن لك خدمات احترافية تجعل تعاملك مع الجهات الرسمية سهلاً.",
         ao_big: "نوفر لك كافة الخدمات الحكومية في منصة واحدة",
         ao_text2: "تعمل منصة آمر تم وفق مفهوم النافذة الواحدة لاستقبال طلبات العملاء وإنجاز معاملاتهم عبر شبكة من الشركاء والمتخصصين.",
@@ -3799,12 +3797,12 @@ async function loadOfficeCounts() {
 async function init() {
     applyLang(lang);
     updateNavAuth();
+    initHeroSlider();
     // استخدام البيانات التجريبية مباشرة
     cats = getDemoData();
     filteredCats = [...cats];
     renderCards();
     loadOfficeCounts();
-    initHeroSlider();
 }
 
 /* ══ HERO SLIDER ══ */
@@ -3943,6 +3941,7 @@ function searchCards() {
 /* ══ RENDER CARDS ══ */
 function renderCards(list = cats) {    const t = T[lang],
         g = document.getElementById("cards-grid");
+    if (!g) return;
     if (!cats.length) {
         g.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--t3);">${t.erq}</div>`;
         return;
