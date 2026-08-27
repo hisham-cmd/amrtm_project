@@ -2994,7 +2994,7 @@ body{display:block!important;background:transparent!important}
                         preload="auto"
                         poster="{{ asset('images/slide-kafd.jpg') }}"
                         style="width:100%; height:100%; object-fit:cover; display:block;">
-                        <source src="{{ asset('videos/saudi-business-intro.mp4') }}" type="video/mp4">
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-network-connections-and-technology-43285-large.mp4" type="video/mp4">
                     </video>
                     <div class="about-one__video-overlay" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,42,21,0.15) 0%, rgba(0,108,53,0.35) 100%); pointer-events:none;"></div>
                     <div class="about-one__video-link" style="pointer-events:auto;">
@@ -3013,7 +3013,7 @@ body{display:block!important;background:transparent!important}
                     </div>
                     <div class="about-one__call-box-content">
                         <p class="about-one__call-text">المكتب الرئيسي</p>
-                        <h4 class="about-one__call-number"><a href="tel:920000000">9200 000 00</a></h4>
+                        <h4 class="about-one__call-number"><a href="tel:+966920002164">966920002164</a></h4>
                     </div>
                 </div>
             </div>
@@ -3804,13 +3804,28 @@ async function loadOfficeCounts() {
     }
 }
 /* ══ INIT ══ */
-/* ══ INIT ══ */
 async function init() {
     applyLang(lang);
     updateNavAuth();
     initHeroSlider();
-    // استخدام البيانات التجريبية مباشرة
-    cats = getDemoData();
+
+    // تحميل الخدمات والتصنيفات تلقائياً من الباك إند
+    const serverCategories = @json($categories ?? []);
+    if (Array.isArray(serverCategories) && serverCategories.length > 0) {
+        cats = serverCategories;
+    } else {
+        try {
+            const apiRes = await (typeof API !== 'undefined' ? API.get('/api/services') : fetch('/amrtm/api/services').then(r => r.json()));
+            if (Array.isArray(apiRes) && apiRes.length > 0) {
+                cats = apiRes;
+            } else {
+                cats = getDemoData();
+            }
+        } catch (err) {
+            cats = getDemoData();
+        }
+    }
+
     filteredCats = [...cats];
     renderCards();
     loadOfficeCounts();

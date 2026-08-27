@@ -25,7 +25,43 @@ class ServiceCatalogController extends Controller
 {
     public function index(): View
     {
-        return view('update_service.index');
+        $categories = Category::with([
+            'entities' => fn($q) => $q->where('is_active', true)
+                ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
+                ->orderBy('sort_order'),
+        ])
+        ->where('is_active', true)
+        ->orderBy('sort_order')
+        ->get()
+        ->map(fn($cat) => [
+            'id'       => $cat->id,
+            'key'      => $cat->key,
+            'name_ar'  => $cat->name_ar,
+            'name_en'  => $cat->name_en,
+            'icon'     => $cat->icon,
+            'color'    => $cat->color,
+            'bg'       => $cat->bg,
+            'entities' => $cat->entities->map(fn($ent) => [
+                'id'       => $ent->id,
+                'name_ar'  => $ent->name_ar,
+                'name_en'  => $ent->name_en,
+                'icon'     => $ent->icon,
+                'color'    => $ent->color,
+                'bg'       => $ent->bg,
+                'tag_ar'   => $ent->tag_ar,
+                'tag_en'   => $ent->tag_en,
+                'services' => $ent->govServices->map(fn($svc) => [
+                    'id'             => $svc->id,
+                    'name_ar'        => $svc->name_ar,
+                    'name_en'        => $svc->name_en,
+                    'icon'           => $svc->icon,
+                    'price'          => (float) $svc->price,
+                    'estimated_days' => $svc->estimated_days,
+                ]),
+            ]),
+        ]);
+
+        return view('update_service.index', compact('categories'));
     }
 
     public function userDashboard(): View
