@@ -785,23 +785,7 @@ Route::post(
 
 // ── Public pages ─────────────────────────────────────────────────────────────
 Route::get('/', function () {
-    return view('design_chooser');
-});
-
-Route::get('/home', function () {
     return view('home');
-});
-
-Route::get('/home/proposal/{id}', function (int $id) {
-    $views = [
-        1 => 'home_proposal1',
-        2 => 'home_proposal2',
-        3 => 'home_proposal3',
-    ];
-
-    abort_unless(isset($views[$id]), 404);
-
-    return view($views[$id]);
 });
 
 
@@ -1415,7 +1399,7 @@ Route::middleware(['auth', 'role:manager'])
         Route::delete('/partner-accounts/{partner}',       [SupervisorPartnerController::class, 'destroy'])->name('partner-accounts.destroy');
     });
 
-    
+
     //More info about Offices
 Route::view('/law-info', 'update_service.Content.LawInfo')
     ->name('law.info');

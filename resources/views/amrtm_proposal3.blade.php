@@ -3,14 +3,12 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
-<meta http-equiv="Pragma" content="no-cache"/>
-<meta http-equiv="expires" content="0"/>
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>التصميم ٣ — NEOM داكن | آمر تم</title>
+<title>التصميم ٣ — آمر تم | Amrtm Platform</title>
     <link rel="icon" type="image/png" href="{{ asset('images/new-logo1.png') }}">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 <link rel="stylesheet" href="{{ asset('css/platform/main.css') }}"/>
 <link rel="stylesheet" href="{{ asset('css/platform/main_style.css') }}"/>
 <style>
@@ -22,33 +20,33 @@
 
 /* Root Variables */
 :root{
-  --pri:#1A237E;
-  --pri2:#283593;
-  --pri3:#1565C0;
+  --pri:#5B21B6;
+  --pri2:#7C3AED;
+  --pri3:#8B5CF6;
 
-  --bg:#F4F6FB;
-  --bg2:#EBEEf8;
+  --bg:#004D25;
+  --bg2:#2E1065;
 
-  --sur:#fff;
-  --sur2:#F0F3FF;
+  --sur:#004D25;
+  --sur2:#312E81;
 
-  --b1:rgba(26,35,126,.1);
-  --b2:rgba(26,35,126,.28);
-  --bc:rgba(26,35,126,.07);
+  --b1:rgba(139,92,246,.15);
+  --b2:rgba(139,92,246,.35);
+  --bc:rgba(139,92,246,.1);
 
-  --t1:#0D1257;
-  --t2:#3A4490;
-  --t3:#7A82B8;
-  --t4:#BDC2E0;
+  --t1:#F5F3FF;
+  --t2:#DDD6FE;
+  --t3:#A78BFA;
+  --t4:#7C3AED;
 
-  --pd:rgba(26,35,126,.08);
-  --pd2:rgba(26,35,126,.15);
+  --pd:rgba(139,92,246,.15);
+  --pd2:rgba(139,92,246,.25);
 
-  --sh:rgba(26,35,126,.08);
-  --sh2:rgba(26,35,126,.18);
+  --sh:rgba(139,92,246,.1);
+  --sh2:rgba(139,92,246,.25);
 
-  --hf:#1A237E;
-  --ht:#1565C0;
+  --hf:#5B21B6;
+  --ht:#8B5CF6;
 }
 
 /* Body */
@@ -132,7 +130,7 @@ body.en *:not(i){
 }
 
 .nb-logo-nm{
-    color:#1A237E;
+    color:#006C35;
     font-size:20px;
     font-weight:900;
 }
@@ -256,7 +254,7 @@ body.en *:not(i){
 
 .nb-btn.out{
     background:#fff;
-    color:#1A237E;
+    color:#006C35;
     border:1px solid #dbe3ef;
 }
 
@@ -303,7 +301,7 @@ body.en *:not(i){
 }
 
 .nb-user-nm{
-    color:#1A237E;
+    color:#006C35;
     font-size:12px;
     font-weight:700;
 }
@@ -873,7 +871,7 @@ body.en .vm-x{
 }
 .s-eye{
     text-align: center;
-    color: #1565C0;
+    color: #004D25;
     font-weight: 700;
     margin-bottom: 10px;
 }
@@ -882,7 +880,7 @@ body.en .vm-x{
     text-align: center;
     font-size: 25px;
     font-weight: 800;
-    color: #1A237E;
+    color: #006C35;
     margin-bottom: 25px;
 }
 
@@ -923,11 +921,11 @@ body.en .vm-x{
     backdrop-filter:blur(18px);
     -webkit-backdrop-filter:blur(18px);
 
-  border:1px solid rgba(26,35,126,.08);
+  border:1px solid rgba(0,108,53,.08);
     border-radius:24px;
 
     overflow:hidden;
-     box-shadow: 0 15px 35px rgba(26,35,126,.15),
+     box-shadow: 0 15px 35px rgba(0,108,53,.15),
                       0 5px 15px rgba(0,0,0,.08);
 
     transition:.35s;
@@ -941,10 +939,10 @@ body.en .vm-x{
 .card:hover{
     transform:translateY(-8px);
     background:#fff;
-    border-color:#1565C0;
+    border-color:#004D25;
 }
 .card:hover .card-nm{
-    color:#1A237E;
+    color:#006C35;
     text-shadow:none;
 }
 
@@ -953,16 +951,16 @@ body.en .vm-x{
 }
 
 .card:hover .card-tag{
-    color:#1A237E;
+    color:#006C35;
 }
 
 .card:hover .card-arr{
-    color:#1A237E;
+    color:#006C35;
 }
 
 .card:hover .card-ico{
-    background:#1A237E;
-    border-color:#1A237E;
+    background:#006C35;
+    border-color:#006C35;
 }
 
 .card:hover .card-ico i{
@@ -1042,12 +1040,12 @@ body.en .vm-x{
     border-top:1px solid #E7ECF7;
 }
 .card-tag{
-    color:#1A237E;
+    color:#006C35;
     font-weight:700;
 }
 
 .card-arr{
-   color:#1A237E;
+   color:#006C35;
 }
 .card-arr{
   font-size:18px;
@@ -1433,7 +1431,7 @@ body.en .em-item:hover{
 ========================= */
 
 .fm-hd{
-  background:linear-gradient(140deg,#0d1b4b 0%,#1A237E 55%,#283593 100%);
+  background:linear-gradient(140deg,#003A1E 0%,#006C35 55%,#004D25 100%);
   padding:1.5rem 1.8rem;
   display:flex;
   align-items:center;
@@ -1522,7 +1520,7 @@ body.en .fm-x{
 .fm-sel-wrap{
   padding:.85rem 1.6rem;
   background:#F7F8FC;
-  border-bottom:1px solid rgba(26,35,126,.08);
+  border-bottom:1px solid rgba(0,108,53,.08);
 }
 .fm-sel-wrap select{
   width:100%;
@@ -1531,18 +1529,18 @@ body.en .fm-x{
   border-radius:12px;
   border:1.5px solid #C5CAE9;
   background:#fff;
-  color:#1A237E;
+  color:#006C35;
   font-family:inherit;
   font-size:13.5px;
   font-weight:600;
   outline:none;
   cursor:pointer;
   transition:all .2s;
-  box-shadow:0 1px 4px rgba(26,35,126,.08);
+  box-shadow:0 1px 4px rgba(0,108,53,.08);
 }
 .fm-sel-wrap select:focus{
-  border-color:#1A237E;
-  box-shadow:0 0 0 3px rgba(26,35,126,.12);
+  border-color:#006C35;
+  box-shadow:0 0 0 3px rgba(0,108,53,.12);
 }
 
 /* =========================
@@ -1554,8 +1552,8 @@ body.en .fm-x{
   align-items:center;
   gap:1rem;
   padding:.85rem 1.6rem;
-  background:linear-gradient(135deg,rgba(26,35,126,.05),rgba(26,35,126,.09));
-  border-bottom:1px solid rgba(26,35,126,.1);
+  background:linear-gradient(135deg,rgba(0,108,53,.05),rgba(0,108,53,.09));
+  border-bottom:1px solid rgba(0,108,53,.1);
 }
 .fm-sico{
   width:46px;
@@ -1573,7 +1571,7 @@ body.en .fm-x{
 .fm-snm{
   font-size:14.5px;
   font-weight:800;
-  color:#1A237E;
+  color:#006C35;
   flex:1;
 }
 .fm-scat{
@@ -1585,11 +1583,11 @@ body.en .fm-x{
   font-size:15px;
   font-weight:900;
   flex-shrink:0;
-  color:#1A237E;
-  background:rgba(26,35,126,.1);
+  color:#006C35;
+  background:rgba(0,108,53,.1);
   padding:5px 14px;
   border-radius:20px;
-  border:1.5px solid rgba(26,35,126,.15);
+  border:1.5px solid rgba(0,108,53,.15);
 }
 
 /* =========================
@@ -1630,7 +1628,7 @@ body.en .fm-x{
 .fm-sec-lbl{
   font-size:11px;
   font-weight:800;
-  color:#1A237E;
+  color:#006C35;
   letter-spacing:1.3px;
   text-transform:uppercase;
   display:flex;
@@ -1643,10 +1641,10 @@ body.en .fm-x{
   content:'';
   flex:1;
   height:1px;
-  background:linear-gradient(90deg,rgba(26,35,126,.2),transparent);
+  background:linear-gradient(90deg,rgba(0,108,53,.2),transparent);
 }
 body.en .fm-sec-lbl::after{
-  background:linear-gradient(270deg,rgba(26,35,126,.2),transparent);
+  background:linear-gradient(270deg,rgba(0,108,53,.2),transparent);
 }
 .fm-row{
   display:grid;
@@ -1690,7 +1688,7 @@ body.en .req{
   font-size:13.5px;
   outline:none;
   transition:all .2s;
-  box-shadow:inset 0 1px 3px rgba(26,35,126,.04);
+  box-shadow:inset 0 1px 3px rgba(0,108,53,.04);
 }
 .fld textarea{
   height:82px;
@@ -1700,9 +1698,9 @@ body.en .req{
 .fld input:focus,
 .fld textarea:focus,
 .fld select:focus{
-  border-color:#1A237E;
+  border-color:#006C35;
   background:#fff;
-  box-shadow:0 0 0 3px rgba(26,35,126,.1);
+  box-shadow:0 0 0 3px rgba(0,108,53,.1);
 }
 .fld input.err{
   border-color:#C62828;
@@ -1738,14 +1736,14 @@ body.en .req{
   border-radius:14px;
   padding:1.4rem;
   text-align:center;
-  background:linear-gradient(160deg,rgba(26,35,126,.03),rgba(26,35,126,.07));
+  background:linear-gradient(160deg,rgba(0,108,53,.03),rgba(0,108,53,.07));
   cursor:pointer;
   transition:all .2s;
   position:relative;
 }
 .f-area:hover{
-  border-color:#1A237E;
-  background:rgba(26,35,126,.09);
+  border-color:#006C35;
+  background:rgba(0,108,53,.09);
 }
 .f-area input{
   position:absolute;
@@ -1757,12 +1755,12 @@ body.en .req{
 }
 .f-area-ico{
   font-size:30px;
-  color:#3949AB;
+  color:#004D25;
 }
 .f-area-t{
   font-size:13px;
   font-weight:800;
-  color:#1A237E;
+  color:#006C35;
   margin-top:.5rem;
 }
 .f-area-s{
@@ -1788,11 +1786,11 @@ body.en .req{
   gap:5px;
   padding:4px 10px;
   border-radius:8px;
-  background:rgba(26,35,126,.1);
-  color:#1A237E;
+  background:rgba(0,108,53,.1);
+  color:#006C35;
   font-size:11px;
   font-weight:700;
-  border:1px solid rgba(26,35,126,.15);
+  border:1px solid rgba(0,108,53,.15);
 }
 .chip-x{
   cursor:pointer;
@@ -1813,8 +1811,8 @@ body.en .req{
   gap:8px;
   padding:.85rem 1.1rem;
   border-radius:12px;
-  background:rgba(26,35,126,.05);
-  border:1px solid rgba(26,35,126,.1);
+  background:rgba(0,108,53,.05);
+  border:1px solid rgba(0,108,53,.1);
   margin-bottom:1rem;
   font-size:12px;
   color:#3F51B5;
@@ -1822,7 +1820,7 @@ body.en .req{
 }
 .prv i{
   font-size:16px;
-  color:#1A237E;
+  color:#006C35;
   flex-shrink:0;
   margin-top:1px;
 }
@@ -1834,7 +1832,7 @@ body.en .req{
 .fm-sub{
   width:100%;
   height:52px;
-  background:linear-gradient(135deg,#0d1b4b 0%,#1A237E 55%,#3949AB 100%);
+  background:linear-gradient(135deg,#003A1E 0%,#006C35 55%,#004D25 100%);
   color:#fff;
   font-family:inherit;
   font-size:15px;
@@ -1846,13 +1844,13 @@ body.en .req{
   align-items:center;
   justify-content:center;
   gap:9px;
-  box-shadow:0 6px 24px rgba(26,35,126,.32);
+  box-shadow:0 6px 24px rgba(0,108,53,.32);
   transition:all .25s;
   letter-spacing:.3px;
 }
 .fm-sub:hover{
   transform:translateY(-2px);
-  box-shadow:0 10px 32px rgba(26,35,126,.45);
+  box-shadow:0 10px 32px rgba(0,108,53,.45);
 }
 .fm-sub.ld{
   opacity:.75;
@@ -1922,7 +1920,7 @@ body.en .req{
 .succ-ttl{
   font-size:20px;
   font-weight:800;
-  color:#1A237E;
+  color:#006C35;
   margin-bottom:.5rem;
 }
 .succ-sub{
@@ -1935,10 +1933,10 @@ body.en .req{
   margin-top:1rem;
   padding:.7rem 1.6rem;
   border-radius:12px;
-  background:rgba(26,35,126,.07);
-  border:1.5px solid rgba(26,35,126,.15);
+  background:rgba(0,108,53,.07);
+  border:1.5px solid rgba(0,108,53,.15);
   font-size:13.5px;
-  color:#1A237E;
+  color:#006C35;
   font-weight:800;
   letter-spacing:.5px;
 }
@@ -2088,14 +2086,14 @@ body.en .req{
     backdrop-filter:blur(18px);
     -webkit-backdrop-filter:blur(18px);
 
-    border:1px solid rgba(26,35,126,.08);
+    border:1px solid rgba(0,108,53,.08);
     border-radius:20px;
 
     text-decoration:none;
     overflow:hidden;
 
     box-shadow:
-        0 12px 25px rgba(26,35,126,.12),
+        0 12px 25px rgba(0,108,53,.12),
         0 4px 12px rgba(0,0,0,.08);
 
     transition:.35s;
@@ -2104,11 +2102,11 @@ body.en .req{
 .off-card:hover{
     transform:translateY(-6px);
     background:#fff;
-    border-color:#1565C0;
+    border-color:#004D25;
 }
 
 .off-card:hover .off-card-name{
-    color:#1A237E;
+    color:#006C35;
     text-shadow:none;
 }
 
@@ -2118,15 +2116,15 @@ body.en .req{
 
 .off-card:hover .off-card-count,
 .off-card:hover .off-cnt{
-    color:#1A237E;
+    color:#006C35;
 }
 
 .off-card:hover .off-card-arrow{
-    color:#1A237E;
+    color:#006C35;
 }
 
 .off-card:hover .off-card-icon{
-    background:#1A237E !important;
+    background:#006C35 !important;
 }
 
 .off-card:hover .off-card-icon i{
@@ -2161,7 +2159,7 @@ body.en .req{
     min-height:42px;
     font-size:16px;
     font-weight:800;
-    color:#1A237E;
+    color:#006C35;
     line-height:1.4;
     margin-bottom:8px;
 }
@@ -2232,7 +2230,7 @@ body.en .req{
 }
 .off-cta-primary{
   background:#fff;
-  color:#1A237E;
+  color:#006C35;
 }
 .off-cta-primary:hover{background:#e8eaf6;transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.2)}
 .off-cta-sec{
@@ -2432,8 +2430,8 @@ body.en .req{
 }
 
 @keyframes vid-pulse{
-  0%,100%{ box-shadow:0 8px 24px rgba(26,35,126,.45); }
-  50%{ box-shadow:0 8px 32px rgba(26,35,126,.7),0 0 0 10px rgba(26,35,126,.1); }
+  0%,100%{ box-shadow:0 8px 24px rgba(0,108,53,.45); }
+  50%{ box-shadow:0 8px 32px rgba(0,108,53,.7),0 0 0 10px rgba(0,108,53,.1); }
 }
 
 /* =========================
@@ -2474,7 +2472,7 @@ body.en .req{
 }
 
 ::-webkit-scrollbar-thumb{
-  background:rgba(26,35,126,.2);
+  background:rgba(0,108,53,.2);
 
   border-radius:4px;
 }
@@ -2617,108 +2615,164 @@ body.en .req{
         padding:0 12px;
     }
 
+}
+
 /* ==========================================
-   PROPOSAL 3 OVERRIDE: Modern Dark NEOM — 100vh Single Page
-   ALL content (hero + offices) inside ONE viewport
+   PROPOSAL 3: Saudi Identity — Green/White
    ========================================== */
 :root{
-  --pri:#00D4AA!important;
-  --pri2:#00F5C8!important;
-  --pri3:#0A1F2C!important;
-  --hf:#00D4AA!important;
-  --ht:#00F5C8!important;
+  --pri:#006C35!important;
+  --pri2:#004D25!important;
+  --pri3:#00894C!important;
+  --bg:#006C35!important;
+  --bg2:#004D25!important;
+  --sur:#006C35!important;
+  --sur2:#004D25!important;
+  --b1:rgba(255,255,255,.15)!important;
+  --b2:rgba(255,255,255,.25)!important;
+  --bc:rgba(255,255,255,.1)!important;
+  --t1:#fff!important;
+  --t2:rgba(255,255,255,.85)!important;
+  --t3:rgba(255,255,255,.65)!important;
+  --t4:#fff!important;
+  --pd:rgba(255,255,255,.1)!important;
+  --pd2:rgba(255,255,255,.2)!important;
+  --sh:rgba(0,0,0,.15)!important;
+  --sh2:rgba(0,0,0,.25)!important;
+  --hf:#004D25!important;
+  --ht:#006C35!important;
 }
-
 html,body{height:100vh!important;overflow:hidden!important}
-body{
-  background:#0D1117!important;color:#E6EDF3!important;
-  display:flex!important;flex-direction:column!important;
-}
-
-/* ── Navbar ── */
-.nb{background:rgba(13,17,23,.92)!important;backdrop-filter:blur(16px)!important;border-bottom:1px solid rgba(0,212,170,.12)!important}
-.nb-mid .nb-lnk{color:#8B949E!important}
-.nb-mid .nb-lnk.on{color:#00D4AA!important}
-.nb-right .nb-btn.out{color:#8B949E!important;border-color:rgba(0,212,170,.2)!important}
-.nb-right .nb-btn.sol{background:linear-gradient(135deg,#00D4AA,#00F5C8)!important;color:#0D1117!important}
-.lng{background:rgba(0,212,170,.06)!important;border-color:rgba(0,212,170,.12)!important}
-.lng .lt{color:#8B949E!important}
-.lng .lt.on{color:#00D4AA!important}
-
-/* ── HERO: flex:1 fills remaining space ── */
-.hero{
-  flex:1!important;
-  min-height:0!important;
-  max-height:none!important;
-  padding:10px 20px 6px!important;
-  background:radial-gradient(ellipse at 50% 20%,rgba(0,212,170,.08) 0%,rgba(13,17,23,1) 70%)!important;
-  overflow:hidden!important;
-}
-.hero::before{
-  content:''!important;position:absolute!important;inset:0!important;opacity:.03!important;
-  background-image:
-    linear-gradient(rgba(0,212,170,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,212,170,.05) 1px,transparent 1px)!important;
-  background-size:40px 40px!important;animation:none!important
-}
-.hero::after{content:''!important;position:absolute!important;top:10%!important;left:50%!important;transform:translateX(-50%)!important;width:800px!important;height:600px!important;background:radial-gradient(ellipse,rgba(0,212,170,.06) 0%,transparent 70%)!important;pointer-events:none!important;z-index:0!important}
-
-.hero-text h1{font-size:clamp(1.2rem,2.5vw,1.8rem)!important;color:#fff!important;font-weight:900!important;margin-bottom:4px!important;text-shadow:0 0 30px rgba(0,212,170,.2)!important}
-.hero-text h1 span{color:#00D4AA!important;-webkit-text-fill-color:#00D4AA!important;text-shadow:0 0 20px rgba(0,212,170,.4)!important}
-.hero-text p,.h-desc{font-size:clamp(.7rem,1.3vw,.82rem)!important;color:#8B949E!important;max-width:500px!important;margin:0 auto 3px!important;line-height:1.4!important}
-.hero-badge{display:inline-flex!important;align-items:center!important;gap:5px!important;padding:4px 12px!important;border-radius:20px!important;background:rgba(0,212,170,.06)!important;border:1px solid rgba(0,212,170,.2)!important;color:#00D4AA!important;font-size:10px!important;font-weight:800!important;margin-bottom:4px!important}
-.hero-badge::before{content:''!important;width:5px!important;height:5px!important;border-radius:50%!important;background:#00D4AA!important;box-shadow:0 0 6px #00D4AA!important}
-.hero-search{max-width:320px!important;margin:0 auto 6px!important;padding:6px 14px!important;background:rgba(255,255,255,.03)!important;border-color:rgba(0,212,170,.12)!important}
-.hero-search i{color:#8B949E!important;font-size:14px!important}
-.hero-search input{font-size:12px!important;color:#E6EDF3!important}
-.hero-search:focus-within{border-color:#00D4AA!important}
-.hero-actions{margin-bottom:6px!important}
-.h-btn{padding:6px 14px!important;font-size:11px!important}
-
-/* ── Cards: compact grid ── */
-.cards-wrap-home{flex:1!important;overflow:hidden!important;padding:0 10px!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important}
-.cards-grid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(130px,1fr))!important;gap:6px!important;max-width:820px!important;margin:0 auto!important}
-.cards-grid .card{border-radius:12px!important;background:rgba(255,255,255,.03)!important;border:1px solid rgba(0,212,170,.08)!important;cursor:pointer!important;transition:all .3s!important;overflow:hidden!important}
-.cards-grid .card:hover{transform:translateY(-3px)!important;background:rgba(255,255,255,.06)!important;border-color:rgba(0,212,170,.2)!important;box-shadow:0 8px 30px rgba(0,0,0,.3),0 0 12px rgba(0,212,170,.04)!important}
-.cards-grid .card-body{padding:10px 10px 6px!important}
-.cards-grid .card-ico{width:32px!important;height:32px!important;border-radius:8px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:15px!important;margin-bottom:6px!important}
-.cards-grid .card-nm{font-size:11px!important;font-weight:800!important;color:#fff!important;margin-bottom:3px!important}
-.cards-grid .card-desc{font-size:9px!important;color:#8B949E!important;line-height:1.3!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important}
-.cards-grid .card-foot{display:flex!important;align-items:center!important;justify-content:space-between!important;padding:4px 10px!important;border-top:1px solid rgba(0,212,170,.05)!important}
-.cards-grid .card-tag{font-size:8px!important;font-weight:700!important;color:#00D4AA!important}
-.cards-grid .card-arr{display:none!important}
-.skel{border-radius:12px!important;background:rgba(0,212,170,.03)!important;border:1px solid rgba(0,212,170,.04)!important}
-
-/* ── Offices: compact ── */
-.offices-sec{
-  flex-shrink:0!important;margin-top:0!important;padding:6px 16px 10px!important;position:relative!important;overflow:hidden!important
-}
-.offices-sec::before,.offices-sec::after{display:none!important}
-.offices-inner{max-width:820px!important;margin:0 auto!important}
-.offices-hd{margin-bottom:0!important}
-.s-ttl{font-size:clamp(.75rem,1.8vw,.9rem)!important;font-weight:800!important;color:#fff!important;margin-bottom:4px!important;text-align:center!important;text-shadow:0 0 15px rgba(0,212,170,.15)!important}
-.off-cards-grid{display:grid!important;grid-template-columns:repeat(6,1fr)!important;gap:6px!important;margin-bottom:6px!important}
-.off-card{padding:8px 4px!important;border-radius:10px!important;background:rgba(255,255,255,.03)!important;border:1px solid rgba(0,212,170,.06)!important;text-align:center!important;flex-direction:column!important;align-items:center!important;gap:3px!important;transition:all .3s!important;text-decoration:none!important;color:#E6EDF3!important}
-.off-card:hover{border-color:rgba(0,212,170,.25)!important;transform:translateY(-2px)!important;box-shadow:0 6px 20px rgba(0,0,0,.3),0 0 8px rgba(0,212,170,.04)!important}
-.off-card-icon{width:28px!important;height:28px!important;border-radius:7px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:12px!important;color:#fff!important;margin:0 auto!important}
-.off-card-name{font-size:9px!important;font-weight:700!important;line-height:1.2!important}
-.off-cta{display:flex!important;gap:6px!important;justify-content:center!important;margin-top:4px!important}
-.off-cta-btn{padding:5px 14px!important;border-radius:8px!important;font-size:10px!important;font-weight:800!important}
-.off-cta-primary{background:linear-gradient(135deg,#00D4AA,#00F5C8)!important;color:#0D1117!important}
-
-/* ── Hide ── */
+body{display:flex!important;flex-direction:column!important}
+.nb{background:rgba(255,255,255,.97)!important;backdrop-filter:blur(16px)!important;border-bottom:1px solid #e2e8f0!important;box-shadow:0 2px 15px rgba(0,0,0,.08)!important}
 .footer,.vid-fab,.f-main,.f-bottom{display:none!important}
-.cards-sec{height:0!important;padding:0!important}
 
-@media(max-width:768px){
-  .hero{padding:8px 10px 4px!important}
-  .hero-text h1{font-size:1rem!important}
-  .cards-grid{grid-template-columns:repeat(2,1fr)!important;gap:5px!important}
+.hero{
+  flex:1!important;min-height:0!important;max-height:none;
+  padding:0!important;background:transparent!important;
+  overflow:hidden!important;
+  display:flex!important;flex-direction:column!important;
+  align-items:stretch!important;justify-content:flex-start!important;
+  position:relative!important;
+}
+
+/* Hero Slider */
+.hero-slider{position:absolute!important;inset:0!important;z-index:0!important;overflow:hidden!important}
+.hero-slide{position:absolute!important;inset:0!important;background-size:cover!important;background-position:center!important;opacity:0;will-change:opacity}
+.hero-slide:nth-child(1){animation:sf1 24s infinite}
+.hero-slide:nth-child(2){animation:sf2 24s infinite}
+.hero-slide:nth-child(3){animation:sf3 24s infinite}
+.hero-slide:nth-child(4){animation:sf4 24s infinite}
+@keyframes sf1{0%{opacity:1}22%{opacity:1}27%{opacity:0}100%{opacity:0}}
+@keyframes sf2{0%{opacity:0}23%{opacity:0}28%{opacity:1}50%{opacity:1}55%{opacity:0}100%{opacity:0}}
+@keyframes sf3{0%{opacity:0}48%{opacity:0}53%{opacity:1}75%{opacity:1}80%{opacity:0}100%{opacity:0}}
+@keyframes sf4{0%{opacity:0}73%{opacity:0}78%{opacity:1}97%{opacity:1}100%{opacity:0}}
+.hero::before{content:''!important;position:absolute!important;inset:0!important;background:linear-gradient(135deg,rgba(0,50,25,.55),rgba(0,30,15,.45),rgba(0,60,30,.5))!important;z-index:1!important;animation:none!important}
+.hero::after{display:none!important}
+
+.purple-split,.offices-sec{position:relative!important;z-index:2!important}
+
+/* Saudi Split Section */
+.purple-split{width:100%;max-width:1400px;margin:0 auto;padding:16px 40px;display:flex;align-items:center;gap:40px;position:relative;z-index:2;direction:rtl;flex:1;min-height:0;overflow:hidden}
+.purple-split__content{flex:1;max-width:600px;min-height:0;overflow:hidden}
+.purple-split__badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:50px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:11px;font-weight:700;margin-bottom:12px}
+.purple-split__badge .fa{color:#fff}
+.purple-split__tagline{display:block;font-size:12px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+.purple-split__title{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:#fff;line-height:1.3;margin:0 0 12px}
+.purple-split__title span{color:#fff}
+.purple-split__desc{font-size:14px;color:rgba(255,255,255,.85);line-height:1.7;margin-bottom:16px}
+.purple-split__features{display:none!important}
+.purple-split__btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:12px;background:linear-gradient(135deg,#fff,#f0fdf4);color:#006C35;font-size:14px;font-weight:800;text-decoration:none;transition:.3s;box-shadow:0 8px 30px rgba(0,0,0,.15)}
+.purple-split__btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.2)}
+
+/* Saudi Cards Grid */
+.about-one__cards-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:8px!important;margin-bottom:16px}
+.ao-card{display:block!important;padding:0!important;border-radius:12px!important;background:rgba(255,255,255,.12)!important;border:1px solid rgba(255,255,255,.15)!important;box-shadow:0 2px 8px rgba(0,0,0,.1)!important;cursor:pointer!important;transition:all .3s!important;overflow:hidden!important;text-decoration:none!important;color:#fff!important;backdrop-filter:blur(8px)!important}
+.ao-card:hover{transform:translateY(-3px)!important;background:rgba(255,255,255,.2)!important;box-shadow:0 6px 20px rgba(0,0,0,.15)!important;border-color:rgba(255,255,255,.3)!important}
+.ao-card-body{padding:10px 8px 6px!important;text-align:center!important}
+.ao-card-ico{width:36px!important;height:36px!important;border-radius:9px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:16px!important;margin:0 auto 6px!important}
+.ao-card-nm{font-size:11px!important;font-weight:800!important;color:#fff!important;margin-bottom:2px!important}
+.ao-card-desc{font-size:9px!important;color:rgba(255,255,255,.65)!important;line-height:1.3!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important}
+.ao-card-foot{display:flex!important;align-items:center!important;justify-content:space-between!important;padding:4px 8px!important;border-top:1px solid rgba(255,255,255,.1)!important;background:rgba(255,255,255,.05)!important}
+.ao-card-tag{font-size:8px!important;font-weight:700!important;color:rgba(255,255,255,.8)!important}
+.ao-card-arr{font-size:12px!important;color:rgba(255,255,255,.6)!important}
+
+/* About One */
+.about-one__text{font-size:14px;color:rgba(255,255,255,.85);line-height:1.7;margin-bottom:12px}
+.section-title__tagline{color:rgba(255,255,255,.7)!important}
+.section-title__title{color:#fff!important}
+.section-title__icon{background:rgba(255,255,255,.1)!important}
+.section-title__icon .fa,.section-title__icon i{color:#fff!important}
+
+/* Image */
+.about-one__left{flex:1;position:relative;display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden}
+.about-one__img-box{position:relative;width:100%;max-width:460px;display:flex;align-items:center;justify-content:center}
+.about-one__img{width:260px;height:260px;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.2);position:relative;z-index:2}
+.about-one__img img{width:100%;height:100%;object-fit:cover}
+.about-one__shape-1{position:absolute;top:-20px;left:-20px;z-index:1;animation:floatBobX 4s ease-in-out infinite alternate;width:60px;height:60px;border-radius:18px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:24px;color:rgba(255,255,255,.6)}
+.about-one__shape-3{position:absolute;top:50%;right:-30px;z-index:1;transform:translateY(-50%);animation:floatBobY 5s ease-in-out infinite alternate;width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:20px;color:rgba(255,255,255,.5)}
+.about-one__video-link{position:absolute;bottom:12px;right:12px;z-index:3}
+.about-one__video-icon{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#fff,#f0fdf4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.3s;box-shadow:0 8px 25px rgba(0,0,0,.2);position:relative}
+.about-one__video-icon:hover{transform:scale(1.1)}
+.about-one__video-icon .fa{color:#006C35;font-size:16px;margin-right:-2px}
+.about-one__video-icon .ripple{position:absolute;width:100%;height:100%;border-radius:50%;border:2px solid #fff;animation:rippleOut 1.5s ease-out infinite}
+.about-one__call-box{position:absolute;bottom:-10px;left:-10px;z-index:3;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.95);border-radius:14px;padding:8px 14px;box-shadow:0 8px 30px rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.3)}
+.about-one__call-icon{width:36px;height:36px;border-radius:8px;background:rgba(0,108,53,.08);display:flex;align-items:center;justify-content:center}
+.about-one__call-icon img{width:28px;height:28px;object-fit:contain}
+.about-one__call-text{font-size:10px;color:#666;margin:0}
+.about-one__call-number{font-size:14px;font-weight:900;color:#006C35;margin:0}
+.about-one__call-number a{color:inherit;text-decoration:none}
+
+/* Saudi Visual (center) */
+.purple-split__visual{flex:1;position:relative;display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden}
+.purple-split__glow{width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.15) 0%,transparent 70%);position:relative;display:flex;align-items:center;justify-content:center}
+.purple-split__center-card{width:160px;height:160px;border-radius:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;z-index:2}
+.purple-split__center-card .fa{font-size:40px;color:#fff}
+.purple-split__center-card span{font-size:13px;color:#fff;font-weight:700}
+.purple-split__orbit{position:absolute;width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;animation:orbitFloat 6s ease-in-out infinite}
+.purple-split__orbit:nth-child(1){top:0;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;animation-delay:0s}
+.purple-split__orbit:nth-child(2){right:0;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;animation-delay:-1.5s}
+.purple-split__orbit:nth-child(3){bottom:0;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;animation-delay:-3s}
+.purple-split__orbit:nth-child(4){left:0;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;animation-delay:-4.5s}
+
+/* Offices */
+.offices-sec{flex-shrink:1!important;margin-top:auto!important;padding:6px 40px 8px!important;position:relative!important;overflow:hidden!important;background:rgba(0,60,30,.95)!important;border-top:1px solid rgba(255,255,255,.1)!important}
+.offices-sec::before,.offices-sec::after{display:none!important}
+.offices-inner{max-width:1200px!important;margin:0 auto!important;text-align:center!important}
+.s-ttl{font-size:clamp(.7rem,1.4vw,.85rem)!important;font-weight:800!important;color:#fff!important;margin-bottom:4px!important;text-align:center!important}
+.off-cards-grid{display:grid!important;grid-template-columns:repeat(6,1fr)!important;gap:8px!important;margin-bottom:4px!important}
+.off-card{padding:6px 4px!important;border-radius:10px!important;background:rgba(255,255,255,.1)!important;border:1px solid rgba(255,255,255,.12)!important;text-align:center!important;display:flex!important;flex-direction:column!important;align-items:center!important;gap:2px!important;transition:all .3s!important;text-decoration:none!important;color:#fff!important;box-shadow:0 1px 4px rgba(0,0,0,.1)!important;backdrop-filter:blur(6px)!important}
+.off-card:hover{transform:translateY(-2px)!important;background:rgba(255,255,255,.18)!important;box-shadow:0 4px 12px rgba(0,0,0,.15)!important;border-color:rgba(255,255,255,.3)!important}
+.off-card-icon{width:28px!important;height:28px!important;border-radius:7px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:12px!important;color:#fff!important;margin:0 auto!important}
+.off-card-name{font-size:9px!important;font-weight:700!important;line-height:1.2!important;color:rgba(255,255,255,.9)!important}
+.off-cta{display:flex!important;gap:8px!important;justify-content:center!important;margin-top:4px!important}
+.off-cta-btn{padding:4px 14px!important;border-radius:8px!important;font-size:10px!important;font-weight:800!important}
+.off-cta-primary{background:linear-gradient(135deg,#fff,#f0fdf4)!important;color:#006C35!important}
+
+/* Responsive */
+@media(max-width:992px){
+  .purple-split{flex-direction:column;gap:12px;padding:8px 20px}
+  .purple-split__visual{min-height:0}
+  .purple-split__glow{width:180px;height:180px}
+  .purple-split__center-card{width:120px;height:120px}
+  .about-one__cards-grid{grid-template-columns:repeat(2,1fr)!important}
   .off-cards-grid{grid-template-columns:repeat(3,1fr)!important}
 }
+@media(max-width:768px){
+  .hero{padding:0!important}
+  .purple-split{padding:6px 15px}
+  .purple-split__visual{min-height:0}
+  .about-one__img{width:140px;height:140px;border-radius:18px}
+  .about-one__shape-1,.about-one__shape-3{display:none}
+  .about-one__cards-grid{grid-template-columns:repeat(2,1fr)!important;gap:6px!important}
+  .cards-wrap-home{padding:0 15px}
+  .offices-sec{padding:4px 15px 6px}
+  .off-cards-grid{grid-template-columns:repeat(3,1fr)!important;gap:6px!important}
+}
 @media(max-width:480px){
-  .cards-grid{grid-template-columns:1fr 1fr!important}
-  .off-cards-grid{grid-template-columns:repeat(3,1fr)!important;gap:4px!important}
+  .about-one__cards-grid{grid-template-columns:1fr 1fr!important;gap:4px!important}
+  .about-one__img{width:120px;height:120px}
+  .off-cards-grid{grid-template-columns:repeat(2,1fr)!important;gap:4px!important}
 }
 </style>
 </head>
@@ -2747,10 +2801,10 @@ body{
   <div class="nb-right">
     <div class="lng"><div class="lt on" id="la" onclick="setLang('ar')">AR</div><div class="lt" id="le" onclick="setLang('en')">EN</div></div>
     <div id="nb-guest" style="{{ auth('business')->check() ? 'display:none' : 'display:flex' }};gap:6px;align-items:center;">
-      <a class="nb-btn out" href="{{ route('amrtm.login') }}" id="nb-li"><i class="ti ti-login"></i><span id="nl-li">دخول</span></a>
-      <a class="nb-btn sol" href="{{ route('amrtm.register') }}" id="nb-re"><i class="ti ti-user-plus"></i><span id="nl-re">تسجيل</span></a>
+      <a class="nb-btn out" href="{{ route('amrtm.login') }}" id="nb-li"><i class="fa fa-right-to-bracket"></i><span id="nl-li">دخول</span></a>
+      <a class="nb-btn sol" href="{{ route('amrtm.register') }}" id="nb-re"><i class="fa fa-user-plus"></i><span id="nl-re">تسجيل</span></a>
       <a href="{{ route('amrtm.office.login') }}" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:20px;background:rgba(255,255,255,.12);color:#fff;font-size:12.5px;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,.25);transition:.2s;white-space:nowrap" title="دخول المكاتب المهنية">
-        <i class="ti ti-building-skyscraper" style="font-size:15px"></i>
+        <i class="fa fa-building" style="font-size:15px"></i>
         <span style="display:none" class="nb-office-lbl">المكاتب</span>
       </a>
     </div>
@@ -2759,7 +2813,7 @@ body{
         @php $authUser = auth('business')->user(); @endphp
         <a class="nb-btn out" id="nb-dash-lnk"
            href="{{ $authUser->isAdmin() ? route('amrtm.admin.dashboard') : route('amrtm.user.dashboard') }}">
-          <i class="ti ti-layout-dashboard"></i>
+          <i class="fa fa-gauge-high"></i>
           <span id="nl-da">{{ $authUser->isAdmin() ? 'لوحة التحكم' : 'حسابي' }}</span>
         </a>
         <div class="nb-user" id="nb-user-chip"
@@ -2773,126 +2827,128 @@ body{
         <button onclick="document.getElementById('nb-logout-form').submit()"
                 style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,.55);font-size:18px;padding:4px 6px;transition:color .2s;"
                 title="تسجيل الخروج">
-          <i class="ti ti-logout"></i>
+          <i class="fa fa-right-from-bracket"></i>
         </button>
       @endauth
     </div>
-    <div class="nb-ham" id="nb-ham" onclick="togMob()"><i class="ti ti-menu-2"></i></div>
+    <div class="nb-ham" id="nb-ham" onclick="togMob()"><i class="fa fa-bars"></i></div>
   </div>
 </nav>
 <div class="mob-dd" id="mob-dd">
-  <div class="mob-lnk"><i class="ti ti-home-2"></i><span id="mn-h">الرئيسية</span></div>
-  <div class="mob-lnk" onclick="scrollCards();clsMob()"><i class="ti ti-grid-3x3"></i><span id="mn-s">الخدمات</span></div>
+  <div class="mob-lnk"><i class="fa fa-house"></i><span id="mn-h">الرئيسية</span></div>
+  <div class="mob-lnk" onclick="scrollCards();clsMob()"><i class="fa fa-table-cells-large"></i><span id="mn-s">الخدمات</span></div>
   @auth('business')
     @if(auth('business')->user()->isAdmin())
-      <div class="mob-lnk" onclick="location.href='{{ route('amrtm.admin.dashboard') }}'"><i class="ti ti-layout-dashboard"></i><span>لوحة التحكم</span></div>
+      <div class="mob-lnk" onclick="location.href='{{ route('amrtm.admin.dashboard') }}'"><i class="fa fa-gauge-high"></i><span>لوحة التحكم</span></div>
     @else
-      <div class="mob-lnk" onclick="location.href='{{ route('amrtm.user.dashboard') }}'"><i class="ti ti-layout-dashboard"></i><span>حسابي</span></div>
+      <div class="mob-lnk" onclick="location.href='{{ route('amrtm.user.dashboard') }}'"><i class="fa fa-gauge-high"></i><span>حسابي</span></div>
     @endif
-    <div class="mob-lnk" onclick="document.getElementById('mob-logout-form').submit()"><i class="ti ti-logout"></i><span>تسجيل الخروج</span></div>
+    <div class="mob-lnk" onclick="document.getElementById('mob-logout-form').submit()"><i class="fa fa-right-from-bracket"></i><span>تسجيل الخروج</span></div>
     <form id="mob-logout-form" method="POST" action="{{ route('amrtm.logout') }}" style="display:none;">@csrf</form>
   @else
-    <div class="mob-lnk" onclick="location.href='{{ route('amrtm.login') }}'"><i class="ti ti-login"></i><span id="mn-l">تسجيل الدخول</span></div>
-    <div class="mob-lnk" onclick="location.href='{{ route('amrtm.register') }}'"><i class="ti ti-user-plus"></i><span id="mn-r">إنشاء حساب</span></div>
+    <div class="mob-lnk" onclick="location.href='{{ route('amrtm.login') }}'"><i class="fa fa-right-to-bracket"></i><span id="mn-l">تسجيل الدخول</span></div>
+    <div class="mob-lnk" onclick="location.href='{{ route('amrtm.register') }}'"><i class="fa fa-user-plus"></i><span id="mn-r">إنشاء حساب</span></div>
   @endauth
 </div>
 
 <!-- HERO -->
 <section class="hero">
 
-    <!-- Hero Text -->
-    <div class="-heroin">
+    <!-- Saudi Identity Slider -->
+    <div class="hero-slider">
+        <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1591696205602-2f950c417cb9?w=1920&q=80&fit=crop')"></div>
+        <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=1920&q=80&fit=crop')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/Business-Services-in-Saudi-Vision-2030-1024x683.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/Marketing-Support-for-Saudi-Vision-2030.jpg') }}')"></div>
+    </div>
 
-        <div class="hero-text" style="text-align:center">
+    <!-- Saudi Split Section -->
+    <div class="purple-split">
 
-          <h1 id="hero-title"id="h-hl">
-    منصة <span id="h-hl">آمر تم</span> لخدمات قطاع الأعمال
-</h1>
-            <p class="h-desc" id="off-sub">
-                منصة تعمل وفق مفهوم النافذة الواحدة لاستقبال طلبات العملاء وإنجاز معاملاتهم عبر شبكة من الشركاء والمتخصصين.
-</p>
+        <!-- Cards Grid (Right — about-one__right) -->
+        <div class="about-one__cards-grid" id="cards-grid">
+            <a href="{{ route('amrtm.catalog.category',['key'=>'ministries']) }}" class="ao-card">
+                <div class="ao-card-body">
+                    <div class="ao-card-ico" style="background:linear-gradient(135deg,#006C35,#004D25)"><i class="fa fa-building-columns"></i></div>
+                    <div class="ao-card-nm">{{ __('home.ministries') }}</div>
+                    <div class="ao-card-desc">{{ __('home.ministries_desc') }}</div>
+                </div>
+                <div class="ao-card-foot"><span class="ao-card-tag">{{ __('home.countries') }}</span><span class="ao-card-arr">←</span></div>
+            </a>
+            <a href="{{ route('amrtm.catalog.category',['key'=>'authorities']) }}" class="ao-card">
+                <div class="ao-card-body">
+                    <div class="ao-card-ico" style="background:linear-gradient(135deg,#006C35,#004D25)"><i class="fa fa-award"></i></div>
+                    <div class="ao-card-nm">{{ __('home.governorates') }}</div>
+                    <div class="ao-card-desc">{{ __('home.governorates_desc') }}</div>
+                </div>
+                <div class="ao-card-foot"><span class="ao-card-tag">{{ __('home.countries') }}</span><span class="ao-card-arr">←</span></div>
+            </a>
+            <a href="{{ route('amrtm.catalog.category',['key'=>'companies']) }}" class="ao-card">
+                <div class="ao-card-body">
+                    <div class="ao-card-ico" style="background:linear-gradient(135deg,#006C35,#004D25)"><i class="fa fa-building"></i></div>
+                    <div class="ao-card-nm">{{ __('home.companies') }}</div>
+                    <div class="ao-card-desc">{{ __('home.companies_desc') }}</div>
+                </div>
+                <div class="ao-card-foot"><span class="ao-card-tag">{{ __('home.countries') }}</span><span class="ao-card-arr">←</span></div>
+            </a>
+            <a href="{{ route('amrtm.catalog.category',['key'=>'embassies']) }}" class="ao-card">
+                <div class="ao-card-body">
+                    <div class="ao-card-ico" style="background:linear-gradient(135deg,#006C35,#004D25)"><i class="fa fa-earth-americas"></i></div>
+                    <div class="ao-card-nm">{{ __('home.embassies') }}</div>
+                    <div class="ao-card-desc">{{ __('home.embassies_desc') }}</div>
+                </div>
+                <div class="ao-card-foot"><span class="ao-card-tag">{{ __('home.countries') }}</span><span class="ao-card-arr">←</span></div>
+            </a>
+            <a href="{{ route('consultants') }}" class="ao-card">
+                <div class="ao-card-body">
+                    <div class="ao-card-ico" style="background:linear-gradient(135deg,#006C35,#004D25)"><i class="fa fa-user-tie"></i></div>
+                    <div class="ao-card-nm">{{ __('home.consultants') }}</div>
+                    <div class="ao-card-desc">{{ __('home.consultants_desc') }}</div>
+                </div>
+                <div class="ao-card-foot"><span class="ao-card-tag">{{ __('home.professionals') }}</span><span class="ao-card-arr">←</span></div>
+            </a>
+            <a href="{{ route('amrtm.catalog.category',['key'=>'services']) }}" class="ao-card">
+                <div class="ao-card-body">
+                    <div class="ao-card-ico" style="background:linear-gradient(135deg,#006C35,#004D25)"><i class="fa fa-briefcase"></i></div>
+                    <div class="ao-card-nm">{{ __('home.services') }}</div>
+                    <div class="ao-card-desc">{{ __('home.services_desc') }}</div>
+                </div>
+                <div class="ao-card-foot"><span class="ao-card-tag">{{ __('home.professionals') }}</span><span class="ao-card-arr">←</span></div>
+            </a>
+        </div>
+
+        <!-- Saudi Emblem Visual (Left) -->
+        <div class="purple-split__visual">
+            <div class="purple-split__glow">
+                <div class="purple-split__orbit"><i class="fa fa-building-columns"></i></div>
+                <div class="purple-split__orbit"><i class="fa fa-gavel"></i></div>
+                <div class="purple-split__orbit"><i class="fa fa-file-shield"></i></div>
+                <div class="purple-split__orbit"><i class="fa fa-handshake"></i></div>
+                <div class="purple-split__center-card">
+                    <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="translate(50,50)">
+                            <rect x="-3" y="-10" width="6" height="40" rx="3" fill="#fff"/>
+                            <path d="M0,-10 Q-20,-30 -35,-20 Q-18,-15 0,-10Z" fill="#fff"/>
+                            <path d="M0,-10 Q20,-30 35,-20 Q18,-15 0,-10Z" fill="#fff"/>
+                            <path d="M0,-10 Q-15,-35 -5,-40 Q-5,-30 0,-10Z" fill="#fff"/>
+                            <path d="M0,-10 Q15,-35 5,-40 Q5,-30 0,-10Z" fill="#fff"/>
+                            <path d="M0,-10 Q-25,-20 -30,-8 Q-15,-10 0,-10Z" fill="#fff"/>
+                            <path d="M0,-10 Q25,-20 30,-8 Q15,-10 0,-10Z" fill="#fff"/>
+                            <path d="M-18,25 L-18,-5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="-22" y1="20" x2="-14" y2="20" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M18,25 L18,-5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="14" y1="20" x2="22" y2="20" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                    <span style="color:#fff;font-size:13px;font-weight:800">آمر تم</span>
+                    <span style="color:rgba(255,255,255,.6);font-size:9px">لقطاع الأعمال</span>
+                </div>
+            </div>
         </div>
 
     </div>
 
-    <!-- Cards -->
-    <div class="cards-wrap-home">
-
-       
-        <div class="cards-grid" id="cards-grid">
-
-          <!-- Skeleton 1 -->
-            <div class="card" style="pointer-events:none;">
-                <div class="card-body">
-                    <div class="skel" style="width:76px;height:76px;border-radius:20px;margin:0 auto 1.2rem;"></div>
-                    <div class="skel" style="width:55%;height:18px;margin:0 auto .5rem;"></div>
-                    <div class="skel" style="width:75%;height:13px;margin:0 auto;"></div>
-                </div>
-
-                <div class="card-foot">
-                    <div class="skel" style="width:70px;height:14px;"></div>
-                </div>
-            </div>
-
-            <!-- Skeleton 2 -->
-            <div class="card" style="pointer-events:none;">
-                <div class="card-body">
-                    <div class="skel" style="width:76px;height:76px;border-radius:20px;margin:0 auto 1.2rem;"></div>
-                    <div class="skel" style="width:55%;height:18px;margin:0 auto .5rem;"></div>
-                    <div class="skel" style="width:75%;height:13px;margin:0 auto;"></div>
-                </div>
-
-                <div class="card-foot">
-                    <div class="skel" style="width:70px;height:14px;"></div>
-                </div>
-            </div>
-
-            <!-- Skeleton 3 -->
-            <div class="card" style="pointer-events:none;">
-                <div class="card-body">
-                    <div class="skel" style="width:76px;height:76px;border-radius:20px;margin:0 auto 1.2rem;"></div>
-                    <div class="skel" style="width:55%;height:18px;margin:0 auto .5rem;"></div>
-                    <div class="skel" style="width:75%;height:13px;margin:0 auto;"></div>
-                </div>
-
-                <div class="card-foot">
-                    <div class="skel" style="width:70px;height:14px;"></div>
-                </div>
-            </div>
-
-            <!-- Skeleton 4 -->
-            <div class="card embassies" style="pointer-events:none;">
-                <div class="card-body">
-                    <div class="skel" style="width:76px;height:76px;border-radius:20px;margin:0 auto 1.2rem;"></div>
-                    <div class="skel" style="width:55%;height:18px;margin:0 auto .5rem;"></div>
-                    <div class="skel" style="width:75%;height:13px;margin:0 auto;"></div>
-                </div>
-
-                <div class="card-foot">
-                    <div class="skel" style="width:70px;height:14px;"></div>
-                </div>
-            </div>
-
-            <!-- Skeleton 5 -->
-            <div class="card" style="pointer-events:none;">
-                <div class="card-body">
-                    <div class="skel" style="width:76px;height:76px;border-radius:20px;margin:0 auto 1.2rem;"></div>
-                    <div class="skel" style="width:55%;height:18px;margin:0 auto .5rem;"></div>
-                    <div class="skel" style="width:75%;height:13px;margin:0 auto;"></div>
-                </div>
-
-                <div class="card-foot">
-                    <div class="skel" style="width:70px;height:14px;"></div>
-                </div>
-            </div>
-
-        </div>
-
-
-        </div>
-
-    </div>
-
+</section>
 <!-- =============== END HERO =============== -->
 
 
@@ -2901,7 +2957,7 @@ body{
     <div class="vm-in">
 
         <div class="vm-x" onclick="closeVid()">
-            <i class="ti ti-x"></i>
+            <i class="fa fa-xmark"></i>
         </div>
 
         <iframe id="vmf"
@@ -2930,8 +2986,8 @@ body{
     <!-- Law -->
     <a href="{{ route('amrtm.offices.directory', 'law') }}" class="off-card" id="off-card-law">
 
-        <div class="off-card-icon" style="background:linear-gradient(135deg,#1A237E,#283593)">
-            <i class="ti ti-scale"></i>
+        <div class="off-card-icon" style="background:linear-gradient(135deg,#006C35,#004D25)">
+            <i class="fa fa-scale-balanced"></i>
         </div>
 
         <div class="off-card-body">
@@ -2947,8 +3003,8 @@ body{
     <!-- Services -->
     <a href="{{ route('amrtm.offices.directory', 'services') }}" class="off-card" id="off-card-svc">
 
-        <div class="off-card-icon" style="background:linear-gradient(135deg,#bd15c0,#c71ee5)">
-            <i class="ti ti-briefcase"></i>
+        <div class="off-card-icon" style="background:linear-gradient(135deg,#004D25,#006C35)">
+            <i class="fa fa-briefcase"></i>
         </div>
 
         <div class="off-card-body">
@@ -2965,8 +3021,8 @@ body{
     <!-- Customs -->
     <a href="{{ route('amrtm.offices.directory', 'customs') }}" class="off-card" id="off-card-cus">
 
-        <div class="off-card-icon" style="background:linear-gradient(135deg,#2182f0,#0688eb)">
-            <i class="ti ti-address-book"></i>
+        <div class="off-card-icon" style="background:linear-gradient(135deg,#006C35,#00894C)">
+            <i class="fa fa-address-book"></i>
         </div>
 
         <div class="off-card-body">
@@ -2983,8 +3039,8 @@ body{
     <!-- Accounting -->
     <a href="{{ route('amrtm.offices.directory', 'accounting') }}" class="off-card" id="off-card-acc">
 
-        <div class="off-card-icon" style="background:linear-gradient(135deg,#2207a7,#0b05d1)">
-            <i class="ti ti-calculator"></i>
+        <div class="off-card-icon" style="background:linear-gradient(135deg,#004D25,#006C35)">
+            <i class="fa fa-calculator"></i>
         </div>
 
         <div class="off-card-body">
@@ -2999,8 +3055,8 @@ body{
     <!-- Engineering -->
     <a href="{{ route('amrtm.offices.directory', 'engineering') }}" class="off-card" id="off-card-eng">
 
-        <div class="off-card-icon" style="background:linear-gradient(135deg,#f69d03,#e9a403)">
-            <i class="ti ti-building"></i>
+        <div class="off-card-icon" style="background:linear-gradient(135deg,#006C35,#004D25)">
+            <i class="fa fa-building"></i>
         </div>
 
         <div class="off-card-body">
@@ -3018,8 +3074,8 @@ body{
     <!-- Freelance -->
     <a href="{{ route('amrtm.offices.directory', 'freelance') }}" class="off-card" id="off-card-free">
 
-        <div class="off-card-icon" style="background:linear-gradient(135deg,#00695C,#00897B)">
-            <i class="ti ti-user"></i>
+        <div class="off-card-icon" style="background:linear-gradient(135deg,#004D25,#006C35)">
+            <i class="fa fa-user"></i>
         </div>
 
         <div class="off-card-body">
@@ -3040,7 +3096,7 @@ body{
             <a href="{{ route('amrtm.office.register') }}"
                class="off-cta-btn off-cta-primary">
 
-                <i class="ti ti-building-plus"></i>
+                <i class="fa fa-building-circle-check"></i>
              تسجيل الخدمات المساندة
             </a>
 
@@ -3056,17 +3112,17 @@ body{
 <!-- LOGIN GATE MODAL -->
 <div class="em" id="lgm" onclick="if(event.target===this)closeLgm()" style="z-index:700;">
   <div class="em-box" style="max-width:440px;">
-    <div class="em-hd" style="background:linear-gradient(135deg,#1A237E,#1565C0);">
-      <div class="em-hd-ico"><i class="ti ti-lock"></i></div>
+    <div class="em-hd" style="background:linear-gradient(135deg,#006C35,#004D25);">
+      <div class="em-hd-ico"><i class="fa fa-lock"></i></div>
       <div><div class="em-hd-nm" id="lgm-ttl">تسجيل الدخول مطلوب</div><div class="em-hd-sb" id="lgm-sub">يجب تسجيل الدخول لتقديم طلب خدمة</div></div>
-      <button class="em-x" onclick="closeLgm()"><i class="ti ti-x"></i></button>
+      <button class="em-x" onclick="closeLgm()"><i class="fa fa-xmark"></i></button>
     </div>
     <div style="padding:2rem 1.6rem;text-align:center;">
-      <div style="width:72px;height:72px;border-radius:50%;background:rgba(26,35,126,.1);border:2px solid rgba(26,35,126,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-size:30px;color:#1A237E;"><i class="ti ti-user-circle"></i></div>
+      <div style="width:72px;height:72px;border-radius:50%;background:rgba(0,108,53,.1);border:2px solid rgba(0,108,53,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-size:30px;color:#006C35;"><i class="fa fa-circle-user"></i></div>
       <p style="font-size:14px;color:#3A4490;line-height:1.8;margin-bottom:1.6rem;" id="lgm-body">لتقديم طلب خدمة يجب أن يكون لديك حساب مسجل في المنصة. سجّل دخولك أو أنشئ حساباً جديداً مجاناً.</p>
       <div style="display:flex;flex-direction:column;gap:.75rem;">
-        <a id="lgm-login-btn" href="#" style="display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:12px;background:linear-gradient(135deg,#1A237E,#1565C0);color:#fff;font-family:inherit;font-size:14.5px;font-weight:800;text-decoration:none;transition:opacity .2s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'"><i class="ti ti-login"></i> <span id="lgm-login-lbl">تسجيل الدخول</span></a>
-        <a id="lgm-reg-btn" href="#" style="display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:12px;background:transparent;color:#1A237E;font-family:inherit;font-size:14px;font-weight:700;text-decoration:none;border:1.5px solid rgba(26,35,126,.2);transition:background .2s;" onmouseover="this.style.background='rgba(26,35,126,.06)'" onmouseout="this.style.background='transparent'"><i class="ti ti-user-plus"></i> <span id="lgm-reg-lbl">إنشاء حساب جديد</span></a>
+        <a id="lgm-login-btn" href="#" style="display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:12px;background:linear-gradient(135deg,#006C35,#004D25);color:#fff;font-family:inherit;font-size:14.5px;font-weight:800;text-decoration:none;transition:opacity .2s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'"><i class="fa fa-right-to-bracket"></i> <span id="lgm-login-lbl">تسجيل الدخول</span></a>
+        <a id="lgm-reg-btn" href="#" style="display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:12px;background:transparent;color:#006C35;font-family:inherit;font-size:14px;font-weight:700;text-decoration:none;border:1.5px solid rgba(0,108,53,.2);transition:background .2s;" onmouseover="this.style.background='rgba(0,108,53,.06)'" onmouseout="this.style.background='transparent'"><i class="fa fa-user-plus"></i> <span id="lgm-reg-lbl">إنشاء حساب جديد</span></a>
       </div>
     </div>
   </div>
@@ -3076,12 +3132,12 @@ body{
 <div class="em" id="em" onclick="if(event.target===this)closeEm()">
   <div class="em-box">
     <div class="em-hd">
-      <div class="em-hd-ico" id="em-ico"><i class="ti ti-building" id="em-ico-i"></i></div>
+      <div class="em-hd-ico" id="em-ico"><i class="fa fa-building" id="em-ico-i"></i></div>
       <div><div class="em-hd-nm" id="em-nm">—</div><div class="em-hd-sb" id="em-sb">اختر الجهة</div></div>
-      <button class="em-x" onclick="closeEm()"><i class="ti ti-x"></i></button>
+      <button class="em-x" onclick="closeEm()"><i class="fa fa-xmark"></i></button>
     </div>
     <div class="em-srch" style="position:relative;">
-      <i class="ti ti-search em-srch-ico"></i>
+      <i class="fa fa-magnifying-glass em-srch-ico"></i>
       <input type="text" id="em-q" placeholder="ابحث..." oninput="filtEm(this.value)"/>
     </div>
     <div class="em-list" id="em-list"></div>
@@ -3092,15 +3148,15 @@ body{
 <div class="fm" id="fm" onclick="if(event.target===this)closeFm()">
   <div class="fm-box">
     <div class="fm-hd">
-      <div class="fm-hd-ico" id="fm-ico"><i class="ti ti-file-text" id="fm-ico-i"></i></div>
+      <div class="fm-hd-ico" id="fm-ico"><i class="fa fa-file-lines" id="fm-ico-i"></i></div>
       <div style="flex:1;"><div class="fm-hd-nm" id="fm-hnm">استمارة التقديم</div><div class="fm-hd-sb" id="fm-hsb">يرجى تعبئة البيانات بدقة</div></div>
-      <button class="fm-x" onclick="closeFm()"><i class="ti ti-x"></i></button>
+      <button class="fm-x" onclick="closeFm()"><i class="fa fa-xmark"></i></button>
     </div>
     <!-- Service select -->
     <div class="fm-sel-wrap"><select id="fm-sel" onchange="onSelChange(this)"></select></div>
     <!-- Service bar -->
     <div class="fm-sbar" id="fm-sb">
-      <div class="fm-sico" id="fm-si"><i class="ti ti-file-text" id="fm-si-i"></i></div>
+      <div class="fm-sico" id="fm-si"><i class="fa fa-file-lines" id="fm-si-i"></i></div>
       <div style="flex:1;"><div class="fm-snm" id="fm-snm">—</div><div class="fm-scat" id="fm-scat">—</div></div>
       <div class="fm-sprice" id="fm-sp">—</div>
     </div>
@@ -3108,46 +3164,46 @@ body{
     <div class="fm-bal"><span class="fm-bal-lbl" id="fm-bl">رصيدك:</span><span class="fm-bal-val" id="fm-bv">—</span></div>
     <!-- Success -->
     <div class="succ" id="fm-succ">
-      <div class="succ-ico"><i class="ti ti-circle-check"></i></div>
+      <div class="succ-ico"><i class="fa fa-circle-check"></i></div>
       <div class="succ-ttl" id="sc-t">تم تقديم طلبك بنجاح!</div>
       <div class="succ-sub" id="sc-s">سيتم مراجعة طلبك والتواصل معك خلال المدة المحددة.</div>
       <div class="succ-ref" id="sc-r">رقم الطلب: —</div>
       <div class="succ-btns">
-        <a class="s-b1" href="{{ route('amrtm.user.dashboard') }}" id="sc-d"><i class="ti ti-layout-dashboard"></i><span id="sc-dl">تابع طلبك</span></a>
+        <a class="s-b1" href="{{ route('amrtm.user.dashboard') }}" id="sc-d"><i class="fa fa-gauge-high"></i><span id="sc-dl">تابع طلبك</span></a>
         <button class="s-b2" onclick="rstFm()" id="sc-n"><span id="sc-nl">طلب جديد</span></button>
       </div>
     </div>
     <!-- Form inner -->
     <div class="fm-body" id="fm-in">
-      <div class="fm-sec-lbl"><i class="ti ti-user"></i><span id="fm-lbl-pers">البيانات الشخصية</span></div>
+      <div class="fm-sec-lbl"><i class="fa fa-user"></i><span id="fm-lbl-pers">البيانات الشخصية</span></div>
       <div class="fm-row">
-        <div class="fld"><label><span class="req">*</span><span id="ln">الاسم الكامل</span></label><input type="text" id="fn"/><div class="ferr" id="en"><i class="ti ti-alert-circle"></i><span id="ent">مطلوب</span></div></div>
-        <div class="fld"><label><span class="req">*</span><span id="lid">رقم الهوية</span></label><input type="text" id="fid" maxlength="10"/><div class="ferr" id="eid"><i class="ti ti-alert-circle"></i><span id="eidt">غير صحيح</span></div></div>
+        <div class="fld"><label><span class="req">*</span><span id="ln">الاسم الكامل</span></label><input type="text" id="fn"/><div class="ferr" id="en"><i class="fa fa-circle-exclamation"></i><span id="ent">مطلوب</span></div></div>
+        <div class="fld"><label><span class="req">*</span><span id="lid">رقم الهوية</span></label><input type="text" id="fid" maxlength="10"/><div class="ferr" id="eid"><i class="fa fa-circle-exclamation"></i><span id="eidt">غير صحيح</span></div></div>
       </div>
       <div class="fm-row">
-        <div class="fld"><label><span class="req">*</span><span id="lph">رقم الجوال</span></label><input type="tel" id="fph"/><div class="ferr" id="eph"><i class="ti ti-alert-circle"></i><span id="epht">غير صحيح</span></div></div>
-        <div class="fld"><label><span class="req">*</span><span id="lem">البريد الإلكتروني</span></label><input type="email" id="fem"/><div class="ferr" id="eem"><i class="ti ti-alert-circle"></i><span id="eemt">غير صحيح</span></div></div>
+        <div class="fld"><label><span class="req">*</span><span id="lph">رقم الجوال</span></label><input type="tel" id="fph"/><div class="ferr" id="eph"><i class="fa fa-circle-exclamation"></i><span id="epht">غير صحيح</span></div></div>
+        <div class="fld"><label><span class="req">*</span><span id="lem">البريد الإلكتروني</span></label><input type="email" id="fem"/><div class="ferr" id="eem"><i class="fa fa-circle-exclamation"></i><span id="eemt">غير صحيح</span></div></div>
       </div>
-      <div class="fm-sec-lbl" style="margin-top:.4rem"><i class="ti ti-building"></i><span id="fm-lbl-biz">بيانات الجهة (اختياري)</span></div>
+      <div class="fm-sec-lbl" style="margin-top:.4rem"><i class="fa fa-building"></i><span id="fm-lbl-biz">بيانات الجهة (اختياري)</span></div>
       <div class="fm-row">
         <div class="fld"><label><span id="lco">اسم الشركة</span></label><input type="text" id="fco"/></div>
         <div class="fld"><label><span id="lcr">السجل التجاري</span></label><input type="text" id="fcr"/></div>
       </div>
-      <div class="fm-sec-lbl" style="margin-top:.4rem"><i class="ti ti-paperclip"></i><span id="fm-lbl-attach">المرفقات والملاحظات</span></div>
+      <div class="fm-sec-lbl" style="margin-top:.4rem"><i class="fa fa-paperclip"></i><span id="fm-lbl-attach">المرفقات والملاحظات</span></div>
       <div class="fld"><label><span id="lno">ملاحظات</span></label><textarea id="fno"></textarea></div>
       <div class="fld">
         <label id="lfi">إرفاق ملفات</label>
         <div class="f-area" id="f-area">
           <input type="file" id="ffi" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="hndFiles(this)"/>
-          <div class="f-area-ico"><i class="ti ti-cloud-upload"></i></div>
+          <div class="f-area-ico"><i class="fa fa-cloud-arrow-up"></i></div>
           <div class="f-area-t" id="fat">اضغط أو اسحب الملفات هنا</div>
           <div class="f-area-s" id="fas">PDF, JPG, PNG, DOC — حد أقصى 10MB</div>
           <div class="f-chips" id="f-chips"></div>
         </div>
       </div>
-      <div class="prv"><i class="ti ti-shield-check"></i><span id="prv-t">بياناتك محمية ومشفرة ولن تُشارَك مع أي جهة خارجية دون موافقتك الصريحة.</span></div>
+      <div class="prv"><i class="fa fa-shield-halved"></i><span id="prv-t">بياناتك محمية ومشفرة ولن تُشارَك مع أي جهة خارجية دون موافقتك الصريحة.</span></div>
       <button class="fm-sub" id="fm-sub" onclick="sbmFm()">
-        <span class="stxt" id="fm-st"><i class="ti ti-send"></i> تقديم الطلب</span>
+        <span class="stxt" id="fm-st"><i class="fa fa-paper-plane"></i> تقديم الطلب</span>
         <div class="spin"></div>
       </button>
     </div>
@@ -3190,7 +3246,7 @@ body{
            target="_blank"
               rel="noopener noreferrer"
             aria-label="X">
-           <i class="ti ti-brand-x"></i>
+           <i class="fa fa-x-twitter"></i>
            </a>
 
             <a class="fsoc"
@@ -3198,7 +3254,7 @@ body{
              target="_blank"
              rel="noopener noreferrer"
                 aria-label="LinkedIn">
-             <i class="ti ti-brand-linkedin"></i>
+             <i class="fa fa-linkedin"></i>
               </a>
 
             <a class="fsoc" 
@@ -3206,11 +3262,11 @@ body{
               target="_blank"
                rel="noopener noreferrer"
                  aria-label="Instagram">
-                <i class="ti ti-brand-instagram"></i>
+                <i class="fa fa-instagram"></i>
              </a>
 
          <a class="fsoc" href="https://wa.me/966504915222">
-            <i class="ti ti-brand-whatsapp"></i>
+            <i class="fa fa-whatsapp"></i>
         </a>
 
     </div>
@@ -3266,7 +3322,7 @@ window.AMRTM_ROUTES = {
 
 <!-- VIDEO FAB — mobile only -->
 <button class="vid-fab" id="vid-fab" onclick="openVid()">
-<div class="vid-fab-ico"><i class="ti ti-player-play-filled"></i></div>
+<div class="vid-fab-ico"><i class="fa fa-play"></i></div>
 <span class="vid-fab-lbl" id="vfl">شاهد كيف تعمل المنصة</span>
 </button>
 <script>
@@ -3401,13 +3457,13 @@ const Notifications = {
 function showToast(message, type='success', duration=3500) {
     const existing = document.getElementById('amrtm-toast');
     if (existing) existing.remove();
-    const colors = { success: { bg: 'rgba(27,94,32,.95)', icon: 'ti-circle-check' }, error: { bg: 'rgba(198,40,40,.95)', icon: 'ti-alert-circle' }, info: { bg: 'rgba(26,35,126,.95)', icon: 'ti-info-circle' }, warning: { bg: 'rgba(230,81,0,.95)', icon: 'ti-alert-triangle' } };
+    const colors = { success: { bg: 'rgba(27,94,32,.95)', icon: 'fa-circle-check' }, error: { bg: 'rgba(198,40,40,.95)', icon: 'fa-circle-exclamation' }, info: { bg: 'rgba(0,108,53,.95)', icon: 'fa-circle-info' }, warning: { bg: 'rgba(230,81,0,.95)', icon: 'fa-triangle-exclamation' } };
     const c = colors[type] || colors.info;
     const lang = localStorage.getItem('amrtm_lang') || 'ar';
     const toast = document.createElement('div');
     toast.id = 'amrtm-toast';
     toast.style.cssText = `position:fixed;bottom:24px;${lang==='ar'?'right':'left'}:24px;z-index:9999;background:${c.bg};color:#fff;padding:12px 18px;border-radius:12px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:9px;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:toastIn .3s ease;font-family:'Cairo',sans-serif;max-width:340px;`;
-    toast.innerHTML = `<i class="ti ${c.icon}" style="font-size:18px;flex-shrink:0;"></i><span>${message}</span>`;
+    toast.innerHTML = `<i class="fa ${c.icon}" style="font-size:18px;flex-shrink:0;"></i><span>${message}</span>`;
     const style = document.createElement('style');
     style.textContent = `@keyframes toastIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}`;
     document.head.appendChild(style);
@@ -3419,7 +3475,7 @@ function showLoader() {
     const el = document.createElement('div');
     el.id = 'amrtm-loader';
     el.style.cssText = 'position:fixed;inset:0;z-index:9998;background:rgba(255,255,255,.7);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;';
-    el.innerHTML = `<div style="width:44px;height:44px;border:4px solid rgba(26,35,126,.2);border-top-color:#1A237E;border-radius:50%;animation:spin .7s linear infinite;"></div><style>@keyframes spin{to{transform:rotate(360deg)}}</style>`;
+    el.innerHTML = `<div style="width:44px;height:44px;border:4px solid rgba(0,108,53,.2);border-top-color:#006C35;border-radius:50%;animation:spin .7s linear infinite;"></div><style>@keyframes spin{to{transform:rotate(360deg)}}</style>`;
     document.body.appendChild(el);
 }
 function hideLoader() { document.getElementById('amrtm-loader')?.remove(); }
@@ -3535,6 +3591,12 @@ const T = {
         fb1: "سياسة الخصوصية",
         fb2: "شروط الاستخدام",
         fb3: "تواصل معنا",
+        ao_tagline: "مرحباً بكم في منصة آمر تم",
+        ao_title: "آمر تم شريكك الموثوق في الخدمات الحكومية",
+        ao_desc: "مكان واحد لإنجاز كافة إجراءات الخدمات الحكومية والخاصة. نضمن لك خدمات احترافية تجعل تعاملك مع الجهات الرسمية سهلاً.",
+        ao_big: "نوفر لك كافة الخدمات الحكومية في منصة واحدة",
+        ao_text2: "تعمل منصة آمر تم وفق مفهوم النافذة الواحدة لاستقبال طلبات العملاء وإنجاز معاملاتهم عبر شبكة من الشركاء والمتخصصين.",
+        ao_cta: "اكتشف أكثر",
     },
     en: {
         nm: "Amrtm",
@@ -3633,80 +3695,84 @@ const T = {
         fb1: "Privacy Policy",
         fb2: "Terms of Use",
         fb3: "Contact Us",
+        ao_tagline: "Welcome to Amrtm Platform",
+        ao_title: "Your Trusted Partner for Government Services",
+        ao_desc: "One place to complete all government and private service procedures. We provide professional services that make dealing with official entities easy.",
+        ao_big: "We provide all government services in one platform",
+        ao_text2: "Amrtm platform operates on a one-stop service model to receive customer requests and complete their transactions through a network of trusted partners.",
+        ao_cta: "Discover More",
     },
 };
 
 /* ══ CARD CONFIG — keys match DB category keys from seeder ══ */
 const CC = {
     ministries: {
-        color: "#1A237E",
-        bg: "rgba(26,35,126,.1)",
-        icon: "ti-building-bank",
+        color: "#006C35",
+        bg: "rgba(0,108,53,.1)",
+        icon: "fa-building-columns",
         dk: "desc_min",
     },
     authorities: {
-        color: "#6A1B9A",
-        bg: "rgba(106,27,154,.1)",
-        icon: "ti-award",
+        color: "#004D25",
+        bg: "rgba(0,77,37,.1)",
+        icon: "fa-award",
         dk: "desc_aut",
     },
     companies: {
-        color: "#1B5E20",
-        bg: "rgba(27,94,32,.1)",
-        icon: "ti-building-factory",
+        color: "#006C35",
+        bg: "rgba(0,108,53,.1)",
+        icon: "fa-building",
         dk: "desc_com",
     },
     embassies: {
-        color: "#00838F",
-        bg: "rgba(0,131,143,.1)",
-        icon: "ti-world",
+        color: "#004D25",
+        bg: "rgba(0,77,37,.1)",
+        icon: "fa-earth-americas",
         dk: "desc_emb",
     },
      consultants: {
-        color: "#E65100",
-        bg: "rgba(173,20,87,.1)",
-        icon: "ti-users",
+        color: "#006C35",
+        bg: "rgba(0,108,53,.1)",
+        icon: "fa-user-tie",
         dk: "desc_consultants", 
          url: "/consultants"
     },
     law: {
-        color: "#AD1457",
-        bg: "rgba(173,20,87,.1)",
-        icon: "ti-scale",
+        color: "#004D25",
+        bg: "rgba(0,77,37,.1)",
+        icon: "fa-scale-balanced",
         dk: "desc_law",
     },
     services: {
-        color: "#E65100",
-        bg: "rgba(230,81,0,.1)",
-        icon: "ti-briefcase",
+        color: "#006C35",
+        bg: "rgba(0,108,53,.1)",
+        icon: "fa-briefcase",
         dk: "desc_svc",
     },
     customs: {
-        color: "#37474F",
-        bg: "rgba(55,71,79,.1)",
-        icon: "ti-truck",
+        color: "#004D25",
+        bg: "rgba(0,77,37,.1)",
+        icon: "fa-truck",
         dk: "desc_cus",
     },
     accounting: {
-    color: "#0D47A1",
-    bg: "rgba(13,71,161,.1)",
-    icon: "ti-calculator",
-    dk: "desc_acc",
-},
-
+        color: "#006C35",
+        bg: "rgba(0,108,53,.1)",
+        icon: "fa-calculator",
+        dk: "desc_acc",
+    },
 engineering: {
-    color: "#F9A825",
-    bg: "rgba(249,168,37,.1)",
-    icon: "ti-building",
-    dk: "desc_eng",
-},
-
+        color: "#004D25",
+        bg: "rgba(0,77,37,.1)",
+        icon: "fa-building",
+        dk: "desc_eng",
+    },
 freelance: {
-    color: "#00695C",
-    bg: "rgba(0,105,92,.1)",
-    icon: "ti-user-star",
-    dk: "desc_free",
-},
+        color: "#006C35",
+        bg: "rgba(0,108,53,.1)",
+        icon: "fa-user-tie",
+        dk: "desc_free",
+    },
     
 };
 
@@ -3827,40 +3893,35 @@ function searchCards() {
 function renderCards(list = cats) {    const t = T[lang],
         g = document.getElementById("cards-grid");
     if (!cats.length) {
-        g.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--t3);">${t.erq}</div>`;
+        g.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:rgba(255,255,255,.5);">${t.erq}</div>`;
         return;
     }
     g.innerHTML = list
         .slice(0, 7)
         .map((c) => {
             const cc = CC[c.key] || {
-                color: c.color || "#1A237E",
-                bg: c.bg || "rgba(26,35,126,.1)",
-                icon: c.icon || "ti-building",
+                color: c.color || "#006C35",
+                bg: c.bg || "rgba(0,108,53,.1)",
+                icon: c.icon || "fa-building",
                 dk: "desc_min",
             };
             const nm = lang === "ar" ? c.name_ar : c.name_en;
             const cnt = c.entities?.length || 0;
             const desc = t[cc.dk] || "";
-          //  const catUrl =
-            //    (window.AMRTM_ROUTES?.catalogBase || "/amrtm/catalog") +
-             //   "/" +
-              //  c.key;  #MARAM
               const catUrl = c.url || ((window.AMRTM_ROUTES?.catalogBase || "/amrtm/catalog") + "/" + c.key);
-            return `<div class="card" style="--cc:${cc.color}" onclick="location.href='${catUrl}'">
-      <div class="card-body">
-        <div class="card-ico" style="background:${cc.bg};border:2px solid ${cc.color}22;">
-          <i class="ti ${cc.icon}" style="color:${cc.color};"></i>
+            return `<a href="${catUrl}" class="ao-card">
+      <div class="ao-card-body">
+        <div class="ao-card-ico" style="background:linear-gradient(135deg,#006C35,#004D25)">
+          <i class="fa ${cc.icon}" style="color:#fff;"></i>
         </div>
-        <div class="card-nm">${nm}</div>
-        <div class="card-desc">${desc}</div>
+        <div class="ao-card-nm">${nm}</div>
+        <div class="ao-card-desc">${desc}</div>
       </div>
-     
-      <div class="card-foot">
-        <span class="card-tag">${cnt} ${t.ents}</span>
-        <i class="ti ti-arrow-left card-arr" style="color:${cc.color};"></i>
+      <div class="ao-card-foot">
+        <span class="ao-card-tag">${cnt} ${t.ents}</span>
+        <span class="ao-card-arr">←</span>
       </div>
-    </div>`;
+    </a>`;
         })
         .join("");
 }
@@ -3872,10 +3933,10 @@ function openEm(key) {
     if (!cat) return;
     curEnts = cat.entities || [];
     const t = T[lang],
-        cc = CC[key] || { color: "#1A237E", icon: "ti-building" };
-    S("em-ico-i", "className", "ti " + cc.icon);
+        cc = CC[key] || { color: "#006C35", icon: "fa-building" };
+    S("em-ico-i", "className", "fa " + cc.icon);
     document.getElementById("em-ico").style.background =
-        cc.bg || "rgba(26,35,126,.1)";
+        cc.bg || "rgba(0,108,53,.1)";
     S("em-nm", "textContent", lang === "ar" ? cat.name_ar : cat.name_en);
     S("em-sb", "textContent", t.chooseEnt);
     document.getElementById("em-q").value = "";
@@ -3895,10 +3956,10 @@ function renderEnts(ents) {
                       ? Math.min(...e.services.map((s) => s.price || 0))
                       : 0;
                   return `<div class="em-item" onclick="openFm(${curEnts.indexOf(e)})">
-      <div class="em-ico" style="background:${e.bg || "rgba(26,35,126,.09)"};border:1px solid ${e.color || "#1A237E"}22;"><i class="ti ${e.icon || "ti-building"}" style="color:${e.color || "#1A237E"};"></i></div>
+      <div class="em-ico" style="background:${e.bg || "rgba(0,108,53,.09)"};border:1px solid ${e.color || "#006C35"}22;"><i class="fa ${e.icon || "fa-building"}" style="color:${e.color || "#006C35"};"></i></div>
       <div class="em-info"><div class="em-nm">${nm}</div><div class="em-tag">${tag}${e.services?.length ? ` · ${e.services.length} ${t.svcs2}` : ""}</div></div>
       ${minPrice > 0 ? `<div class="em-price-tag">${t.svcs2}: من ${minPrice} ${t.sar}</div>` : ""}
-      <i class="ti ${lang === "ar" ? "ti-chevron-left" : "ti-chevron-right"} em-chv"></i>
+      <i class="fa ${lang === "ar" ? "fa-chevron-left" : "fa-chevron-right"} em-chv"></i>
     </div>`;
               })
               .join("")
@@ -3934,9 +3995,9 @@ function openFm(idx) {
         cat = cats.find((c) => c.key === curCatKey);
     const catNm = cat ? (lang === "ar" ? cat.name_ar : cat.name_en) : "";
     const nm = lang === "ar" ? curEnt.name_ar : curEnt.name_en;
-    S("fm-ico-i", "className", "ti " + (curEnt.icon || "ti-building"));
+    S("fm-ico-i", "className", "fa " + (curEnt.icon || "fa-building"));
     document.getElementById("fm-ico").style.background =
-        curEnt.bg || "rgba(26,35,126,.09)";
+        curEnt.bg || "rgba(0,108,53,.09)";
     S("fm-hnm", "textContent", t.fttl);
     S("fm-hsb", "textContent", nm + (catNm ? " — " + catNm : ""));
     // Build service dropdown
@@ -3947,7 +4008,7 @@ function openFm(idx) {
         svcs
             .map(
                 (s) =>
-                    `<option value="${s.id}" data-price="${s.price}" data-icon="${s.icon || "ti-file-text"}">${lang === "ar" ? s.name_ar : s.name_en} — ${s.price} ${t.sar}</option>`,
+                    `<option value="${s.id}" data-price="${s.price}" data-icon="${s.icon || "fa-file-lines"}">${lang === "ar" ? s.name_ar : s.name_en} — ${s.price} ${t.sar}</option>`,
             )
             .join("");
     sel.value = "";
@@ -3961,7 +4022,7 @@ function openFm(idx) {
     S("fas", "textContent", t.fas);
     S("prv-t", "textContent", t.prv);
     document.getElementById("fm-st").innerHTML =
-        `<i class="ti ti-send"></i> ${t.sub}`;
+        `<i class="fa fa-paper-plane"></i> ${t.sub}`;
     S("sc-t", "textContent", t.sct);
     S("sc-s", "textContent", t.scs);
     S("sc-dl", "textContent", t.scd);
@@ -4002,12 +4063,12 @@ function updSvcBar(svc) {
         return;
     }
     bar.style.opacity = "1";
-    const c = curEnt?.color || "#1A237E",
-        b = curEnt?.bg || "rgba(26,35,126,.09)";
+    const c = curEnt?.color || "#006C35",
+        b = curEnt?.bg || "rgba(0,108,53,.09)";
     const si = document.getElementById("fm-si");
     si.style.background = b;
     si.style.borderColor = c + "22";
-    S("fm-si-i", "className", "ti " + (svc.icon || "ti-file-text"));
+    S("fm-si-i", "className", "fa " + (svc.icon || "fa-file-lines"));
     document.getElementById("fm-si-i").style.color = c;
     S("fm-snm", "textContent", lang === "ar" ? svc.name_ar : svc.name_en);
     S(
@@ -4081,7 +4142,7 @@ function renderChips() {
     document.getElementById("f-chips").innerHTML = files
         .map(
             (f, i) =>
-                `<div class="chip"><i class="ti ti-file"></i><span>${f.name.length > 16 ? f.name.slice(0, 14) + "…" : f.name}</span><span class="chip-x" onclick="rmFile(${i})"><i class="ti ti-x"></i></span></div>`,
+                `<div class="chip"><i class="fa fa-file"></i><span>${f.name.length > 16 ? f.name.slice(0, 14) + "…" : f.name}</span><span class="chip-x" onclick="rmFile(${i})"><i class="fa fa-xmark"></i></span></div>`,
         )
         .join("");
 }
@@ -4302,6 +4363,12 @@ function applyLang(l) {
         ["fb1", "fb1"],
         ["fb2", "fb2"],
         ["fb3", "fb3"],
+        ["ao-tagline", "ao_tagline"],
+        ["ao-title", "ao_title"],
+        ["ao-desc", "ao_desc"],
+        ["ao-big", "ao_big"],
+        ["ao-text2", "ao_text2"],
+        ["ao-cta", "ao_cta"],
     ].forEach(([id, k]) => S(id, "textContent", t[k]));
     const ht = document.getElementById("h-t");
     if (ht) ht.innerHTML = t.h1 + ' <span id="h-hl">' + t.hl + "</span>";
@@ -4310,8 +4377,8 @@ function applyLang(l) {
         .forEach(
             (i) =>
                 (i.className =
-                    "ti " +
-                    (l === "ar" ? "ti-chevron-left" : "ti-chevron-right")),
+                    "fa " +
+                    (l === "ar" ? "fa-chevron-left" : "fa-chevron-right")),
         );
 }
 
@@ -4334,7 +4401,8 @@ function clsMob() {
     document.getElementById("mob-dd").classList.remove("open");
 }
 function scrollCards() {
-    document.getElementById("cards-sec").scrollIntoView({ behavior: "smooth" });
+    var el = document.getElementById("cards-grid");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
 }
 
 /* ══ DRAG DROP ══ */
@@ -4444,7 +4512,7 @@ function getDemoData() {
                     "وزارة الاتصالات وتقنية المعلومات",
                     "Ministry of Communications & IT",
                     "ti-wifi",
-                    "#1565C0",
+                    "#004D25",
                     "rgba(21,101,192,.11)",
                     "التقنية والرقمنة",
                     "Technology & Digital",
@@ -4642,8 +4710,8 @@ function getDemoData() {
                     "وزارة الشؤون الإسلامية والدعوة والإرشاد",
                     "Ministry of Islamic Affairs",
                     "ti-moon",
-                    "#1A237E",
-                    "rgba(26,35,126,.11)",
+                    "#006C35",
+                    "rgba(0,108,53,.11)",
                     "الشؤون الدينية",
                     "Religious Affairs",
                     [
@@ -4894,8 +4962,8 @@ function getDemoData() {
                     "وزارة المالية",
                     "Ministry of Finance",
                     "ti-coin",
-                    "#1A237E",
-                    "rgba(26,35,126,.11)",
+                    "#006C35",
+                    "rgba(0,108,53,.11)",
                     "المالية والميزانية",
                     "Finance & Budget",
                     [
@@ -5098,8 +5166,8 @@ function getDemoData() {
                     "وزارة الحج والعمرة",
                     "Ministry of Hajj & Umrah",
                     "ti-building-mosque",
-                    "#1A237E",
-                    "rgba(26,35,126,.11)",
+                    "#006C35",
+                    "rgba(0,108,53,.11)",
                     "الحج والعمرة",
                     "Hajj & Umrah",
                     [
@@ -5119,8 +5187,8 @@ function getDemoData() {
                     "وزارة حرس الوطني",
                     "Ministry of National Guard",
                     "ti-shield-star",
-                    "#1A237E",
-                    "rgba(26,35,126,.14)",
+                    "#006C35",
+                    "rgba(0,108,53,.14)",
                     "الأمن الوطني",
                     "National Security",
                     [
@@ -5315,7 +5383,7 @@ function getDemoData() {
                     "هيئة الاتصالات والفضاء والتقنية",
                     "CST",
                     "ti-satellite",
-                    "#1565C0",
+                    "#004D25",
                     "rgba(21,101,192,.1)",
                     "الاتصالات والتقنية",
                     "Telecom & Technology",
@@ -5406,7 +5474,7 @@ function getDemoData() {
                     "الهيئة السعودية للبيانات والذكاء الاصطناعي",
                     "SDAIA",
                     "ti-brain",
-                    "#1565C0",
+                    "#004D25",
                     "rgba(21,101,192,.1)",
                     "الذكاء الاصطناعي",
                     "AI & Data",
@@ -5524,8 +5592,8 @@ function getDemoData() {
                     "الخطوط الجوية العربية السعودية",
                     "Saudi Arabian Airlines (Saudia)",
                     "ti-plane",
-                    "#1A237E",
-                    "rgba(26,35,126,.1)",
+                    "#006C35",
+                    "rgba(0,108,53,.1)",
                     "الطيران",
                     "Aviation",
                     [
@@ -5711,8 +5779,8 @@ function getDemoData() {
                     "البنك الأهلي السعودي",
                     "SNB",
                     "ti-building-bank",
-                    "#1A237E",
-                    "rgba(26,35,126,.1)",
+                    "#006C35",
+                    "rgba(0,108,53,.1)",
                     "الخدمات المصرفية",
                     "Banking Services",
                     [
@@ -5919,8 +5987,8 @@ function getDemoData() {
                     "سفارة الولايات المتحدة في الرياض",
                     "US Embassy - Riyadh",
                     "ti-world",
-                    "#1A237E",
-                    "rgba(26,35,126,.1)",
+                    "#006C35",
+                    "rgba(0,108,53,.1)",
                     "سفارة أجنبية",
                     "Foreign Embassy",
                     [
@@ -5971,7 +6039,7 @@ function getDemoData() {
                     "سفارة فرنسا في الرياض",
                     "French Embassy - Riyadh",
                     "ti-world",
-                    "#1565C0",
+                    "#004D25",
                     "rgba(21,101,192,.1)",
                     "سفارة أجنبية",
                     "Foreign Embassy",
@@ -6001,8 +6069,8 @@ function getDemoData() {
                     "القنصلية الأمريكية في جدة",
                     "US Consulate - Jeddah",
                     "ti-building",
-                    "#1A237E",
-                    "rgba(26,35,126,.1)",
+                    "#006C35",
+                    "rgba(0,108,53,.1)",
                     "قنصلية أجنبية",
                     "Foreign Consulate",
                     [S(135, "تأشيرات السفر", "Travel Visas", "ti-ticket", 350)],
