@@ -2986,14 +2986,17 @@ body{display:block!important;background:transparent!important}
                     <i class="fa fa-shapes"></i>
                 </div>
                 <div class="about-one__img" onclick="openVid()" style="cursor:pointer; position:relative; overflow:hidden;">
-                    <iframe
-                        src="https://www.youtube-nocookie.com/embed/Z0oYp28dDug?autoplay=1&mute=1&loop=1&playlist=Z0oYp28dDug&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1"
-                        title="فيديو رؤية المملكة 2030 الرسمي"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                        style="width:170%; height:170%; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); pointer-events:none; border:none;">
-                    </iframe>
+                    <video
+                        autoplay
+                        loop
+                        muted
+                        playsinline
+                        preload="auto"
+                        poster="{{ asset('images/slide-kafd.jpg') }}"
+                        style="width:100%; height:100%; object-fit:cover; display:block;">
+                        <source src="{{ asset('videos/saudi-business-intro.mp4') }}" type="video/mp4">
+                    </video>
+                    <div class="about-one__video-overlay" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,42,21,0.15) 0%, rgba(0,108,53,0.35) 100%); pointer-events:none;"></div>
                     <div class="about-one__video-link" style="pointer-events:auto;">
                         <div class="about-one__video-icon">
                             <span class="fa fa-play" style="font-size:16px;color:#fff;margin-right:-2px"></span>
@@ -3069,11 +3072,14 @@ body{display:block!important;background:transparent!important}
             <i class="fa fa-xmark"></i>
         </div>
 
-        <iframe id="vmf"
-                src=""
-                allowfullscreen
-                allow="autoplay; encrypted-media">
-        </iframe>
+        <video id="vmf-video"
+               controls
+               playsinline
+               preload="auto"
+               style="width:100%; height:auto; max-height:80vh; display:block; background:#000;">
+            <source src="{{ asset('videos/saudi-business-intro.mp4') }}" type="video/mp4">
+            المتصفح لا يدعم تشغيل هذا الفيديو.
+        </video>
 
     </div>
 </div>
@@ -4326,13 +4332,22 @@ function rstFm() {
 
 /* ══ VIDEO ══ */
 function openVid() {
-    document.getElementById("vm").classList.add("open");
-    document.getElementById("vmf").src = "https://www.youtube-nocookie.com/embed/Z0oYp28dDug?autoplay=1&rel=0";
+    const modal = document.getElementById("vm");
+    const video = document.getElementById("vmf-video");
+    if (modal) modal.classList.add("open");
+    if (video) {
+        video.currentTime = 0;
+        video.play().catch(function(e){ console.log("Play error:", e); });
+    }
     document.body.style.overflow = "hidden";
 }
 function closeVid() {
-    document.getElementById("vm").classList.remove("open");
-    document.getElementById("vmf").src = "";
+    const modal = document.getElementById("vm");
+    const video = document.getElementById("vmf-video");
+    if (modal) modal.classList.remove("open");
+    if (video) {
+        video.pause();
+    }
     document.body.style.overflow = "";
 }
 
