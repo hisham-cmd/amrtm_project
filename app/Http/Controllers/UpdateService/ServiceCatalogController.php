@@ -25,41 +25,48 @@ class ServiceCatalogController extends Controller
 {
     public function index(): View
     {
-        $categories = Category::with([
-            'entities' => fn($q) => $q->where('is_active', true)
-                ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
-                ->orderBy('sort_order'),
-        ])
-        ->where('is_active', true)
-        ->orderBy('sort_order')
-        ->get()
-        ->map(fn($cat) => [
-            'id'       => $cat->id,
-            'key'      => $cat->key,
-            'name_ar'  => $cat->name_ar,
-            'name_en'  => $cat->name_en,
-            'icon'     => $cat->icon,
-            'color'    => $cat->color,
-            'bg'       => $cat->bg,
-            'entities' => $cat->entities->map(fn($ent) => [
-                'id'       => $ent->id,
-                'name_ar'  => $ent->name_ar,
-                'name_en'  => $ent->name_en,
-                'icon'     => $ent->icon,
-                'color'    => $ent->color,
-                'bg'       => $ent->bg,
-                'tag_ar'   => $ent->tag_ar,
-                'tag_en'   => $ent->tag_en,
-                'services' => $ent->govServices->map(fn($svc) => [
-                    'id'             => $svc->id,
-                    'name_ar'        => $svc->name_ar,
-                    'name_en'        => $svc->name_en,
-                    'icon'           => $svc->icon,
-                    'price'          => (float) $svc->price,
-                    'estimated_days' => $svc->estimated_days,
+        $categories = collect();
+
+        try {
+            $categories = Category::with([
+                'entities' => fn($q) => $q->where('is_active', true)
+                    ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
+                    ->orderBy('sort_order'),
+            ])
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get()
+            ->map(fn($cat) => [
+                'id'       => $cat->id,
+                'key'      => $cat->key,
+                'name_ar'  => $cat->name_ar,
+                'name_en'  => $cat->name_en,
+                'icon'     => $cat->icon,
+                'color'    => $cat->color,
+                'bg'       => $cat->bg,
+                'entities' => $cat->entities->map(fn($ent) => [
+                    'id'       => $ent->id,
+                    'name_ar'  => $ent->name_ar,
+                    'name_en'  => $ent->name_en,
+                    'icon'     => $ent->icon,
+                    'color'    => $ent->color,
+                    'bg'       => $ent->bg,
+                    'tag_ar'   => $ent->tag_ar,
+                    'tag_en'   => $ent->tag_en,
+                    'services' => $ent->govServices->map(fn($svc) => [
+                        'id'             => $svc->id,
+                        'name_ar'        => $svc->name_ar,
+                        'name_en'        => $svc->name_en,
+                        'icon'           => $svc->icon,
+                        'price'          => (float) $svc->price,
+                        'estimated_days' => $svc->estimated_days,
+                    ]),
                 ]),
-            ]),
-        ]);
+            ]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Categories DB fetch skipped (offline/fallback mode): ' . $e->getMessage());
+            $categories = collect();
+        }
 
         return view('update_service.index', compact('categories'));
     }
@@ -194,59 +201,69 @@ class ServiceCatalogController extends Controller
     /* ── JSON: all categories with entities & services ── */
     public function apiServices(): JsonResponse
     {
-        $categories = Category::with([
-            'entities' => fn($q) => $q->where('is_active', true)
-                ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
-                ->orderBy('sort_order'),
-        ])
-        ->where('is_active', true)
-        ->orderBy('sort_order')
-        ->get()
-        ->map(fn($cat) => [
-            'id'       => $cat->id,
-            'key'      => $cat->key,
-            'name_ar'  => $cat->name_ar,
-            'name_en'  => $cat->name_en,
-            'icon'     => $cat->icon,
-            'color'    => $cat->color,
-            'bg'       => $cat->bg,
-            'entities' => $cat->entities->map(fn($ent) => [
-                'id'       => $ent->id,
-                'name_ar'  => $ent->name_ar,
-                'name_en'  => $ent->name_en,
-                'icon'     => $ent->icon,
-                'color'    => $ent->color,
-                'bg'       => $ent->bg,
-                'tag_ar'   => $ent->tag_ar,
-                'tag_en'   => $ent->tag_en,
-                'services' => $ent->govServices->map(fn($svc) => [
-                    'id'             => $svc->id,
-                    'name_ar'        => $svc->name_ar,
-                    'name_en'        => $svc->name_en,
-                    'icon'           => $svc->icon,
-                    'price'          => (float) $svc->price,
-                    'estimated_days' => $svc->estimated_days,
+        try {
+            $categories = Category::with([
+                'entities' => fn($q) => $q->where('is_active', true)
+                    ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
+                    ->orderBy('sort_order'),
+            ])
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get()
+            ->map(fn($cat) => [
+                'id'       => $cat->id,
+                'key'      => $cat->key,
+                'name_ar'  => $cat->name_ar,
+                'name_en'  => $cat->name_en,
+                'icon'     => $cat->icon,
+                'color'    => $cat->color,
+                'bg'       => $cat->bg,
+                'entities' => $cat->entities->map(fn($ent) => [
+                    'id'       => $ent->id,
+                    'name_ar'  => $ent->name_ar,
+                    'name_en'  => $ent->name_en,
+                    'icon'     => $ent->icon,
+                    'color'    => $ent->color,
+                    'bg'       => $ent->bg,
+                    'tag_ar'   => $ent->tag_ar,
+                    'tag_en'   => $ent->tag_en,
+                    'services' => $ent->govServices->map(fn($svc) => [
+                        'id'             => $svc->id,
+                        'name_ar'        => $svc->name_ar,
+                        'name_en'        => $svc->name_en,
+                        'icon'           => $svc->icon,
+                        'price'          => (float) $svc->price,
+                        'estimated_days' => $svc->estimated_days,
+                    ]),
                 ]),
-            ]),
-        ]);
+            ]);
 
-        return response()->json($categories);
+            return response()->json($categories);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('apiServices DB error: ' . $e->getMessage());
+            return response()->json([]);
+        }
     }
 
     /* ── JSON: public office type counts (for main page) ── */
     public function publicOfficeTypes(): JsonResponse
     {
-        $rows = Office::where('is_active', true)
-            ->where('is_verified', true)
-            ->selectRaw('type, COUNT(*) as count')
-            ->groupBy('type')
-            ->get()
-            ->keyBy('type');
-
         $types = ['law', 'services', 'customs'];
-        $result = [];
-        foreach ($types as $t) {
-            $result[$t] = (int) ($rows[$t]->count ?? 0);
+        $result = ['law' => 0, 'services' => 0, 'customs' => 0];
+
+        try {
+            $rows = Office::where('is_active', true)
+                ->where('is_verified', true)
+                ->selectRaw('type, COUNT(*) as count')
+                ->groupBy('type')
+                ->get()
+                ->keyBy('type');
+
+            foreach ($types as $t) {
+                $result[$t] = (int) ($rows[$t]->count ?? 0);
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('publicOfficeTypes DB error: ' . $e->getMessage());
         }
 
         return response()->json($result);

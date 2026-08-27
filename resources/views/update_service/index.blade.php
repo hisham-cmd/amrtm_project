@@ -2701,7 +2701,7 @@ body{display:block!important;background:transparent!important}
 }
 
 /* About-One Section */
-.about-one-wrap{width:100%;max-width:1400px;margin:0 auto;padding:30px 40px 20px;display:flex;align-items:center;gap:24px;position:relative;z-index:2;overflow:hidden;background:rgba(255,255,255,.82);backdrop-filter:blur(18px);border-radius:20px 20px 0 0;margin-top:100px}
+.about-one-wrap{width:100%;max-width:1400px;margin:0 auto;padding:30px 40px 20px;display:flex;align-items:center;gap:24px;position:relative;z-index:2;overflow:hidden;background:rgba(255,255,255,.52);border-radius:20px 20px 0 0;margin-top:100px}
 .about-one__left{flex:1;position:relative;display:flex;align-items:center;justify-content:center; max-width:400px}
 .about-one__img-box{position:relative;width:100%;max-width:460px;display:flex;align-items:center;justify-content:center}
 .about-one__img{width:260px;height:260px;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,108,53,.15);position:relative;z-index:2}
@@ -2758,7 +2758,7 @@ body{display:block!important;background:transparent!important}
 .cards-grid .card-arr{font-size:14px!important;color:#006C35!important}
 
 /* Offices */
-.offices-sec{padding:16px 40px 12px!important;position:relative!important;overflow:hidden!important;background:rgba(255,255,255,.85)!important;backdrop-filter:blur(12px)!important;border-radius:0 0 16px 16px!important;max-width:1400px!important;    margin: 1px auto !important;}
+.offices-sec{padding:16px 40px 12px!important;position:relative!important;overflow:hidden!important;background:rgba(255,255,255,.55)!important;border-radius:0 0 16px 16px!important;max-width:1400px!important;    margin: 1px auto !important;}
 .offices-sec::before,.offices-sec::after{display:none!important}
 .offices-inner{max-width:1200px!important;margin:0 auto!important;text-align:center!important}
 .s-ttl{font-size:clamp(.7rem,1.4vw,.85rem)!important;font-weight:800!important;color:#002A15!important;margin-bottom:4px!important;text-align:center!important}
@@ -2994,7 +2994,7 @@ body{display:block!important;background:transparent!important}
                         preload="auto"
                         poster="{{ asset('images/slide-kafd.jpg') }}"
                         style="width:100%; height:100%; object-fit:cover; display:block;">
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-network-connections-and-technology-43285-large.mp4" type="video/mp4">
+                        <source src="{{ asset('videos/istockphoto-1135241592-640_adpp_is.mp4') }}" type="video/mp4">
                     </video>
                     <div class="about-one__video-overlay" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,42,21,0.15) 0%, rgba(0,108,53,0.35) 100%); pointer-events:none;"></div>
                     <div class="about-one__video-link" style="pointer-events:auto;">
