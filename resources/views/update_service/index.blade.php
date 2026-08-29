@@ -2706,8 +2706,8 @@ body{display:block!important;background:transparent!important}
 .about-one__img-box{position:relative;width:100%;max-width:460px;display:flex;align-items:center;justify-content:center}
 .about-one__img{width:260px;height:260px;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,108,53,.15);position:relative;z-index:2}
 .about-one__img img{width:100%;height:100%;object-fit:cover}
-.about-one__shape-1{position:absolute;top:-20px;left:-20px;z-index:1;animation:floatBobX 4s ease-in-out infinite alternate;width:60px;height:60px;border-radius:18px;background:linear-gradient(135deg,rgba(0,108,53,.1),rgba(0,132,61,.15));display:flex;align-items:center;justify-content:center;font-size:24px;color:#006C35}
-.about-one__shape-3{position:absolute;top:50%;right:-30px;z-index:1;transform:translateY(-50%);animation:floatBobY 5s ease-in-out infinite alternate;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,rgba(0,108,53,.08),rgba(0,132,61,.12));display:flex;align-items:center;justify-content:center;font-size:20px;color:#00843D}
+.about-one__shape-1{position:absolute;top:-20px;left:-20px;z-index:1;animation:floatBobX 4s ease-in-out infinite alternate;width:60px;height:60px;border-radius:18px;    background: linear-gradient(135deg, rgb(255 255 255 / 44%), rgb(255 255 255 / 50%));display:flex;align-items:center;justify-content:center;font-size:24px;color:#006C35}
+.about-one__shape-3{position:absolute;top:50%;right:-30px;z-index:1;transform:translateY(-50%);animation:floatBobY 5s ease-in-out infinite alternate;width:50px;height:50px;border-radius:50%;    background: linear-gradient(135deg, rgb(255 255 255 / 44%), rgb(255 255 255 / 50%));display:flex;align-items:center;justify-content:center;font-size:20px;color:#00843D}
 @keyframes floatBobX{0%{transform:translateX(0)}100%{transform:translateX(12px)}}
 @keyframes floatBobY{0%{transform:translateY(-50%) translateY(0)}100%{transform:translateY(-50%) translateY(-12px)}}
 .about-one__video-link{position:absolute;bottom:12px;right:12px;z-index:3}
