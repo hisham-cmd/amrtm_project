@@ -920,12 +920,12 @@ body.en .vm-x{
     text-align: center;
     font-size: 25px;
     font-weight: 800;
-    color: #006C35;
+    color: #052a16;
     margin-bottom: 25px;
-        padding: 10px;
+    padding: 10px;
     display: inline-block;
     border-radius: 20px;
-
+    background: #ffffff87
 }
 
 .s-bar{
@@ -2094,7 +2094,7 @@ body.en .req{
     transform:translateY(-18px);
 }
 .offices-hd .s-eye{color:rgba(255,255,255,.65)}
-.offices-hd .s-ttl{color:#fff}
+.offices-hd .s-ttl{color:#052a16}
 .offices-hd .s-bar{background:linear-gradient(90deg,rgba(255,255,255,.7),rgba(255, 255, 255, 0.53))}
 .off-sub{
   font-size:14px;
@@ -2504,6 +2504,74 @@ body.en .req{
     color:#fff;
 }
 
+/* =========================
+   FIXED CONTACT BAR (سفلي ثابت)
+========================= */
+
+.cb{
+  position:fixed!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  z-index:999!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:12px!important;
+  padding:10px 16px!important;
+  background:rgba(255,255,255,.96)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+  backdrop-filter:blur(12px)!important;
+  border-top:1px solid rgba(0,0,0,.08)!important;
+  box-shadow:0 -4px 20px rgba(0,0,0,.12)!important;
+}
+
+.cb-lbl{
+  font-size:13px!important;
+  font-weight:800!important;
+  color:#002A15!important;
+  white-space:nowrap!important;
+}
+
+.cb a{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:9px 16px!important;
+  border-radius:12px!important;
+  font-size:13px!important;
+  font-weight:800!important;
+  text-decoration:none!important;
+  transition:.25s!important;
+}
+
+.cb-call{
+  background:linear-gradient(135deg,#006C35,#00843D)!important;
+  color:#fff!important;
+  box-shadow:0 4px 12px rgba(0,108,53,.35)!important;
+}
+
+.cb-call:hover{
+  transform:translateY(-2px)!important;
+}
+
+.cb-wa{
+  background:rgba(37,211,102,.14)!important;
+  color:#075E54!important;
+  border:1px solid rgba(37,211,102,.4)!important;
+}
+
+.cb-wa:hover{
+  background:#25D366!important;
+  color:#fff!important;
+}
+
+@media(max-width:576px){
+  .cb{flex-wrap:wrap!important;gap:8px!important;padding:8px 10px!important}
+  .cb-lbl{display:none!important}
+  .cb a{flex:1!important;justify-content:center!important;padding:9px 8px!important;font-size:12px!important}
+}
+
 /* نخفي القديم */
 
 .f-div,
@@ -2757,7 +2825,7 @@ body{display:block!important;background:transparent!important}
 }
 
 /* About-One Section */
-.about-one-wrap{width:100%;max-width:100%;margin:0 auto;padding:30px 40px 20px;display:flex;align-items:center;gap:24px;position:relative;z-index:2;overflow:hidden;background:rgba(255,255,255,0);border-radius:20px 20px 0 0;margin-top:100px;    justify-content: space-between;}
+.about-one-wrap{width:100%;max-width:100%;margin:0 auto;padding:30px 40px 20px;display:flex;align-items:center;gap:24px;position:relative;z-index:2;overflow:hidden;background:rgba(255,255,255,0);border-radius:20px 20px 0 0;margin-top:0px;    justify-content: space-between;}
 .about-one__left{flex:1;position:relative;display:flex;align-items:center;justify-content:center; max-width:400px}
 .about-one__img-box{position:relative;width:100%;max-width:460px;display:flex;align-items:center;justify-content:center}
 .about-one__img{width:260px;height:260px;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,108,53,.15);position:relative;z-index:2}
@@ -2778,32 +2846,23 @@ body{display:block!important;background:transparent!important}
 .about-one__call-text{font-size:11px;color:#7A82B8;margin:0}
 .about-one__call-number{font-size:15px;font-weight:900;color:#006C35;margin:0}
 .about-one__call-number a{color:inherit;text-decoration:none}
-.about-one__right{flex:1;max-width:1000px;overflow:hidden}
+.about-one__right{flex:1;max-width:1400px;overflow:hidden}
 .section-title{margin-bottom:18px}
 .section-title__icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:rgba(0,108,53,.08);margin-bottom:8px}
 .section-title__icon .fa{font-size:14px;color:#006C35}
 .section-title__icon i{font-size:14px;color:#006C35}
-.section-title__tagline{display:block;font-size:13px;font-weight:700;color:#00843D;margin-bottom:4px;    background: #ffffff87;
-    padding: 8px;
-    display: inline-block;
-    border-radius: 10px;}
-.section-title__title{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:#002A15;line-height:1.3;margin:0;    background: #ffffff87;
-    padding: 10px;
-    display: inline-block;
-    border-radius: 20px;}
-.about-one__text{font-size:15px;color:#004D28;line-height:1.8;margin-bottom:16px;    background: #ffffff87;
-    padding: 10px;
-    display: inline-block;
-    border-radius: 20px;}
+.section-title__tagline{display:block;font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:8px 14px;display:inline-block;border-radius:20px;border:1px solid rgba(255,255,255,.3);text-shadow:0 1px 3px rgba(0,0,0,.45)}
+.section-title__title{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:#fff;line-height:1.3;margin:0;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:10px 18px;display:inline-block;border-radius:20px;border:1px solid rgba(255,255,255,.3);text-shadow:0 2px 4px rgba(0,0,0,.45)}
+.about-one__text{font-size:15px;color:#fff;line-height:1.8;margin-bottom:16px;background:rgba(255,255,255,.14);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:10px 16px;display:inline-block;border-radius:20px;border:1px solid rgba(255,255,255,.28);text-shadow:0 1px 3px rgba(0,0,0,.45)}
 .about-one__cards-grid{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:10px!important;margin-bottom:10px;margin-top: 80px;}
-.ao-card{display:block!important;padding:0!important;border-radius:16px!important;background:#ffffff87!important;border:1px solid rgba(0,108,53,.08)!important;box-shadow:0 4px 15px rgba(0,108,53,.08)!important;cursor:pointer!important;transition:all .3s!important;overflow:hidden!important;text-decoration:none!important;color:inherit!important}
-.ao-card:hover{transform:translateY(-5px)!important;box-shadow:0 12px 30px rgba(0,108,53,.15)!important;border-color:#00843D!important}
+.ao-card{display:block!important;padding:0!important;border-radius:16px!important;background:rgba(255,255,255,.18)!important;-webkit-backdrop-filter:blur(2px)!important;backdrop-filter:blur(2px)!important;border:1px solid rgba(255,255,255,.35)!important;box-shadow:0 4px 15px rgba(0,0,0,.14)!important;cursor:pointer!important;transition:all .3s!important;overflow:hidden!important;text-decoration:none!important;color:inherit!important; max-width: 200px;}
+.ao-card:hover{transform:translateY(-5px)!important;box-shadow:0 12px 30px rgba(0,0,0,.22)!important;border-color:#fff!important;background:rgba(255,255,255,.28)!important}
 .ao-card-body{padding:14px 12px 8px!important;text-align:center!important; min-height: 145px;}
 .ao-card-ico{width:42px!important;height:42px!important;border-radius:12px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:18px!important;margin:0 auto 8px!important}
-.ao-card-nm{font-size:14px!important;font-weight:800!important;color:#002A15!important;margin-bottom:4px!important}
-.ao-card-desc{font-size:10px!important;color:#7A82B8!important;line-height:1.4!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important}
-.ao-card-foot{display:flex!important;align-items:center!important;justify-content:space-between!important;padding:6px 12px!important;border-top:1px solid rgba(0,108,53,.06)!important;background:#F5F8F6!important}
-.ao-card-tag{font-size:12px!important;font-weight:700!important;color:#006C35!important}
+.ao-card-nm{font-size:14px!important;font-weight:800!important;color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.45)!important;margin-bottom:4px!important}
+.ao-card-desc{font-size:10px!important;color:rgba(255,255,255,.92)!important;text-shadow:0 1px 3px rgba(0,0,0,.45)!important;line-height:1.4!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important}
+.ao-card-foot{display:flex!important;align-items:center!important;justify-content:space-between!important;padding:6px 12px!important;border-top:1px solid rgba(255,255,255,.35)!important;background:transparent!important}
+.ao-card-tag{font-size:12px!important;font-weight:700!important;color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.45)!important}
 .ao-card-arr{font-size:14px!important}
 .about-one__btn-box-and-signature{display:flex;align-items:center;gap:12px}
 .about-one__btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:12px;background:linear-gradient(135deg,#006C35,#00843D);color:#fff;font-size:14px;font-weight:800;text-decoration:none;transition:.3s;box-shadow:0 6px 20px rgba(0,108,53,.25)}
@@ -2826,7 +2885,7 @@ body{display:block!important;background:transparent!important}
 .offices-sec{padding:16px 40px 12px!important;position:relative!important;overflow:hidden!important;background:rgba(255,255,255,0)!important;border-radius:0 0 16px 16px!important;max-width:1400px!important;    margin: 0px auto !important;}
 .offices-sec::before,.offices-sec::after{display:none!important}
 .offices-inner{max-width:1200px!important;margin:0 auto!important;text-align:center!important}
-.s-ttl{font-size:clamp(.7rem,1.4vw,.85rem)!important;font-weight:800!important;color:#ffffff !important;margin-bottom:4px!important;text-align:center!important}
+.s-ttl{font-size:clamp(.7rem,1.4vw,.85rem)!important;font-weight:800!important;color:#fff!important;margin-bottom:10px!important;text-align:center!important;background:rgba(255,255,255,.16)!important;-webkit-backdrop-filter:blur(10px)!important;backdrop-filter:blur(10px)!important;padding:8px 16px!important;display:inline-block!important;border-radius:20px!important;border:1px solid rgba(255,255,255,.3)!important;text-shadow:0 1px 3px rgba(0,0,0,.45)!important;max-width:100%!important;box-sizing:border-box!important}
 .off-cards-grid{display:grid!important;grid-template-columns:repeat(6,1fr)!important;gap:8px!important;margin-bottom:10px!important}
 .off-card{padding:6px 4px!important;border-radius:10px!important;background:#fff!important;border:1px solid rgba(0,108,53,.08)!important;text-align:center!important;display:flex!important;flex-direction:column!important;align-items:center!important;gap:2px!important;transition:all .3s!important;text-decoration:none!important;color:#002A15!important;box-shadow:0 1px 4px rgba(0,108,53,.05)!important}
 .off-card:hover{transform:translateY(-2px)!important;box-shadow:0 4px 12px rgba(0,108,53,.1)!important;border-color:#00843D!important}
@@ -2951,16 +3010,20 @@ body{display:block!important;background:transparent!important}
 
     <!-- Hero Slider -->
     <div class="hero-slider" id="heroSlider">
-        <div class="hero-slide active" style="background-image:url('{{ asset('images/slide-kafd.jpg') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-kingdom.jpg') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-diriyah.jpg') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-alula.jpg') }}')"></div>
+        <div class="hero-slide active" style="background-image:url('{{ asset('images/slide-1.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-2.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-3.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-4.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-5.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-6.jpg') }}')"></div>
     </div>
     <div class="hero-slider-dots" id="heroSliderDots">
         <div class="hero-slider-dot active" data-index="0"></div>
         <div class="hero-slider-dot" data-index="1"></div>
         <div class="hero-slider-dot" data-index="2"></div>
         <div class="hero-slider-dot" data-index="3"></div>
+        <div class="hero-slider-dot" data-index="4"></div>
+        <div class="hero-slider-dot" data-index="5"></div>
     </div>
     <div class="hero-slider-arrow prev" onclick="heroSliderPrev()"><i class="fa fa-chevron-right"></i></div>
     <div class="hero-slider-arrow next" onclick="heroSliderNext()"><i class="fa fa-chevron-left"></i></div>
@@ -2977,7 +3040,7 @@ body{display:block!important;background:transparent!important}
                 <h2 class="section-title__title" id="ao-title">منصة آمر تم لخدمات قطاع الأعمال</h2>
             </div>
             <p class="about-one__text" id="ao-desc">منصة تعمل وفق مفهوم النافذة الواحدة لاستقبال طلبات العملاء وإنجاز معاملاتهم عبر شبكة من الشركاء والمتخصصين.</p>
-
+            <br/>
             <span class="section-title__tagline" id="ao-tagline">أختر الخدمة المطلوبة من خلال الجهات التالية</span>
             <div class="about-one__cards-grid">
                 <a href="{{ route('amrtm.catalog.category', 'ministries') }}" class="ao-card" style="--cc:#1A237E">
@@ -3285,7 +3348,9 @@ body{display:block!important;background:transparent!important}
              </a>
 
          <a class="fsoc" href="https://wa.me/966504915222">
-            <i class="fa fa-whatsapp"></i>
+            <svg viewBox="0 0 448 512" width="16" height="16" fill="currentColor" aria-hidden="true" style="display:block">
+                <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+            </svg>
         </a>
 
     </div>
@@ -3304,10 +3369,12 @@ body{display:block!important;background:transparent!important}
                 <i class="fa fa-phone"></i>
                 <span>966920002164</span>
             </a>
-            <a class="f-wa" href="https://wa.me/966504915222" target="_blank" rel="noopener noreferrer">
-                <i class="fa fa-whatsapp"></i>
-                <span>واتساب</span>
-            </a>
+<a class="f-wa" href="https://wa.me/966504915222" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 448 512" width="15" height="15" fill="currentColor" aria-hidden="true" style="display:block">
+                        <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+                    </svg>
+                    <span>واتساب</span>
+                </a>
         </div>
 
         <a class="fbl" href="#">
@@ -3327,6 +3394,21 @@ body{display:block!important;background:transparent!important}
 </div>
 
 </footer>
+
+<!-- FIXED CONTACT BAR -->
+<div class="cb">
+    <span class="cb-lbl">المكتب الرئيسي</span>
+    <a class="cb-call" href="tel:+966920002164">
+        <i class="fa fa-phone"></i>
+        <span>966920002164</span>
+    </a>
+    <a class="cb-wa" href="https://wa.me/966504915222" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 448 512" width="16" height="16" fill="currentColor" aria-hidden="true" style="display:block">
+            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+        </svg>
+        <span>واتساب</span>
+    </a>
+</div>
 
 <script>
 window.AMRTM_USER = {!! auth('business')->check() ? json_encode([
