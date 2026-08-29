@@ -2727,10 +2727,19 @@ body{display:block!important;background:transparent!important}
 .section-title__icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:rgba(0,108,53,.08);margin-bottom:8px}
 .section-title__icon .fa{font-size:14px;color:#006C35}
 .section-title__icon i{font-size:14px;color:#006C35}
-.section-title__tagline{display:block;font-size:13px;font-weight:700;color:#00843D;margin-bottom:4px}
-.section-title__title{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:#002A15;line-height:1.3;margin:0}
-.about-one__text{font-size:15px;color:#004D28;line-height:1.8;margin-bottom:16px}
-.about-one__cards-grid{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:10px!important;margin-bottom:20px}
+.section-title__tagline{display:block;font-size:13px;font-weight:700;color:#00843D;margin-bottom:4px;    background: #ffffff;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 10px;}
+.section-title__title{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:#002A15;line-height:1.3;margin:0;    background: #ffffff;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 20px;}
+.about-one__text{font-size:15px;color:#004D28;line-height:1.8;margin-bottom:16px;    background: #ffffff;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 20px;}
+.about-one__cards-grid{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:10px!important;margin-bottom:10px}
 .ao-card{display:block!important;padding:0!important;border-radius:16px!important;background:#fff!important;border:1px solid rgba(0,108,53,.08)!important;box-shadow:0 4px 15px rgba(0,108,53,.08)!important;cursor:pointer!important;transition:all .3s!important;overflow:hidden!important;text-decoration:none!important;color:inherit!important}
 .ao-card:hover{transform:translateY(-5px)!important;box-shadow:0 12px 30px rgba(0,108,53,.15)!important;border-color:#00843D!important}
 .ao-card-body{padding:14px 12px 8px!important;text-align:center!important; min-height: 145px;}
