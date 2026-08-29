@@ -2917,6 +2917,7 @@ body{display:block!important;background:transparent!important}
             <div class="section-title text-left">
       
                 <span class="section-title__tagline" id="ao-tagline">مرحباً بكم في منصة آمر تم</span>
+                <br>
                 <h2 class="section-title__title" id="ao-title">منصة آمر تم لخدمات قطاع الأعمال</h2>
             </div>
             <p class="about-one__text" id="ao-desc">منصة تعمل وفق مفهوم النافذة الواحدة لاستقبال طلبات العملاء وإنجاز معاملاتهم عبر شبكة من الشركاء والمتخصصين.</p>
