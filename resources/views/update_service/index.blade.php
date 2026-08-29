@@ -922,6 +922,10 @@ body.en .vm-x{
     font-weight: 800;
     color: #006C35;
     margin-bottom: 25px;
+        padding: 10px;
+    display: inline-block;
+    border-radius: 20px;
+
 }
 
 .s-bar{
@@ -2448,6 +2452,58 @@ body.en .req{
     color:#002A15;
 }
 
+/* جهة الاتصال (الجوال + واتساب) */
+
+.f-contact{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.f-call-lbl{
+    font-size:13px;
+    font-weight:800;
+    color:#002A15;
+    white-space:nowrap;
+}
+
+.f-call,
+.f-wa{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    color:#002A15;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+    padding:9px 14px;
+    border-radius:10px;
+    background:#fff;
+    border:1px solid rgba(13,18,87,.15);
+    transition:.25s;
+}
+
+.f-call i,
+.f-wa i{
+    font-size:15px;
+}
+
+.f-call:hover{
+    background:#002A15;
+    color:#fff;
+}
+
+.f-wa{
+    background:rgba(37,211,102,.12);
+    border-color:rgba(37,211,102,.35);
+    color:#075E54;
+}
+
+.f-wa:hover{
+    background:#25D366;
+    color:#fff;
+}
+
 /* نخفي القديم */
 
 .f-div,
@@ -2701,13 +2757,13 @@ body{display:block!important;background:transparent!important}
 }
 
 /* About-One Section */
-.about-one-wrap{width:100%;max-width:1400px;margin:0 auto;padding:30px 40px 20px;display:flex;align-items:center;gap:24px;position:relative;z-index:2;overflow:hidden;background:rgba(255,255,255,0);border-radius:20px 20px 0 0;margin-top:100px}
+.about-one-wrap{width:100%;max-width:100%;margin:0 auto;padding:30px 40px 20px;display:flex;align-items:center;gap:24px;position:relative;z-index:2;overflow:hidden;background:rgba(255,255,255,0);border-radius:20px 20px 0 0;margin-top:100px;    justify-content: space-between;}
 .about-one__left{flex:1;position:relative;display:flex;align-items:center;justify-content:center; max-width:400px}
 .about-one__img-box{position:relative;width:100%;max-width:460px;display:flex;align-items:center;justify-content:center}
 .about-one__img{width:260px;height:260px;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,108,53,.15);position:relative;z-index:2}
 .about-one__img img{width:100%;height:100%;object-fit:cover}
-.about-one__shape-1{position:absolute;top:-20px;left:-20px;z-index:1;animation:floatBobX 4s ease-in-out infinite alternate;width:60px;height:60px;border-radius:18px;    background: linear-gradient(135deg, rgb(255 255 255 / 44%), rgb(255 255 255 / 50%));display:flex;align-items:center;justify-content:center;font-size:24px;color:#006C35}
-.about-one__shape-3{position:absolute;top:50%;right:-30px;z-index:1;transform:translateY(-50%);animation:floatBobY 5s ease-in-out infinite alternate;width:50px;height:50px;border-radius:50%;    background: linear-gradient(135deg, rgb(255 255 255 / 44%), rgb(255 255 255 / 50%));display:flex;align-items:center;justify-content:center;font-size:20px;color:#00843D}
+
+
 @keyframes floatBobX{0%{transform:translateX(0)}100%{transform:translateX(12px)}}
 @keyframes floatBobY{0%{transform:translateY(-50%) translateY(0)}100%{transform:translateY(-50%) translateY(-12px)}}
 .about-one__video-link{position:absolute;bottom:12px;right:12px;z-index:3}
@@ -2722,32 +2778,32 @@ body{display:block!important;background:transparent!important}
 .about-one__call-text{font-size:11px;color:#7A82B8;margin:0}
 .about-one__call-number{font-size:15px;font-weight:900;color:#006C35;margin:0}
 .about-one__call-number a{color:inherit;text-decoration:none}
-.about-one__right{flex:1;max-width:900px;overflow:hidden}
+.about-one__right{flex:1;max-width:1000px;overflow:hidden}
 .section-title{margin-bottom:18px}
 .section-title__icon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:rgba(0,108,53,.08);margin-bottom:8px}
 .section-title__icon .fa{font-size:14px;color:#006C35}
 .section-title__icon i{font-size:14px;color:#006C35}
-.section-title__tagline{display:block;font-size:13px;font-weight:700;color:#00843D;margin-bottom:4px;    background: #ffffff;
-    padding: 10px;
+.section-title__tagline{display:block;font-size:13px;font-weight:700;color:#00843D;margin-bottom:4px;    background: #ffffff87;
+    padding: 8px;
     display: inline-block;
     border-radius: 10px;}
-.section-title__title{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:#002A15;line-height:1.3;margin:0;    background: #ffffff;
+.section-title__title{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:#002A15;line-height:1.3;margin:0;    background: #ffffff87;
     padding: 10px;
     display: inline-block;
     border-radius: 20px;}
-.about-one__text{font-size:15px;color:#004D28;line-height:1.8;margin-bottom:16px;    background: #ffffff;
+.about-one__text{font-size:15px;color:#004D28;line-height:1.8;margin-bottom:16px;    background: #ffffff87;
     padding: 10px;
     display: inline-block;
     border-radius: 20px;}
-.about-one__cards-grid{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:10px!important;margin-bottom:10px}
-.ao-card{display:block!important;padding:0!important;border-radius:16px!important;background:#fff!important;border:1px solid rgba(0,108,53,.08)!important;box-shadow:0 4px 15px rgba(0,108,53,.08)!important;cursor:pointer!important;transition:all .3s!important;overflow:hidden!important;text-decoration:none!important;color:inherit!important}
+.about-one__cards-grid{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:10px!important;margin-bottom:10px;margin-top: 80px;}
+.ao-card{display:block!important;padding:0!important;border-radius:16px!important;background:#ffffff87!important;border:1px solid rgba(0,108,53,.08)!important;box-shadow:0 4px 15px rgba(0,108,53,.08)!important;cursor:pointer!important;transition:all .3s!important;overflow:hidden!important;text-decoration:none!important;color:inherit!important}
 .ao-card:hover{transform:translateY(-5px)!important;box-shadow:0 12px 30px rgba(0,108,53,.15)!important;border-color:#00843D!important}
 .ao-card-body{padding:14px 12px 8px!important;text-align:center!important; min-height: 145px;}
 .ao-card-ico{width:42px!important;height:42px!important;border-radius:12px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:18px!important;margin:0 auto 8px!important}
-.ao-card-nm{font-size:12px!important;font-weight:800!important;color:#002A15!important;margin-bottom:4px!important}
+.ao-card-nm{font-size:14px!important;font-weight:800!important;color:#002A15!important;margin-bottom:4px!important}
 .ao-card-desc{font-size:10px!important;color:#7A82B8!important;line-height:1.4!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important}
 .ao-card-foot{display:flex!important;align-items:center!important;justify-content:space-between!important;padding:6px 12px!important;border-top:1px solid rgba(0,108,53,.06)!important;background:#F5F8F6!important}
-.ao-card-tag{font-size:9px!important;font-weight:700!important;color:#006C35!important}
+.ao-card-tag{font-size:12px!important;font-weight:700!important;color:#006C35!important}
 .ao-card-arr{font-size:14px!important}
 .about-one__btn-box-and-signature{display:flex;align-items:center;gap:12px}
 .about-one__btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:12px;background:linear-gradient(135deg,#006C35,#00843D);color:#fff;font-size:14px;font-weight:800;text-decoration:none;transition:.3s;box-shadow:0 6px 20px rgba(0,108,53,.25)}
@@ -2798,7 +2854,7 @@ body{display:block!important;background:transparent!important}
   .about-one-wrap{padding:6px 15px}
   .about-one__left{min-height:0 ; max-width:400px}
   .about-one__img{width:140px;height:140px;border-radius:18px}
-  .about-one__shape-1,.about-one__shape-3{display:none}
+  
   .cards-grid{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
   .off-cards-grid{grid-template-columns:repeat(3,1fr)!important;gap:6px!important}
   .cards-wrap-home{padding:0 15px}
@@ -2916,19 +2972,19 @@ body{display:block!important;background:transparent!important}
         <div class="about-one__right">
             <div class="section-title text-left">
       
-                <span class="section-title__tagline" id="ao-tagline">مرحباً بكم في منصة آمر تم</span>
+                
                 <br>
                 <h2 class="section-title__title" id="ao-title">منصة آمر تم لخدمات قطاع الأعمال</h2>
             </div>
             <p class="about-one__text" id="ao-desc">منصة تعمل وفق مفهوم النافذة الواحدة لاستقبال طلبات العملاء وإنجاز معاملاتهم عبر شبكة من الشركاء والمتخصصين.</p>
+
+            <span class="section-title__tagline" id="ao-tagline">أختر الخدمة المطلوبة من خلال الجهات التالية</span>
             <div class="about-one__cards-grid">
                 <a href="{{ route('amrtm.catalog.category', 'ministries') }}" class="ao-card" style="--cc:#1A237E">
                     <div class="ao-card-body">
-                        <div class="ao-card-ico" style="background:rgba(26,35,126,.1);border:2px solid #1A237E22;">
-                            <i class="fa fa-landmark" style="color:#1A237E;"></i>
-                        </div>
+                       
                         <div class="ao-card-nm">الوزارات</div>
-                        <div class="ao-card-desc">جميع الوزارات الحكومية السعودية</div>
+                       
                     </div>
                     <div class="ao-card-foot">
                         <span class="ao-card-tag">24 جهة</span>
@@ -2937,11 +2993,9 @@ body{display:block!important;background:transparent!important}
                 </a>
                 <a href="{{ route('amrtm.catalog.category', 'authorities') }}" class="ao-card" style="--cc:#6A1B9A">
                     <div class="ao-card-body">
-                        <div class="ao-card-ico" style="background:rgba(106,27,154,.1);border:2px solid #6A1B9A22;">
-                            <i class="fa fa-award" style="color:#6A1B9A;"></i>
-                        </div>
+                       
                         <div class="ao-card-nm">الهيئات</div>
-                        <div class="ao-card-desc">الهيئات والمؤسسات الحكومية</div>
+                       
                     </div>
                     <div class="ao-card-foot">
                         <span class="ao-card-tag">12 جهة</span>
@@ -2950,11 +3004,9 @@ body{display:block!important;background:transparent!important}
                 </a>
                 <a href="{{ route('amrtm.catalog.category', 'companies') }}" class="ao-card" style="--cc:#1B5E20">
                     <div class="ao-card-body">
-                        <div class="ao-card-ico" style="background:rgba(27,94,32,.1);border:2px solid #1B5E2022;">
-                            <i class="fa fa-building" style="color:#1B5E20;"></i>
-                        </div>
+                        
                         <div class="ao-card-nm">الشركات الحكومية</div>
-                        <div class="ao-card-desc">المؤسسات والشركات الحكومية</div>
+                       
                     </div>
                     <div class="ao-card-foot">
                         <span class="ao-card-tag">11 جهة</span>
@@ -2963,11 +3015,9 @@ body{display:block!important;background:transparent!important}
                 </a>
                 <a href="{{ route('amrtm.catalog.category', 'embassies') }}" class="ao-card" style="--cc:#00838F">
                     <div class="ao-card-body">
-                        <div class="ao-card-ico" style="background:rgba(0,131,143,.1);border:2px solid #00838F22;">
-                            <i class="fa fa-earth-americas" style="color:#00838F;"></i>
-                        </div>
+                        
                         <div class="ao-card-nm">السفارات والمنظمات</div>
-                        <div class="ao-card-desc">سفارات المملكة والقنصليات والمنظمات</div>
+                        
                     </div>
                     <div class="ao-card-foot">
                         <span class="ao-card-tag">12 جهة</span>
@@ -2976,11 +3026,9 @@ body{display:block!important;background:transparent!important}
                 </a>
                 <a href="{{ route('consultants') }}" class="ao-card" style="--cc:#E65100">
                     <div class="ao-card-body">
-                        <div class="ao-card-ico" style="background:rgba(230,81,0,.1);border:2px solid #E6510022;">
-                            <i class="fa fa-user-tie" style="color:#E65100;"></i>
-                        </div>
+                       
                         <div class="ao-card-nm">المستشارين</div>
-                        <div class="ao-card-desc">اختر مستشارك</div>
+                       
                     </div>
                     <div class="ao-card-foot">
                         <span class="ao-card-tag">0 جهة</span>
@@ -2992,9 +3040,7 @@ body{display:block!important;background:transparent!important}
         </div>
         <div class="about-one__left">
             <div class="about-one__img-box">
-                <div class="about-one__shape-1">
-                    <i class="fa fa-shapes"></i>
-                </div>
+                
                 <div class="about-one__img" onclick="openVid()" style="cursor:pointer; position:relative; overflow:hidden;">
                     <img src="{{ asset('images/logo2.jpg') }}" alt="منصة أمر تم" loading="lazy"
                          style="width:100%; height:100%; object-fit:cover; display:block;">
@@ -3004,18 +3050,6 @@ body{display:block!important;background:transparent!important}
                             <span class="fa fa-play" style="font-size:16px;color:#fff;margin-right:-2px"></span>
                             <i class="ripple"></i>
                         </div>
-                    </div>
-                </div>
-                <div class="about-one__shape-3">
-                    <i class="fa fa-bolt"></i>
-                </div>
-                <div class="about-one__call-box">
-                    <div class="about-one__call-icon">
-                        <img src="{{ asset('images/new-logo1.png') }}" class="w-100 p-2" loading="lazy">
-                    </div>
-                    <div class="about-one__call-box-content">
-                        <p class="about-one__call-text">المكتب الرئيسي</p>
-                        <h4 class="about-one__call-number"><a href="tel:+966920002164">966920002164</a></h4>
                     </div>
                 </div>
             </div>
@@ -3263,6 +3297,18 @@ body{display:block!important;background:transparent!important}
 
     <!-- الروابط -->
     <div class="f-left">
+
+        <div class="f-contact">
+            <span class="f-call-lbl">المكتب الرئيسي</span>
+            <a class="f-call" href="tel:+966920002164">
+                <i class="fa fa-phone"></i>
+                <span>966920002164</span>
+            </a>
+            <a class="f-wa" href="https://wa.me/966504915222" target="_blank" rel="noopener noreferrer">
+                <i class="fa fa-whatsapp"></i>
+                <span>واتساب</span>
+            </a>
+        </div>
 
         <a class="fbl" href="#">
             سياسة الخصوصية
@@ -3576,7 +3622,7 @@ const T = {
         fb1: "سياسة الخصوصية",
         fb2: "شروط الاستخدام",
         fb3: "تواصل معنا",
-        ao_tagline: "مرحباً بكم في منصة آمر تم",
+        ao_tagline: "أختر الخدمة المطلوبة من خلال الجهات التالية",
         ao_title: "منصة آمر تم لخدمات قطاع الأعمال",
         ao_desc: "منصة تعمل وفق مفهوم النافذة الواحدة لاستقبال طلبات العملاء وإنجاز معاملاتهم عبر شبكة من الشركاء والمتخصصين.",
         ao_big: "نوفر لك كافة الخدمات الحكومية في منصة واحدة",
