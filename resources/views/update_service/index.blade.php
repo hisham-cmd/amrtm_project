@@ -425,6 +425,7 @@ body.en *:not(i):not(span.fa):not(.fa){
     display:flex;
     gap:10px;
     align-items:center;
+    display: none;
 }
 .hero-slider-dot{
     width:10px;
@@ -2825,10 +2826,10 @@ body{display:block!important;background:transparent!important}
 }
 
 /* About-One Section */
-.about-one-wrap{width:100%;max-width:100%;margin:0 auto;padding:30px 40px 20px;display:flex;align-items:center;gap:24px;position:relative;z-index:2;overflow:hidden;background:rgba(255,255,255,0);border-radius:20px 20px 0 0;margin-top:0px;    justify-content: space-between;}
-.about-one__left{flex:1;position:relative;display:flex;align-items:center;justify-content:center; max-width:400px}
+.about-one-wrap{width:100%;max-width:100%;margin:0 auto;padding:30px 40px 20px;display:flex;align-items:start;gap:24px;position:relative;z-index:2;overflow:hidden;background:rgba(255,255,255,0);border-radius:20px 20px 0 0;margin-top:0px;    justify-content: space-between;}
+.about-one__left{flex:1;position:relative;display:flex;align-items:start;justify-content:center; max-width:400px}
 .about-one__img-box{position:relative;width:100%;max-width:460px;display:flex;align-items:center;justify-content:center}
-.about-one__img{width:260px;height:260px;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,108,53,.15);position:relative;z-index:2}
+.about-one__img{width:200px;height:200px;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,108,53,.15);position:relative;z-index:2}
 .about-one__img img{width:100%;height:100%;object-fit:cover}
 
 
@@ -2854,10 +2855,12 @@ body{display:block!important;background:transparent!important}
 .section-title__tagline{display:block;font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:8px 14px;display:inline-block;border-radius:20px;border:1px solid rgba(255,255,255,.3);text-shadow:0 1px 3px rgba(0,0,0,.45)}
 .section-title__title{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:#fff;line-height:1.3;margin:0;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:10px 18px;display:inline-block;border-radius:20px;border:1px solid rgba(255,255,255,.3);text-shadow:0 2px 4px rgba(0,0,0,.45)}
 .about-one__text{font-size:15px;color:#fff;line-height:1.8;margin-bottom:16px;background:rgba(255,255,255,.14);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:10px 16px;display:inline-block;border-radius:20px;border:1px solid rgba(255,255,255,.28);text-shadow:0 1px 3px rgba(0,0,0,.45)}
-.about-one__cards-grid{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:10px!important;margin-bottom:10px;margin-top: 80px;}
-.ao-card{display:block!important;padding:0!important;border-radius:16px!important;background:rgba(255,255,255,.18)!important;-webkit-backdrop-filter:blur(2px)!important;backdrop-filter:blur(2px)!important;border:1px solid rgba(255,255,255,.35)!important;box-shadow:0 4px 15px rgba(0,0,0,.14)!important;cursor:pointer!important;transition:all .3s!important;overflow:hidden!important;text-decoration:none!important;color:inherit!important; max-width: 200px;}
+.about-one__cards-grid{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:10px!important;margin-bottom:10px;margin-top: 80px;    margin-right: 355px;}
+.ao-card{display:block!important;padding:0!important;border-radius:16px!important;background:rgba(255,255,255,.18)!important;-webkit-backdrop-filter:blur(2px)!important;backdrop-filter:blur(2px)!important;border:1px solid rgba(255,255,255,.35)!important;box-shadow:0 4px 15px rgba(0,0,0,.14)!important;cursor:pointer!important;transition:all .3s!important;overflow:hidden!important;text-decoration:none!important;color:inherit!important; max-width: 170px;}
 .ao-card:hover{transform:translateY(-5px)!important;box-shadow:0 12px 30px rgba(0,0,0,.22)!important;border-color:#fff!important;background:rgba(255,255,255,.28)!important}
-.ao-card-body{padding:14px 12px 8px!important;text-align:center!important; min-height: 145px;}
+.ao-card-body{padding:14px 12px 8px!important;text-align:center!important; min-height: 145px;    display: flex;
+    align-items: center;
+    justify-content: center;}
 .ao-card-ico{width:42px!important;height:42px!important;border-radius:12px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:18px!important;margin:0 auto 8px!important}
 .ao-card-nm{font-size:14px!important;font-weight:800!important;color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.45)!important;margin-bottom:4px!important}
 .ao-card-desc{font-size:10px!important;color:rgba(255,255,255,.92)!important;text-shadow:0 1px 3px rgba(0,0,0,.45)!important;line-height:1.4!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important}
@@ -2896,37 +2899,65 @@ body{display:block!important;background:transparent!important}
 .off-cta-primary{background:linear-gradient(135deg,#006C35,#00843D)!important;color:#fff!important}
 
 /* Responsive */
+@media(max-width:1200px){
+  .about-one__cards-grid{margin-right:0!important;margin-top:25px!important}
+}
 @media(max-width:992px){
-  .about-one-wrap{flex-direction:column;gap:12px;padding:8px 20px}
-  .about-one__left{min-height:0 ;max-width:400px}
-  .about-one__img{width:180px;height:180px}
-  .about-one__right{text-align:center}
-  .section-title{text-align:center}
-  .about-one__cards-grid{grid-template-columns:repeat(2,1fr)!important}
-  .about-one__btn-box-and-signature{justify-content:center}
-  .about-one__call-box{position:relative;bottom:auto;left:auto;margin-top:10px}
+  .hero{padding-top:75px!important;padding-bottom:20px!important}
+  .about-one-wrap{flex-direction:column!important;align-items:center!important;gap:16px!important;padding:12px 18px!important;width:100%!important;box-sizing:border-box!important}
+  .about-one__left{min-height:0!important;max-width:100%!important;width:100%!important;display:flex!important;justify-content:center!important;align-items:center!important;margin:6px 0!important}
+  .about-one__img-box{width:100%!important;max-width:280px!important;display:flex!important;justify-content:center!important}
+  .about-one__img{width:220px!important;height:135px!important;border-radius:18px!important}
+  .about-one__right{width:100%!important;max-width:100%!important;text-align:center!important}
+  .section-title{text-align:center!important;margin-bottom:10px!important}
+  .section-title__title{font-size:1.3rem!important;padding:8px 16px!important;border-radius:16px!important}
+  .about-one__text{font-size:13.5px!important;padding:8px 14px!important;border-radius:14px!important;margin-bottom:12px!important}
+  .about-one__cards-grid{grid-template-columns:repeat(3,1fr)!important;gap:10px!important;margin:15px auto 0!important;margin-right:0!important;width:100%!important}
+  .ao-card{max-width:100%!important;width:100%!important}
+  .ao-card-body{min-height:80px!important;padding:12px 8px!important}
+  .about-one__btn-box-and-signature{justify-content:center!important}
+  .about-one__call-box{position:relative!important;bottom:auto!important;left:auto!important;margin-top:10px!important}
   .cards-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))!important;gap:10px!important}
-  .off-cards-grid{grid-template-columns:repeat(3,1fr)!important}
+  .off-cards-grid{grid-template-columns:repeat(3,1fr)!important;gap:8px!important}
 }
 @media(max-width:768px){
-  .hero{padding:0!important}
-  .about-one-wrap{padding:6px 15px}
-  .about-one__left{min-height:0 ; max-width:400px}
-  .about-one__img{width:140px;height:140px;border-radius:18px}
-  
+  .hero{padding-top:70px!important;padding-bottom:15px!important;min-height:auto!important}
+  .about-one-wrap{padding:8px 12px!important;gap:12px!important;width:100%!important}
+  .about-one__left{min-height:0!important;max-width:100%!important;margin-top:4px!important}
+  .about-one__img{width:200px!important;height:125px!important;border-radius:16px!important}
+  .about-one__video-icon{width:42px!important;height:42px!important}
+  .about-one__video-icon .fa{font-size:14px!important}
+  .about-one__video-label{bottom:6px!important;left:6px!important;right:6px!important;padding:4px 6px!important}
+  .about-one__video-label span{font-size:11px!important}
+  .section-title__title{font-size:1.15rem!important;padding:6px 12px!important}
+  .about-one__text{font-size:12px!important;padding:6px 10px!important;line-height:1.5!important}
+  .section-title__tagline{font-size:11.5px!important;padding:5px 10px!important}
+  .about-one__cards-grid{grid-template-columns:repeat(2,1fr)!important;gap:8px!important;margin:12px 0 0!important;margin-right:0!important}
+  .about-one__cards-grid a:last-child{grid-column:span 2!important}
+  .ao-card{border-radius:12px!important}
+  .ao-card-body{min-height:65px!important;padding:8px 6px!important}
+  .ao-card-nm{font-size:13px!important}
+  .ao-card-foot{padding:4px 8px!important}
+  .ao-card-tag{font-size:10.5px!important}
   .cards-grid{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
   .off-cards-grid{grid-template-columns:repeat(3,1fr)!important;gap:6px!important}
-  .cards-wrap-home{padding:0 15px}
-  .offices-sec{padding:8px 15px 10px}
-  .hero-slider-arrow{display:none}
-  .hero-slider-dots{bottom:12px}
-  .hero-slider-dot{width:8px;height:8px}
-  .hero-slider-dot.active{width:22px}
+  .cards-wrap-home{padding:0 12px!important}
+  .offices-sec{padding:8px 12px 10px!important;width:100%!important}
+  .s-ttl{font-size:11px!important;padding:6px 12px!important;border-radius:14px!important;line-height:1.35!important;max-width:100%!important}
+  .off-card{padding:6px 4px!important}
+  .off-card-name{font-size:10px!important}
+  .hero-slider-arrow{display:none!important}
+  .hero-slider-dots{bottom:12px!important}
+  .hero-slider-dot{width:8px!important;height:8px!important}
+  .hero-slider-dot.active{width:22px!important}
 }
 @media(max-width:480px){
+  .about-one__cards-grid{grid-template-columns:repeat(2,1fr)!important;gap:6px!important;margin-right:0!important}
+  .about-one__cards-grid a:last-child{grid-column:span 2!important}
   .cards-grid{grid-template-columns:1fr 1fr!important;gap:6px!important}
-  .off-cards-grid{grid-template-columns:repeat(2,1fr)!important;gap:4px!important}
-  .about-one__img{width:150px;height:150px}
+  .off-cards-grid{grid-template-columns:repeat(2,1fr)!important;gap:5px!important}
+  .about-one__img{width:180px!important;height:115px!important}
+  .section-title__title{font-size:1.02rem!important}
 }
 </style>
 </head>
@@ -3010,12 +3041,12 @@ body{display:block!important;background:transparent!important}
 
     <!-- Hero Slider -->
     <div class="hero-slider" id="heroSlider">
-        <div class="hero-slide active" style="background-image:url('{{ asset('images/slide-1.jpg') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-2.jpg') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-3.jpg') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-4.jpg') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-5.jpg') }}')"></div>
-        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-6.jpg') }}')"></div>
+        <div class="hero-slide active" style="background-image:url('{{ asset('images/slide-riyadh-business.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-kafd.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-kafd-night.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-kingdom.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-port-dammam.jpg') }}')"></div>
+        <div class="hero-slide" style="background-image:url('{{ asset('images/slide-port-jeddah.jpg') }}')"></div>
     </div>
     <div class="hero-slider-dots" id="heroSliderDots">
         <div class="hero-slider-dot active" data-index="0"></div>
@@ -3104,15 +3135,21 @@ body{display:block!important;background:transparent!important}
         <div class="about-one__left">
             <div class="about-one__img-box">
                 
-                <div class="about-one__img" onclick="openVid()" style="cursor:pointer; position:relative; overflow:hidden;">
+                <div class="about-one__img" onclick="openVid()" style="cursor:pointer; position:relative; overflow:hidden; border-radius:24px; box-shadow:0 15px 40px rgba(0,0,0,0.25); border:1.5px solid rgba(255,255,255,0.25);">
                     <img src="{{ asset('images/logo2.jpg') }}" alt="منصة أمر تم" loading="lazy"
-                         style="width:100%; height:100%; object-fit:cover; display:block;">
-                    <div class="about-one__video-overlay" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,42,21,0.15) 0%, rgba(0,108,53,0.35) 100%); pointer-events:none;"></div>
-                    <div class="about-one__video-link" style="pointer-events:auto;">
-                        <div class="about-one__video-icon">
+                         style="width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.4s ease;">
+                    <div class="about-one__video-overlay" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,25,12,0.2) 0%, rgba(0,70,35,0.85) 100%); pointer-events:none;"></div>
+                    <div class="about-one__video-link" style="position:absolute; top:42%; left:50%; transform:translate(-50%,-50%); z-index:3; pointer-events:auto;">
+                        <div class="about-one__video-icon" style="width:52px; height:52px; margin:0 auto;">
                             <span class="fa fa-play" style="font-size:16px;color:#fff;margin-right:-2px"></span>
                             <i class="ripple"></i>
                         </div>
+                    </div>
+                    <div class="about-one__video-label" style="position:absolute; bottom:10px; left:8px; right:8px; z-index:3; text-align:center; background:rgba(0,0,0,0.48); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); padding:6px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); pointer-events:none;">
+                        <span style="color:#ffffff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:6px;">
+                            <i class="fa fa-circle-play" style="color:#2ecc71; font-size:13px;"></i>
+                            فيديو تعريفي عن الخدمات
+                        </span>
                     </div>
                 </div>
             </div>
