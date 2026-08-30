@@ -3242,7 +3242,6 @@
             border: 1px solid rgba(255, 255, 255, .3);
             text-shadow: 0 1px 3px rgba(0, 0, 0, .45);
             text-align: center;
-            margin-right: 355px;
         }
 
         .section-title__title {
@@ -3277,15 +3276,15 @@
         }
 
         .about-one__cards-grid {
-            display: grid !important;
-            grid-template-columns: repeat(5, 1fr) !important;
-            gap: 10px !important;
+
             margin-bottom: 10px;
             margin-top: 15px;
-            margin-right: 355px;
+            display: flex !important;
+            justify-content: space-between;
         }
 
         .ao-card {
+            min-width: 180px;
             display: flex !important;
             flex-direction: column !important;
             padding: 0 !important;
@@ -4032,64 +4031,7 @@
                 </div>
                 <p class="about-one__text" id="ao-desc">منصة تعمل وفق مفهوم النافذة الواحدة لاستقبال طلبات العملاء
                     وإنجاز معاملاتهم عبر شبكة من الشركاء والمتخصصين.</p>
-                <div class="ao-tagline-wrap"
-                    style="text-align: center; display: flex; justify-content: center; width: 100%; margin: 15px auto 5px;    margin-right: 355px;">
-                    <span class="section-title__tagline" id="ao-tagline">أختر الخدمة المطلوبة من خلال الجهات
-                        التالية</span>
-                </div>
 
-                <div class="about-one__cards-grid">
-                    <a href="{{ route('amrtm.catalog.category', 'ministries') }}" class="ao-card" style="--cc:#3B82F6">
-                        <div class="ao-card-body">
-
-                            <div class="ao-card-nm">الوزارات</div>
-                        </div>
-                        <div class="ao-card-foot">
-                            <span class="ao-card-tag">24 جهة</span>
-                            <i class="fa fa-arrow-left ao-card-arr"></i>
-                        </div>
-                    </a>
-                    <a href="{{ route('amrtm.catalog.category', 'authorities') }}" class="ao-card" style="--cc:#A855F7">
-                        <div class="ao-card-body">
-
-                            <div class="ao-card-nm">الهيئات</div>
-                        </div>
-                        <div class="ao-card-foot">
-                            <span class="ao-card-tag">12 جهة</span>
-                            <i class="fa fa-arrow-left ao-card-arr"></i>
-                        </div>
-                    </a>
-                    <a href="{{ route('amrtm.catalog.category', 'companies') }}" class="ao-card" style="--cc:#22C55E">
-                        <div class="ao-card-body">
-
-                            <div class="ao-card-nm">الشركات الحكومية</div>
-                        </div>
-                        <div class="ao-card-foot">
-                            <span class="ao-card-tag">11 جهة</span>
-                            <i class="fa fa-arrow-left ao-card-arr"></i>
-                        </div>
-                    </a>
-                    <a href="{{ route('amrtm.catalog.category', 'embassies') }}" class="ao-card" style="--cc:#06B6D4">
-                        <div class="ao-card-body">
-
-                            <div class="ao-card-nm">السفارات والمنظمات</div>
-                        </div>
-                        <div class="ao-card-foot">
-                            <span class="ao-card-tag">12 جهة</span>
-                            <i class="fa fa-arrow-left ao-card-arr"></i>
-                        </div>
-                    </a>
-                    <a href="{{ route('consultants') }}" class="ao-card" style="--cc:#F97316">
-                        <div class="ao-card-body">
-
-                            <div class="ao-card-nm">المستشارين</div>
-                        </div>
-                        <div class="ao-card-foot">
-                            <span class="ao-card-tag">0 جهة</span>
-                            <i class="fa fa-arrow-left ao-card-arr"></i>
-                        </div>
-                    </a>
-                </div>
 
             </div>
             <div class="about-one__left">
@@ -4122,8 +4064,74 @@
             </div>
 
         </div>
+        <div class="offices-sec" id="offices-sec">
+            <div class="offices-inner">
+                <div class="ao-tagline-wrap"
+                    style="text-align: center; display: flex; justify-content: center; width: 100%; margin: 15px auto 5px; ">
+                    <span class="section-title__tagline" id="ao-tagline">أختر الخدمة المطلوبة من بين
+                        {{ $totalServices ?? 140 }}
+                        خدمة عبر {{ $totalEntities ?? 153 }} جهة</span>
+                </div>
 
+                <div class="about-one__cards-grid">
+                    @php
+                        $catColorMap = [
+                            'ministries' => '#3B82F6',
+                            'authorities' => '#A855F7',
+                            'companies' => '#22C55E',
+                            'embassies' => '#06B6D4',
+                            'consultants' => '#F97316',
+                        ];
+                    @endphp
 
+                    @forelse($categories as $cat)
+                        @php
+                            $catKey = $cat['key'] ?? '';
+                            $catColor = $catColorMap[$catKey] ?? ($cat['color'] ?? '#00A651');
+                        @endphp
+                        <a href="{{ route('amrtm.catalog.category', $catKey) }}" class="ao-card"
+                            style="--cc:{{ $catColor }}">
+                            <div class="ao-card-body">
+                                <div class="ao-card-nm">{{ $cat['name_ar'] }}</div>
+                                <div class="ao-card-svc-badge"
+                                    style="font-size: 11.5px; color: #fff; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 2px 10px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.8); margin-top: 4px;">
+                                    {{ $cat['services_count'] }} خدمة
+                                </div>
+                            </div>
+                            <div class="ao-card-foot">
+                                <span class="ao-card-tag">{{ $cat['entities_count'] }} جهة</span>
+                                <i class="fa fa-arrow-left ao-card-arr"></i>
+                            </div>
+                        </a>
+                    @empty
+                        <a href="{{ route('amrtm.catalog.category', 'ministries') }}" class="ao-card" style="--cc:#3B82F6">
+                            <div class="ao-card-body">
+                                <div class="ao-card-nm">الوزارات</div>
+                            </div>
+                            <div class="ao-card-foot">
+                                <span class="ao-card-tag">24 جهة</span>
+                                <i class="fa fa-arrow-left ao-card-arr"></i>
+                            </div>
+                        </a>
+                    @endforelse
+
+                    <a href="{{ route('consultants') }}" class="ao-card" style="--cc:#F97316">
+                        <div class="ao-card-body">
+                            <div class="ao-card-nm">المستشارين</div>
+                            <div class="ao-card-svc-badge"
+                                style="font-size: 11.5px; color: #fff; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 2px 10px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.8); margin-top: 4px;">
+                                استشارات فورية
+                            </div>
+                        </div>
+                        <div class="ao-card-foot">
+                            <span class="ao-card-tag">{{ $officeCounts['freelance'] ?? 0 }} مستشار</span>
+                            <i class="fa fa-arrow-left ao-card-arr"></i>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </div>
 
         <!-- ================= OFFICES ================= -->
         <div class="offices-sec" id="offices-sec">

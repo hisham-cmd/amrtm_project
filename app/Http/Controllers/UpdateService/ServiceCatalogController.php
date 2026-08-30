@@ -26,6 +26,16 @@ class ServiceCatalogController extends Controller
     public function index(): View
     {
         $categories = collect();
+        $totalEntities = 0;
+        $totalServices = 0;
+        $officeCounts = [
+            'law'         => 0,
+            'services'    => 0,
+            'customs'     => 0,
+            'accounting'  => 0,
+            'engineering' => 0,
+            'freelance'   => 0,
+        ];
 
         try {
             $categories = Category::with([
@@ -36,39 +46,58 @@ class ServiceCatalogController extends Controller
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->get()
-            ->map(fn($cat) => [
-                'id'       => $cat->id,
-                'key'      => $cat->key,
-                'name_ar'  => $cat->name_ar,
-                'name_en'  => $cat->name_en,
-                'icon'     => $cat->icon,
-                'color'    => $cat->color,
-                'bg'       => $cat->bg,
-                'entities' => $cat->entities->map(fn($ent) => [
-                    'id'       => $ent->id,
-                    'name_ar'  => $ent->name_ar,
-                    'name_en'  => $ent->name_en,
-                    'icon'     => $ent->icon,
-                    'color'    => $ent->color,
-                    'bg'       => $ent->bg,
-                    'tag_ar'   => $ent->tag_ar,
-                    'tag_en'   => $ent->tag_en,
-                    'services' => $ent->govServices->map(fn($svc) => [
-                        'id'             => $svc->id,
-                        'name_ar'        => $svc->name_ar,
-                        'name_en'        => $svc->name_en,
-                        'icon'           => $svc->icon,
-                        'price'          => (float) $svc->price,
-                        'estimated_days' => $svc->estimated_days,
+            ->map(function ($cat) {
+                $entitiesCount = $cat->entities->count();
+                $servicesCount = $cat->entities->sum(fn($ent) => $ent->govServices->count());
+
+                return [
+                    'id'             => $cat->id,
+                    'key'            => $cat->key,
+                    'name_ar'        => $cat->name_ar,
+                    'name_en'        => $cat->name_en,
+                    'icon'           => $cat->icon,
+                    'color'          => $cat->color,
+                    'bg'             => $cat->bg,
+                    'entities_count' => $entitiesCount,
+                    'services_count' => $servicesCount,
+                    'entities'       => $cat->entities->map(fn($ent) => [
+                        'id'             => $ent->id,
+                        'name_ar'        => $ent->name_ar,
+                        'name_en'        => $ent->name_en,
+                        'icon'           => $ent->icon,
+                        'color'          => $ent->color,
+                        'bg'             => $ent->bg,
+                        'tag_ar'         => $ent->tag_ar,
+                        'tag_en'         => $ent->tag_en,
+                        'services_count' => $ent->govServices->count(),
+                        'services'       => $ent->govServices->map(fn($svc) => [
+                            'id'             => $svc->id,
+                            'name_ar'        => $svc->name_ar,
+                            'name_en'        => $svc->name_en,
+                            'icon'           => $svc->icon,
+                            'price'          => (float) $svc->price,
+                            'estimated_days' => $svc->estimated_days,
+                        ]),
                     ]),
-                ]),
-            ]);
+                ];
+            });
+
+            $totalEntities = $categories->sum('entities_count');
+            $totalServices = $categories->sum('services_count');
+
+            $dbOfficeCounts = Office::where('is_active', true)
+                ->selectRaw('type, count(*) as count')
+                ->groupBy('type')
+                ->pluck('count', 'type')
+                ->toArray();
+
+            $officeCounts = array_merge($officeCounts, $dbOfficeCounts);
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::warning('Categories DB fetch skipped (offline/fallback mode): ' . $e->getMessage());
             $categories = collect();
         }
 
-        return view('update_service.index', compact('categories'));
+        return view('update_service.index', compact('categories', 'totalEntities', 'totalServices', 'officeCounts'));
     }
 
     public function userDashboard(): View
