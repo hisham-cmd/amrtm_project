@@ -32,6 +32,7 @@ use App\Http\Controllers\Jobs\CadresApplicationController;
 use App\Http\Controllers\Jobs\JobSpecializationController;
 use App\Http\Controllers\UpdateService\ServiceCatalogController;
 use App\Http\Controllers\UpdateService\AdminServiceController;
+use App\Http\Controllers\UpdateService\HomepageController;
 use App\Http\Controllers\UpdateService\AmrtmAuthController;
 use App\Http\Controllers\UpdateService\NotificationController;
 use App\Http\Controllers\UpdateService\PaymentController;
@@ -183,6 +184,21 @@ Route::prefix('amrtm')->name('amrtm.')->group(function () {
         Route::get('/admin/icons',
             [IconController::class, 'page']
         )->name('admin.icons');
+
+        Route::get('/admin/homepage',
+            [HomepageController::class, 'page']
+        )->name('admin.homepage');
+
+        Route::prefix('/admin/api/homepage')->name('admin.api.homepage.')->group(function () {
+            Route::get('/settings',  [HomepageController::class, 'getSettings'])->name('settings');
+            Route::post('/settings', [HomepageController::class, 'saveSettings'])->name('settings.save');
+            Route::get('/slides',    [HomepageController::class, 'listSlides'])->name('slides');
+            Route::post('/slides',   [HomepageController::class, 'storeSlide'])->name('slides.store');
+            Route::post('/slides/reorder', [HomepageController::class, 'reorderSlides'])->name('slides.reorder');
+            Route::put('/slides/{id}',      [HomepageController::class, 'updateSlide'])->name('slides.update');
+            Route::post('/slides/{id}/toggle', [HomepageController::class, 'toggleSlide'])->name('slides.toggle');
+            Route::delete('/slides/{id}',   [HomepageController::class, 'deleteSlide'])->name('slides.delete');
+        });
     });
 
 

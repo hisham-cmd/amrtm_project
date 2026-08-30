@@ -97,7 +97,28 @@ class ServiceCatalogController extends Controller
             $categories = collect();
         }
 
-        return view('update_service.index', compact('categories', 'totalEntities', 'totalServices', 'officeCounts'));
+        $homepageSettings = \App\Models\HomepageSetting::query()->pluck('value', 'key');
+        $homepageSlides   = \App\Models\HomepageSlide::active()->get()->map(fn ($s) => [
+            'id'         => $s->id,
+            'title'      => $s->title,
+            'image_url'  => $s->image_url,
+            'link_url'   => $s->link_url,
+        ]);
+
+        $homepageMedia = [
+            'video_file'   => $this->resolveMediaUrl($homepageSettings['video_file'] ?? 'videos/0829.mp4'),
+            'video_poster' => $this->resolveMediaUrl($homepageSettings['video_poster'] ?? 'images/logo2.jpg'),
+        ];
+
+        return view('update_service.index', compact(
+            'categories',
+            'totalEntities',
+            'totalServices',
+            'officeCounts',
+            'homepageSettings',
+            'homepageSlides',
+            'homepageMedia'
+        ));
     }
 
     public function userDashboard(): View
@@ -507,5 +528,14 @@ class ServiceCatalogController extends Controller
         $user->update(['password' => Hash::make($request->new_password)]);
 
         return response()->json(['message' => 'تم تغيير كلمة المرور بنجاح']);
+    }
+
+    private function resolveMediaUrl(string $path): string
+    {
+        if (str_starts_with($path, 'homepage/')) {
+            return \Illuminate\Support\Facades\Storage::url($path);
+        }
+
+        return asset($path);
     }
 }

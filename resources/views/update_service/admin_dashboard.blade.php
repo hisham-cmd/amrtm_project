@@ -697,7 +697,12 @@ body.en .perm-toggle input:checked+.perm-slider::before{transform:translateX(18p
 
     <div class="sb-sec" id="sb-s3">الإدارة</div>
 
-   
+    <div class="sb-item"
+         onclick="location.href='{{ route('amrtm.admin.homepage') }}'">
+        <i class="ti ti-home"></i>
+        <span id="si-homepage">إدارة الواجهة</span>
+    </div>
+
     @if(auth('business')->user()->hasPermission('manage_catalog'))
         <div class="sb-item" onclick="showPage('catalog')">
             <i class="ti ti-category"></i>
@@ -1546,7 +1551,7 @@ window.AMRTM_ROUTES = {
 <script src="{{ asset('js/amrtm-web.js') }}"></script>
 <script>
 const T={
-  ar:{nm:'آمر تم',da:'لوحة التحكم',s1:'الرئيسية',s2:'الطلبات',s3:'الإدارة',s4:'أخرى',siOv:'نظرة عامة',siReq:'الطلبات',siPrice:'التسعير',siFin:'المالية',siSite:'الموقع',siSet:'الإعدادات',
+  ar:{nm:'آمر تم',da:'لوحة التحكم',s1:'الرئيسية',s2:'الطلبات',s3:'الإدارة',s4:'أخرى',siOv:'نظرة عامة',siReq:'الطلبات',siPrice:'التسعير',siFin:'المالية',siSite:'الموقع',siSet:'الإعدادات',siHomepage:'إدارة الواجهة',
   ovTtl:'نظرة عامة على المنصة',ovSub:'آخر تحديث: منذ لحظات',ovViewReq:'عرض الطلبات',
   scTotal:'إجمالي الطلبات',scPend:'قيد الانتظار',scProc:'جاري المعالجة',scDone:'مكتملة',scRej:'مرفوضة',scUsers:'المستخدمين',
   ch1:'الطلبات خلال 7 أيام',ch1s:'عدد الطلبات اليومية',ch2:'توزيع الطلبات',ch2s:'حسب الحالة',dLbl:'طلب',
@@ -1560,7 +1565,7 @@ const T={
   stPend:'قيد الانتظار',stProc:'جاري المعالجة',stInprog:'قيد التنفيذ',stDone:'تمت العملية',stRej:'مرفوض',
   days:['أح','إث','ثل','أر','خم','جم','سب'],
   updateSuc:'تم التحديث بنجاح',priceSaved:'تم حفظ السعر',},
-  en:{nm:'Amrtm',da:'Dashboard',s1:'Main',s2:'Requests',s3:'Management',s4:'Other',siOv:'Overview',siReq:'Requests',siPrice:'Pricing',siFin:'Finance',siSite:'Website',siSet:'Settings',
+  en:{nm:'Amrtm',da:'Dashboard',s1:'Main',s2:'Requests',s3:'Management',s4:'Other',siOv:'Overview',siReq:'Requests',siPrice:'Pricing',siFin:'Finance',siSite:'Website',siSet:'Settings',siHomepage:'Homepage',
   ovTtl:'Platform Overview',ovSub:'Last updated: moments ago',ovViewReq:'View Requests',
   scTotal:'Total Requests',scPend:'Pending',scProc:'Processing',scDone:'Completed',scRej:'Rejected',scUsers:'Users',
   ch1:'Requests over 7 days',ch1s:'Daily request count',ch2:'Request Distribution',ch2s:'By status',dLbl:'Requests',
@@ -2106,7 +2111,7 @@ function setLang(l){
 function applyLang(l){
   const t=T[l];
   [['sb-nm','nm'],['sb-sb','da'],['sb-s1','s1'],['sb-s2','s2'],['sb-s3','s3'],['sb-s4','s4'],
-   ['si-ov','siOv'],['si-req','siReq'],['si-price','siPrice'],['si-fin','siFin'],['si-site','siSite'],['si-set','siSet'],
+   ['si-ov','siOv'],['si-req','siReq'],['si-price','siPrice'],['si-fin','siFin'],['si-site','siSite'],['si-set','siSet'],['si-homepage','siHomepage'],
    ['ov-ttl','ovTtl'],['ov-sub','ovSub'],['ov-view-req','ovViewReq'],
    ['sc-total-l','scTotal'],['sc-pend-l','scPend'],['sc-proc-l','scProc'],['sc-done-l','scDone'],['sc-rej-l','scRej'],['sc-users-l','scUsers'],
    ['ch1-ttl','ch1'],['ch1-sub','ch1s'],['ch2-ttl','ch2'],['ch2-sub','ch2s'],['d-lbl','dLbl'],

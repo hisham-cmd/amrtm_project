@@ -3198,7 +3198,46 @@
         .about-one__right {
             flex: 1;
             max-width: 1400px;
-            overflow: hidden
+            overflow: hidden;
+            position: relative
+        }
+
+        .ao-floating-contract {
+            position: absolute;
+            left: 0;
+            bottom: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #006C35, #00A651);
+            color: #fff;
+            font-size: 14.5px;
+            font-weight: 800;
+            padding: 13px 22px;
+            border-radius: 16px;
+            text-decoration: none;
+            border: 1.5px solid rgba(255, 255, 255, .35);
+            box-shadow: 0 14px 32px -8px rgba(0, 108, 53, .65);
+            transition: transform .3s ease, box-shadow .3s ease;
+            z-index: 5;
+        }
+
+        .ao-floating-contract:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 42px -8px rgba(0, 108, 53, .8);
+        }
+
+        .ao-floating-contract .fa {
+            font-size: 16px;
+        }
+
+        @media (max-width: 767px) {
+            .ao-floating-contract {
+                position: static;
+                margin: 14px 0 0;
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         .section-title {
@@ -3226,22 +3265,38 @@
             color: #006C35
         }
 
-        .section-title__tagline {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13.5px;
-            font-weight: 700;
-            color: #fff;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, .18);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-            padding: 8px 18px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, .3);
-            text-shadow: 0 1px 3px rgba(0, 0, 0, .45);
-            text-align: center;
+        .ao-tagline-wrap {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            width: 90% !important;
+            max-width: 800px !important;
+            margin: 22px auto 14px !important;
+            gap: 18px !important;
+        }
+
+        .ao-line-left,
+        .ao-line-right {
+            flex: 1 !important;
+            height: 1.5px !important;
+            border-radius: 2px !important;
+        }
+
+        .ao-line-left {
+            background: linear-gradient(to left, rgba(255,255,255,0.7), rgba(255,255,255,0)) !important;
+        }
+
+        .ao-line-right {
+            background: linear-gradient(to right, rgba(255,255,255,0.7), rgba(255,255,255,0)) !important;
+        }
+
+        .ao-title-main {
+            color: #FFFFFF !important;
+            font-size: 16px !important;
+            font-weight: 900 !important;
+            white-space: nowrap !important;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.95) !important;
+            letter-spacing: 0.5px !important;
         }
 
         .section-title__title {
@@ -3999,21 +4054,19 @@
 
         <!-- Hero Slider -->
         <div class="hero-slider" id="heroSlider">
-            <div class="hero-slide active"
-                style="background-image:url('{{ asset('images/slide-riyadh-business.jpg') }}')"></div>
-            <div class="hero-slide" style="background-image:url('{{ asset('images/slide-kafd.jpg') }}')"></div>
-            <div class="hero-slide" style="background-image:url('{{ asset('images/slide-kafd-night.jpg') }}')"></div>
-            <div class="hero-slide" style="background-image:url('{{ asset('images/slide-kingdom.jpg') }}')"></div>
-            <div class="hero-slide" style="background-image:url('{{ asset('images/slide-port-dammam.jpg') }}')"></div>
-            <div class="hero-slide" style="background-image:url('{{ asset('images/slide-port-jeddah.jpg') }}')"></div>
+            @forelse($homepageSlides as $slide)
+                <div class="hero-slide {{ $loop->first ? 'active' : '' }}"
+                    style="background-image:url('{{ $slide['image_url'] }}')"></div>
+            @empty
+                <div class="hero-slide active"
+                    style="background-image:url('{{ asset('images/slide-riyadh-business.jpg') }}')"></div>
+                <div class="hero-slide" style="background-image:url('{{ asset('images/slide-kafd.jpg') }}')"></div>
+            @endforelse
         </div>
         <div class="hero-slider-dots" id="heroSliderDots">
-            <div class="hero-slider-dot active" data-index="0"></div>
-            <div class="hero-slider-dot" data-index="1"></div>
-            <div class="hero-slider-dot" data-index="2"></div>
-            <div class="hero-slider-dot" data-index="3"></div>
-            <div class="hero-slider-dot" data-index="4"></div>
-            <div class="hero-slider-dot" data-index="5"></div>
+            @foreach($homepageSlides as $slide)
+                <div class="hero-slider-dot {{ $loop->first ? 'active' : '' }}" data-index="{{ $loop->index }}"></div>
+            @endforeach
         </div>
         <div class="hero-slider-arrow prev" onclick="heroSliderPrev()"><i class="fa fa-chevron-right"></i></div>
         <div class="hero-slider-arrow next" onclick="heroSliderNext()"><i class="fa fa-chevron-left"></i></div>
@@ -4027,11 +4080,14 @@
 
 
                     <br>
-                    <h2 class="section-title__title" id="ao-title">منصة آمر تم لخدمات قطاع الأعمال</h2>
+                    <h2 class="section-title__title" id="ao-title">{{ $homepageSettings['site_title'] ?? 'منصة آمر تم لخدمات قطاع الأعمال' }}</h2>
                 </div>
-                <p class="about-one__text" id="ao-desc">منصة تعمل وفق مفهوم النافذة الواحدة لاستقبال طلبات العملاء
-                    وإنجاز معاملاتهم عبر شبكة من الشركاء والمتخصصين.</p>
+                <p class="about-one__text" id="ao-desc">{{ $homepageSettings['site_subtitle'] ?? 'منصة تعمل وفق مفهوم النافذة الواحدة لاستقبال طلبات العملاء وإنجاز معاملاتهم عبر شبكة من الشركاء والمتخصصين.' }}</p>
 
+                <a href="#" class="ao-floating-contract" id="ao-create-contract">
+                    <i class="fa fa-file-signature"></i>
+                    {{ $homepageSettings['contract_button_text'] ?? 'عقود نظامية متاحة حسب النشاط' }}
+                </a>
 
             </div>
             <div class="about-one__left">
@@ -4039,7 +4095,7 @@
 
                     <div class="about-one__img" onclick="openVid()"
                         style="cursor:pointer; position:relative; overflow:hidden; border-radius:24px; box-shadow:0 15px 40px rgba(0,0,0,0.25); border:1.5px solid rgba(255,255,255,0.25);">
-                        <img src="{{ asset('images/logo2.jpg') }}" alt="منصة أمر تم" loading="lazy"
+                        <img src="{{ asset($homepageSettings['video_poster'] ?? 'images/logo2.jpg') }}" alt="منصة أمر تم" loading="lazy"
                             style="width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.4s ease;">
                         <div class="about-one__video-overlay"
                             style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,25,12,0.2) 0%, rgba(0,70,35,0.85) 100%); pointer-events:none;">
@@ -4066,11 +4122,10 @@
         </div>
         <div class="offices-sec" id="offices-sec">
             <div class="offices-inner">
-                <div class="ao-tagline-wrap"
-                    style="text-align: center; display: flex; justify-content: center; width: 100%; margin: 15px auto 5px; ">
-                    <span class="section-title__tagline" id="ao-tagline">أختر الخدمة المطلوبة من بين
-                        {{ $totalServices ?? 140 }}
-                        خدمة عبر {{ $totalEntities ?? 153 }} جهة</span>
+                <div class="ao-tagline-wrap" id="ao-tagline">
+                    <span class="ao-line-right"></span>
+                    <span class="ao-title-main">{{ $homepageSettings['site_tagline'] ?? 'أختر الخدمة المطلوبة من خلال الجهات التالية' }}</span>
+                    <span class="ao-line-left"></span>
                 </div>
 
                 <div class="about-one__cards-grid">
@@ -4199,7 +4254,7 @@
 
             <video id="vmf-video" controls playsinline preload="auto"
                 style="width:100%; height:auto; max-height:80vh; display:block; background:#000;">
-                <source src="{{ asset('videos/0829.mp4') }}" type="video/mp4">
+                <source src="{{ $homepageMedia['video_file'] }}" type="video/mp4">
                 المتصفح لا يدعم تشغيل هذا الفيديو.
             </video>
 
@@ -4425,12 +4480,12 @@
             <div class="f-left">
 
                 <div class="f-contact">
-                    <span class="f-call-lbl">المكتب الرئيسي</span>
-                    <a class="f-call" href="tel:+966920002164">
+                    <span class="f-call-lbl">{{ $homepageSettings['main_office_label'] ?? 'المكتب الرئيسي' }}</span>
+                    <a class="f-call" href="tel:+{{ $homepageSettings['contact_phone'] ?? '966920002164' }}">
                         <i class="fa fa-phone"></i>
-                        <span>966920002164</span>
+                        <span>{{ $homepageSettings['contact_phone'] ?? '966920002164' }}</span>
                     </a>
-                    <a class="f-wa" href="https://wa.me/966504915222" target="_blank" rel="noopener noreferrer">
+                    <a class="f-wa" href="https://wa.me/{{ $homepageSettings['contact_whatsapp'] ?? '966504915222' }}" target="_blank" rel="noopener noreferrer">
                         <svg viewBox="0 0 448 512" width="15" height="15" fill="currentColor" aria-hidden="true"
                             style="display:block">
                             <path
