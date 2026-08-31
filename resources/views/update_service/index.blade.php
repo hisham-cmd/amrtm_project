@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
@@ -5125,7 +5125,7 @@
                 cats = serverCategories;
             } else {
                 try {
-                    const apiRes = await (typeof API !== 'undefined' ? API.get('/api/services') : fetch('/amrtm/api/services').then(r => r.json()));
+                    const apiRes = await (typeof API !== 'undefined' ? API.get('/services') : fetch('/amrtm/api/services').then(r => r.json()));
                     if (Array.isArray(apiRes) && apiRes.length > 0) {
                         cats = apiRes;
                     } else {

@@ -25,7 +25,100 @@ class ServiceCatalogController extends Controller
 {
     public function index(): View
     {
-        return view('update_service.index');
+        $categories = collect();
+        $totalEntities = 0;
+        $totalServices = 0;
+        $officeCounts = [
+            'law' => 0,
+            'services' => 0,
+            'customs' => 0,
+            'accounting' => 0,
+            'engineering' => 0,
+            'freelance' => 0,
+        ];
+
+        try {
+            $categories = Category::with([
+                'entities' => fn($q) => $q->where('is_active', true)
+                    ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
+                    ->orderBy('sort_order'),
+            ])
+                ->where('is_active', true)
+                ->orderBy('sort_order')
+                ->get()
+                ->map(function ($cat) {
+                    $entitiesCount = $cat->entities->count();
+                    $servicesCount = $cat->entities->sum(fn($ent) => $ent->govServices->count());
+
+                    return [
+                        'id' => $cat->id,
+                        'key' => $cat->key,
+                        'name_ar' => $cat->name_ar,
+                        'name_en' => $cat->name_en,
+                        'icon' => $cat->icon,
+                        'color' => $cat->color,
+                        'bg' => $cat->bg,
+                        'entities_count' => $entitiesCount,
+                        'services_count' => $servicesCount,
+                        'entities' => $cat->entities->map(fn($ent) => [
+                            'id' => $ent->id,
+                            'name_ar' => $ent->name_ar,
+                            'name_en' => $ent->name_en,
+                            'icon' => $ent->icon,
+                            'color' => $ent->color,
+                            'bg' => $ent->bg,
+                            'tag_ar' => $ent->tag_ar,
+                            'tag_en' => $ent->tag_en,
+                            'services_count' => $ent->govServices->count(),
+                            'services' => $ent->govServices->map(fn($svc) => [
+                                'id' => $svc->id,
+                                'name_ar' => $svc->name_ar,
+                                'name_en' => $svc->name_en,
+                                'icon' => $svc->icon,
+                                'price' => (float) $svc->price,
+                                'estimated_days' => $svc->estimated_days,
+                            ]),
+                        ]),
+                    ];
+                });
+
+            $totalEntities = $categories->sum('entities_count');
+            $totalServices = $categories->sum('services_count');
+
+            $dbOfficeCounts = Office::where('is_active', true)
+                ->selectRaw('type, count(*) as count')
+                ->groupBy('type')
+                ->pluck('count', 'type')
+                ->toArray();
+
+            $officeCounts = array_merge($officeCounts, $dbOfficeCounts);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Categories DB fetch skipped (offline/fallback mode): ' . $e->getMessage());
+            $categories = collect();
+        }
+
+        $homepageSettings = \App\Models\HomepageSetting::query()->pluck('value', 'key');
+        $homepageSlides = \App\Models\HomepageSlide::active()->get()->map(fn($s) => [
+            'id' => $s->id,
+            'title' => $s->title,
+            'image_url' => $s->image_url,
+            'link_url' => $s->link_url,
+        ]);
+
+        $homepageMedia = [
+            'video_file' => $this->resolveMediaUrl($homepageSettings['video_file'] ?? 'videos/0829.mp4'),
+            'video_poster' => $this->resolveMediaUrl($homepageSettings['video_poster'] ?? 'images/logo2.jpg'),
+        ];
+
+        return view('update_service.index', compact(
+            'categories',
+            'totalEntities',
+            'totalServices',
+            'officeCounts',
+            'homepageSettings',
+            'homepageSlides',
+            'homepageMedia'
+        ));
     }
 
     public function userDashboard(): View
@@ -47,7 +140,7 @@ class ServiceCatalogController extends Controller
     public function entityPage(string $key, int $entityId): View
     {
         $category = Category::where('key', $key)->where('is_active', true)->firstOrFail();
-        $entity   = Entity::where('id', $entityId)
+        $entity = Entity::where('id', $entityId)
             ->where('category_id', $category->id)
             ->where('is_active', true)
             ->with(['govServices' => fn($q) => $q->where('is_active', true)->orderBy('sort_order')])
@@ -88,12 +181,12 @@ class ServiceCatalogController extends Controller
     public function submitOfficeRequest(Request $request): JsonResponse
     {
         $request->validate([
-            'office_id'         => 'required|integer',
+            'office_id' => 'required|integer',
             'office_service_id' => 'required|integer',
-            'client_name'       => 'required|string|max:100',
-            'client_phone'      => 'required|string|max:20',
-            'client_id_number'  => 'nullable|string|max:20',
-            'notes'             => 'nullable|string|max:1000',
+            'client_name' => 'required|string|max:100',
+            'client_phone' => 'required|string|max:20',
+            'client_id_number' => 'nullable|string|max:20',
+            'notes' => 'nullable|string|max:1000',
         ]);
 
         $office = Office::where('id', $request->office_id)
@@ -104,40 +197,45 @@ class ServiceCatalogController extends Controller
             ->where('office_id', $office->id)->where('is_active', true)
             ->firstOrFail();
 
-        $user             = \Illuminate\Support\Facades\Auth::guard('business')->user();
+        $user = \Illuminate\Support\Facades\Auth::guard('business')->user();
         $commissionAmount = round($service->price * ($office->commission_rate / 100), 2);
-        $refNumber        = 'OF-' . strtoupper(substr(md5(uniqid()), 0, 8));
+        $refNumber = 'OF-' . strtoupper(substr(md5(uniqid()), 0, 8));
 
         $req = OfficeRequest::create([
-            'ref_number'        => $refNumber,
-            'user_id'           => $user->id,
-            'office_id'         => $office->id,
+            'ref_number' => $refNumber,
+            'user_id' => $user->id,
+            'office_id' => $office->id,
             'office_service_id' => $service->id,
-            'client_name'       => $request->client_name,
-            'client_phone'      => $request->client_phone,
-            'client_email'      => $user->email,
-            'client_id_number'  => $request->client_id_number,
-            'notes'             => $request->notes,
-            'price'             => $service->price,
+            'client_name' => $request->client_name,
+            'client_phone' => $request->client_phone,
+            'client_email' => $user->email,
+            'client_id_number' => $request->client_id_number,
+            'notes' => $request->notes,
+            'price' => $service->price,
             'commission_amount' => $commissionAmount,
-            'status'            => 'pending',
+            'status' => 'pending',
         ]);
 
         // Notifications
-        BusinessNotification::forAdmin('new_office_request',
+        BusinessNotification::forAdmin(
+            'new_office_request',
             "طلب مباشر جديد — {$office->name_ar}",
             "العميل {$request->client_name} طلب خدمة من {$office->name_ar} — المرجع: {$refNumber} — المبلغ: {$service->price} ر.س",
             ['request_id' => $req->id, 'ref_number' => $refNumber, 'office_id' => $office->id],
             $req->id
         );
-        BusinessNotification::forOffice($office->id, 'new_office_request',
+        BusinessNotification::forOffice(
+            $office->id,
+            'new_office_request',
             'طلب خدمة جديد من عميل',
             "تلقيت طلباً جديداً من {$request->client_name} — المرجع: {$refNumber}",
             ['request_id' => $req->id, 'ref_number' => $refNumber],
             $req->id
         );
         if ($user) {
-            BusinessNotification::forUser($user->id, 'request_submitted',
+            BusinessNotification::forUser(
+                $user->id,
+                'request_submitted',
                 'تم إرسال طلبك بنجاح',
                 "تم إرسال طلبك إلى {$office->name_ar} — المرجع: {$refNumber}",
                 ['request_id' => $req->id, 'ref_number' => $refNumber],
@@ -146,7 +244,7 @@ class ServiceCatalogController extends Controller
         }
 
         return response()->json([
-            'message'    => 'تم إرسال طلبك بنجاح. سيتواصل معك المكتب قريباً.',
+            'message' => 'تم إرسال طلبك بنجاح. سيتواصل معك المكتب قريباً.',
             'ref_number' => $refNumber,
         ], 201);
     }
@@ -159,36 +257,36 @@ class ServiceCatalogController extends Controller
                 ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
                 ->orderBy('sort_order'),
         ])
-        ->where('is_active', true)
-        ->orderBy('sort_order')
-        ->get()
-        ->map(fn($cat) => [
-            'id'       => $cat->id,
-            'key'      => $cat->key,
-            'name_ar'  => $cat->name_ar,
-            'name_en'  => $cat->name_en,
-            'icon'     => $cat->icon,
-            'color'    => $cat->color,
-            'bg'       => $cat->bg,
-            'entities' => $cat->entities->map(fn($ent) => [
-                'id'       => $ent->id,
-                'name_ar'  => $ent->name_ar,
-                'name_en'  => $ent->name_en,
-                'icon'     => $ent->icon,
-                'color'    => $ent->color,
-                'bg'       => $ent->bg,
-                'tag_ar'   => $ent->tag_ar,
-                'tag_en'   => $ent->tag_en,
-                'services' => $ent->govServices->map(fn($svc) => [
-                    'id'             => $svc->id,
-                    'name_ar'        => $svc->name_ar,
-                    'name_en'        => $svc->name_en,
-                    'icon'           => $svc->icon,
-                    'price'          => (float) $svc->price,
-                    'estimated_days' => $svc->estimated_days,
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get()
+            ->map(fn($cat) => [
+                'id' => $cat->id,
+                'key' => $cat->key,
+                'name_ar' => $cat->name_ar,
+                'name_en' => $cat->name_en,
+                'icon' => $cat->icon,
+                'color' => $cat->color,
+                'bg' => $cat->bg,
+                'entities' => $cat->entities->map(fn($ent) => [
+                    'id' => $ent->id,
+                    'name_ar' => $ent->name_ar,
+                    'name_en' => $ent->name_en,
+                    'icon' => $ent->icon,
+                    'color' => $ent->color,
+                    'bg' => $ent->bg,
+                    'tag_ar' => $ent->tag_ar,
+                    'tag_en' => $ent->tag_en,
+                    'services' => $ent->govServices->map(fn($svc) => [
+                        'id' => $svc->id,
+                        'name_ar' => $svc->name_ar,
+                        'name_en' => $svc->name_en,
+                        'icon' => $svc->icon,
+                        'price' => (float) $svc->price,
+                        'estimated_days' => $svc->estimated_days,
+                    ]),
                 ]),
-            ]),
-        ]);
+            ]);
 
         return response()->json($categories);
     }
@@ -206,7 +304,7 @@ class ServiceCatalogController extends Controller
         $types = ['law', 'services', 'customs'];
         $result = [];
         foreach ($types as $t) {
-            $result[$t] = (int) ($rows[$t]->count ?? 0);
+            $result[$t] = (int) ($rows->get($t)?->count ?? 0);
         }
 
         return response()->json($result);
@@ -258,7 +356,7 @@ class ServiceCatalogController extends Controller
     public function userStats(): JsonResponse
     {
         $user = auth('business')->user();
-        $uid  = $user->id;
+        $uid = $user->id;
 
         // Single aggregation query instead of 5 separate count queries
         $counts = ServiceRequest::where('user_id', $uid)
@@ -285,18 +383,18 @@ class ServiceCatalogController extends Controller
 
         return response()->json([
             'user' => [
-                'id'      => $user->id,
-                'name'    => $user->name,
-                'email'   => $user->email,
-                'phone'   => $user->phone ?? '',
-                'role'    => $user->role,
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone ?? '',
+                'role' => $user->role,
                 'balance' => ServicePayment::getBalance($uid),
-                'stats'   => [
-                    'total'      => (int) $counts->total,
-                    'pending'    => (int) $counts->pending,
+                'stats' => [
+                    'total' => (int) $counts->total,
+                    'pending' => (int) $counts->pending,
                     'processing' => (int) $counts->processing,
-                    'done'       => (int) $counts->done,
-                    'rejected'   => (int) $counts->rejected,
+                    'done' => (int) $counts->done,
+                    'rejected' => (int) $counts->rejected,
                 ],
             ],
             'recent_requests' => $recentRequests,
@@ -308,12 +406,12 @@ class ServiceCatalogController extends Controller
     public function chargeBalance(ChargeBalanceRequest $request): JsonResponse
     {
         ServicePayment::create([
-            'user_id'        => auth('business')->id(),
-            'amount'         => $request->amount,
-            'type'           => 'charge',
+            'user_id' => auth('business')->id(),
+            'amount' => $request->amount,
+            'type' => 'charge',
             'description_ar' => 'شحن رصيد',
             'description_en' => 'Balance top-up',
-            'status'         => 'completed',
+            'status' => 'completed',
         ]);
 
         return response()->json(['message' => 'تم شحن الرصيد', 'amount' => $request->amount]);
@@ -335,12 +433,15 @@ class ServiceCatalogController extends Controller
         $user = auth('business')->user();
         $user->update($request->validated());
 
-        return response()->json(['message' => 'تم حفظ البيانات', 'user' => [
-            'id'    => $user->id,
-            'name'  => $user->name,
-            'email' => $user->email,
-            'phone' => $user->phone ?? '',
-        ]]);
+        return response()->json([
+            'message' => 'تم حفظ البيانات',
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone ?? '',
+            ]
+        ]);
     }
 
     /* ── JSON: change password ── */
@@ -348,12 +449,21 @@ class ServiceCatalogController extends Controller
     {
         $user = auth('business')->user();
 
-        if (! Hash::check($request->current_password, $user->password)) {
+        if (!Hash::check($request->current_password, $user->password)) {
             return response()->json(['message' => 'كلمة المرور الحالية غير صحيحة'], 422);
         }
 
         $user->update(['password' => Hash::make($request->new_password)]);
 
         return response()->json(['message' => 'تم تغيير كلمة المرور بنجاح']);
+    }
+
+    private function resolveMediaUrl(string $path): string
+    {
+        if (str_starts_with($path, 'homepage/')) {
+            return \Illuminate\Support\Facades\Storage::url($path);
+        }
+
+        return asset($path);
     }
 }
