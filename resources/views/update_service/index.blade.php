@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
@@ -1441,13 +1441,10 @@
         .em-ico {
             width: 44px;
             height: 44px;
-
             border-radius: 11px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             flex-shrink: 0;
         }
 
@@ -3271,8 +3268,8 @@
             align-items: center !important;
             width: 90% !important;
             max-width: 800px !important;
-            margin: 22px auto 14px !important;
-            gap: 18px !important;
+            margin: 18px auto 12px !important;
+            gap: 14px !important;
         }
 
         .ao-line-left,
@@ -3283,20 +3280,25 @@
         }
 
         .ao-line-left {
-            background: linear-gradient(to left, rgba(255,255,255,0.7), rgba(255,255,255,0)) !important;
+            background: linear-gradient(to left, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0)) !important;
         }
 
         .ao-line-right {
-            background: linear-gradient(to right, rgba(255,255,255,0.7), rgba(255,255,255,0)) !important;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0)) !important;
         }
 
         .ao-title-main {
             color: #FFFFFF !important;
-            font-size: 16px !important;
-            font-weight: 900 !important;
+            font-size: 15px !important;
+            font-weight: 700 !important;
             white-space: nowrap !important;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.95) !important;
+            text-align: center !important;
             letter-spacing: 0.5px !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 0.95) !important;
         }
 
         .section-title__title {
@@ -3331,15 +3333,15 @@
         }
 
         .about-one__cards-grid {
-
             margin-bottom: 10px;
             margin-top: 15px;
-            display: flex !important;
-            justify-content: space-between;
+            display: grid !important;
+            grid-template-columns: repeat(5, 1fr) !important;
+            gap: 12px !important;
+            width: 100% !important;
         }
 
         .ao-card {
-            min-width: 180px;
             display: flex !important;
             flex-direction: column !important;
             padding: 0 !important;
@@ -3355,7 +3357,8 @@
             overflow: hidden !important;
             text-decoration: none !important;
             color: inherit !important;
-            max-width: 170px;
+            width: 100% !important;
+            max-width: 100% !important;
         }
 
         .ao-card:hover {
@@ -3742,13 +3745,12 @@
                 grid-template-columns: repeat(3, 1fr) !important;
                 gap: 10px !important;
                 margin: 15px auto 0 !important;
-                margin-right: 0 !important;
                 width: 100% !important
             }
 
-            .ao-card {
-                max-width: 100% !important;
-                width: 100% !important
+            .about-one__cards-grid a:nth-child(4),
+            .about-one__cards-grid a:nth-child(5) {
+                grid-column: auto !important;
             }
 
             .ao-card-body {
@@ -3780,7 +3782,7 @@
 
         @media(max-width:768px) {
             .hero {
-                padding-top: 70px !important;
+                padding-top: 0px !important;
                 padding-bottom: 15px !important;
                 min-height: auto !important
             }
@@ -3842,11 +3844,19 @@
             .about-one__cards-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 8px !important;
-                margin: 12px 0 0 !important;
-                margin-right: 0 !important
+                margin: 12px 0 0 !important
             }
 
             .about-one__cards-grid a:last-child {
+                grid-column: span 2 !important
+            }
+
+            .about-one__cards-grid a:nth-child(4),
+            .about-one__cards-grid a:nth-child(5) {
+                grid-column: auto !important;
+            }
+
+            .about-one__cards-grid a:nth-child(5):last-child {
                 grid-column: span 2 !important
             }
 
@@ -3856,19 +3866,25 @@
 
             .ao-card-body {
                 min-height: 65px !important;
-                padding: 8px 6px !important
+                padding: 10px 8px !important
             }
 
             .ao-card-nm {
-                font-size: 13px !important
+                font-size: 13px !important;
+                line-height: 1.3 !important
             }
 
             .ao-card-foot {
-                padding: 4px 8px !important
+                padding: 5px 8px !important
             }
 
             .ao-card-tag {
                 font-size: 10.5px !important
+            }
+
+            .ao-card-svc-badge {
+                font-size: 10px !important;
+                padding: 2px 8px !important
             }
 
             .cards-grid {
@@ -3927,12 +3943,35 @@
         @media(max-width:480px) {
             .about-one__cards-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
-                gap: 6px !important;
-                margin-right: 0 !important
+                gap: 6px !important
             }
 
             .about-one__cards-grid a:last-child {
                 grid-column: span 2 !important
+            }
+
+            .about-one__cards-grid a:nth-child(4),
+            .about-one__cards-grid a:nth-child(5) {
+                grid-column: auto !important;
+            }
+
+            .about-one__cards-grid a:nth-child(5):last-child {
+                grid-column: span 2 !important
+            }
+
+            .ao-card-body {
+                min-height: 58px !important;
+                padding: 8px 6px !important
+            }
+
+            .ao-card-nm {
+                font-size: 12px !important;
+                line-height: 1.25 !important
+            }
+
+            .ao-card-svc-badge {
+                font-size: 9.5px !important;
+                padding: 1px 6px !important
             }
 
             .cards-grid {
@@ -3952,6 +3991,18 @@
 
             .section-title__title {
                 font-size: 1.02rem !important
+            }
+
+            .ao-tagline-wrap {
+                gap: 8px !important;
+                margin: 16px auto 10px !important;
+                width: 96% !important;
+            }
+
+            .ao-title-main {
+                font-size: 13.5px !important;
+                padding: 8px 16px !important;
+                white-space: normal !important;
             }
         }
     </style>
@@ -3973,7 +4024,7 @@
         <div class="nb-mid">
             <div class="nb-lnk on" id="nl-home">الرئيسية</div>
             <div class="nb-lnk" onclick="scrollCards()" id="nl-svcs">الخدمات</div>
-            <div class="nb-lnk" id="nl-about" onclick="window.location='{{ route('about') }}'">
+            <div class="nb-lnk" id="nl-about" onclick="window.location='#'">
                 عن المنصة
             </div>
 
@@ -4080,9 +4131,13 @@
 
 
                     <br>
-                    <h2 class="section-title__title" id="ao-title">{{ $homepageSettings['site_title'] ?? 'منصة آمر تم لخدمات قطاع الأعمال' }}</h2>
+                    <h2 class="section-title__title" id="ao-title">
+                        {{ $homepageSettings['site_title'] ?? 'منصة آمر تم لخدمات قطاع الأعمال' }}
+                    </h2>
                 </div>
-                <p class="about-one__text" id="ao-desc">{{ $homepageSettings['site_subtitle'] ?? 'منصة تعمل وفق مفهوم النافذة الواحدة لاستقبال طلبات العملاء وإنجاز معاملاتهم عبر شبكة من الشركاء والمتخصصين.' }}</p>
+                <p class="about-one__text" id="ao-desc">
+                    {{ $homepageSettings['site_subtitle'] ?? 'منصة تعمل وفق مفهوم النافذة الواحدة لاستقبال طلبات العملاء وإنجاز معاملاتهم عبر شبكة من الشركاء والمتخصصين.' }}
+                </p>
 
                 <a href="#" class="ao-floating-contract" id="ao-create-contract">
                     <i class="fa fa-file-signature"></i>
@@ -4095,7 +4150,8 @@
 
                     <div class="about-one__img" onclick="openVid()"
                         style="cursor:pointer; position:relative; overflow:hidden; border-radius:24px; box-shadow:0 15px 40px rgba(0,0,0,0.25); border:1.5px solid rgba(255,255,255,0.25);">
-                        <img src="{{ asset($homepageSettings['video_poster'] ?? 'images/logo2.jpg') }}" alt="منصة أمر تم" loading="lazy"
+                        <img src="{{ asset($homepageSettings['video_poster'] ?? 'images/logo2.jpg') }}"
+                            alt="منصة أمر تم" loading="lazy"
                             style="width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.4s ease;">
                         <div class="about-one__video-overlay"
                             style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,25,12,0.2) 0%, rgba(0,70,35,0.85) 100%); pointer-events:none;">
@@ -4122,9 +4178,12 @@
         </div>
         <div class="offices-sec" id="offices-sec">
             <div class="offices-inner">
-                <div class="ao-tagline-wrap" id="ao-tagline">
+                <div class="ao-tagline-wrap">
                     <span class="ao-line-right"></span>
-                    <span class="ao-title-main">{{ $homepageSettings['site_tagline'] ?? 'أختر الخدمة المطلوبة من خلال الجهات التالية' }}</span>
+                    <span class="ao-title-main">
+                        <span
+                            id="ao-tagline">{{ $homepageSettings['site_tagline'] ?? 'أختر الخدمة المطلوبة من خلال الجهات التالية' }}</span>
+                    </span>
                     <span class="ao-line-left"></span>
                 </div>
 
@@ -4170,7 +4229,7 @@
                         </a>
                     @endforelse
 
-                    <a href="{{ route('consultants') }}" class="ao-card" style="--cc:#F97316">
+                    <a href="#" class="ao-card" style="--cc:#F97316">
                         <div class="ao-card-body">
                             <div class="ao-card-nm">المستشارين</div>
                             <div class="ao-card-svc-badge"
@@ -4485,7 +4544,8 @@
                         <i class="fa fa-phone"></i>
                         <span>{{ $homepageSettings['contact_phone'] ?? '966920002164' }}</span>
                     </a>
-                    <a class="f-wa" href="https://wa.me/{{ $homepageSettings['contact_whatsapp'] ?? '966504915222' }}" target="_blank" rel="noopener noreferrer">
+                    <a class="f-wa" href="https://wa.me/{{ $homepageSettings['contact_whatsapp'] ?? '966504915222' }}"
+                        target="_blank" rel="noopener noreferrer">
                         <svg viewBox="0 0 448 512" width="15" height="15" fill="currentColor" aria-hidden="true"
                             style="display:block">
                             <path
