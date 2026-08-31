@@ -25,100 +25,7 @@ class ServiceCatalogController extends Controller
 {
     public function index(): View
     {
-        $categories = collect();
-        $totalEntities = 0;
-        $totalServices = 0;
-        $officeCounts = [
-            'law'         => 0,
-            'services'    => 0,
-            'customs'     => 0,
-            'accounting'  => 0,
-            'engineering' => 0,
-            'freelance'   => 0,
-        ];
-
-        try {
-            $categories = Category::with([
-                'entities' => fn($q) => $q->where('is_active', true)
-                    ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
-                    ->orderBy('sort_order'),
-            ])
-            ->where('is_active', true)
-            ->orderBy('sort_order')
-            ->get()
-            ->map(function ($cat) {
-                $entitiesCount = $cat->entities->count();
-                $servicesCount = $cat->entities->sum(fn($ent) => $ent->govServices->count());
-
-                return [
-                    'id'             => $cat->id,
-                    'key'            => $cat->key,
-                    'name_ar'        => $cat->name_ar,
-                    'name_en'        => $cat->name_en,
-                    'icon'           => $cat->icon,
-                    'color'          => $cat->color,
-                    'bg'             => $cat->bg,
-                    'entities_count' => $entitiesCount,
-                    'services_count' => $servicesCount,
-                    'entities'       => $cat->entities->map(fn($ent) => [
-                        'id'             => $ent->id,
-                        'name_ar'        => $ent->name_ar,
-                        'name_en'        => $ent->name_en,
-                        'icon'           => $ent->icon,
-                        'color'          => $ent->color,
-                        'bg'             => $ent->bg,
-                        'tag_ar'         => $ent->tag_ar,
-                        'tag_en'         => $ent->tag_en,
-                        'services_count' => $ent->govServices->count(),
-                        'services'       => $ent->govServices->map(fn($svc) => [
-                            'id'             => $svc->id,
-                            'name_ar'        => $svc->name_ar,
-                            'name_en'        => $svc->name_en,
-                            'icon'           => $svc->icon,
-                            'price'          => (float) $svc->price,
-                            'estimated_days' => $svc->estimated_days,
-                        ]),
-                    ]),
-                ];
-            });
-
-            $totalEntities = $categories->sum('entities_count');
-            $totalServices = $categories->sum('services_count');
-
-            $dbOfficeCounts = Office::where('is_active', true)
-                ->selectRaw('type, count(*) as count')
-                ->groupBy('type')
-                ->pluck('count', 'type')
-                ->toArray();
-
-            $officeCounts = array_merge($officeCounts, $dbOfficeCounts);
-        } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::warning('Categories DB fetch skipped (offline/fallback mode): ' . $e->getMessage());
-            $categories = collect();
-        }
-
-        $homepageSettings = \App\Models\HomepageSetting::query()->pluck('value', 'key');
-        $homepageSlides   = \App\Models\HomepageSlide::active()->get()->map(fn ($s) => [
-            'id'         => $s->id,
-            'title'      => $s->title,
-            'image_url'  => $s->image_url,
-            'link_url'   => $s->link_url,
-        ]);
-
-        $homepageMedia = [
-            'video_file'   => $this->resolveMediaUrl($homepageSettings['video_file'] ?? 'videos/0829.mp4'),
-            'video_poster' => $this->resolveMediaUrl($homepageSettings['video_poster'] ?? 'images/logo2.jpg'),
-        ];
-
-        return view('update_service.index', compact(
-            'categories',
-            'totalEntities',
-            'totalServices',
-            'officeCounts',
-            'homepageSettings',
-            'homepageSlides',
-            'homepageMedia'
-        ));
+        return view('update_service.index');
     }
 
     public function userDashboard(): View
@@ -128,125 +35,55 @@ class ServiceCatalogController extends Controller
 
     public function categoryPage(string $key): View
     {
-        try {
-            $category = Category::with([
-                'entities' => fn($q) => $q->where('is_active', true)
-                    ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
-                    ->orderBy('sort_order'),
-            ])->where('key', $key)->where('is_active', true)->first();
-
-            if (!$category) {
-                $category = new Category([
-                    'key' => $key,
-                    'name_ar' => $key === 'ministries' ? 'الوزارات' : ($key === 'authorities' ? 'الهيئات والمؤسسات الحكومية' : 'الشركات والجهات الخاصة'),
-                    'name_en' => ucfirst($key),
-                ]);
-                $category->setRelation('entities', collect());
-            }
-        } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::warning('categoryPage DB error: ' . $e->getMessage());
-            $category = new Category([
-                'key' => $key,
-                'name_ar' => $key === 'ministries' ? 'الوزارات' : ($key === 'authorities' ? 'الهيئات والمؤسسات الحكومية' : 'الشركات والجهات الخاصة'),
-                'name_en' => ucfirst($key),
-            ]);
-            $category->setRelation('entities', collect());
-        }
+        $category = Category::with([
+            'entities' => fn($q) => $q->where('is_active', true)
+                ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
+                ->orderBy('sort_order'),
+        ])->where('key', $key)->where('is_active', true)->firstOrFail();
 
         return view('update_service.catalog_category', compact('category'));
     }
 
     public function entityPage(string $key, int $entityId): View
     {
-        try {
-            $category = Category::where('key', $key)->where('is_active', true)->first();
-            if (!$category) {
-                $category = new Category(['key' => $key, 'name_ar' => 'الجهة', 'name_en' => 'Entity']);
-            }
-
-            $entity = Entity::where('id', $entityId)
-                ->where('is_active', true)
-                ->with(['govServices' => fn($q) => $q->where('is_active', true)->orderBy('sort_order')])
-                ->first();
-
-            if (!$entity) {
-                $entity = new Entity(['id' => $entityId, 'name_ar' => 'الجهة المطلوبة', 'name_en' => 'Requested Entity']);
-                $entity->setRelation('govServices', collect());
-            }
-        } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::warning('entityPage DB error: ' . $e->getMessage());
-            $category = new Category(['key' => $key, 'name_ar' => 'الجهة', 'name_en' => 'Entity']);
-            $entity = new Entity(['id' => $entityId, 'name_ar' => 'الجهة المطلوبة', 'name_en' => 'Requested Entity']);
-            $entity->setRelation('govServices', collect());
-        }
+        $category = Category::where('key', $key)->where('is_active', true)->firstOrFail();
+        $entity   = Entity::where('id', $entityId)
+            ->where('category_id', $category->id)
+            ->where('is_active', true)
+            ->with(['govServices' => fn($q) => $q->where('is_active', true)->orderBy('sort_order')])
+            ->firstOrFail();
 
         return view('update_service.catalog_entity', compact('category', 'entity'));
     }
 
     public function officeDirectory(string $type): View
     {
-        $typeLabels = Office::$typeLabels ?? [
-            'law'         => 'مكاتب المحاماة',
-            'services'    => 'مكاتب الخدمات والتعقيب',
-            'customs'     => 'شركات التخليص الجمركي',
-            'accounting'  => 'الاستشارات المالية والضريبية',
-            'engineering' => 'الاستشارات الهندسية',
-            'freelance'   => 'أصحاب المهن الحرة',
-        ];
+        $typeLabels = Office::$typeLabels;
+        abort_if(!isset($typeLabels[$type]), 404);
 
-        $offices = collect();
-
-        try {
-            $offices = Office::where('type', $type)
-                ->where('is_active', true)
-                ->where('is_verified', true)
-                ->with(['specialtiesRelation', 'services'])
-                ->get();
-        } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::warning('officeDirectory DB error: ' . $e->getMessage());
-            $offices = collect();
-        }
+        $offices = Office::where('type', $type)
+            ->where('is_active', true)
+            ->where('is_verified', true)
+            ->orderBy('name_ar')
+            ->get();
 
         return view('update_service.office_directory', compact('type', 'offices', 'typeLabels'));
     }
 
     public function officeDetail(string $type, int $officeId): View
     {
-        $typeLabels = Office::$typeLabels ?? [
-            'law'         => 'مكاتب المحاماة',
-            'services'    => 'مكاتب الخدمات والتعقيب',
-            'customs'     => 'شركات التخليص الجمركي',
-            'accounting'  => 'الاستشارات المالية والضريبية',
-            'engineering' => 'الاستشارات الهندسية',
-            'freelance'   => 'أصحاب المهن الحرة',
-        ];
+        $typeLabels = Office::$typeLabels;
+        abort_if(!isset($typeLabels[$type]), 404);
 
-        try {
-            $office = Office::where('id', $officeId)
-                ->where('type', $type)
-                ->where('is_active', true)
-                ->where('is_verified', true)
-                ->with([
-                    'specialtiesRelation',
-                    'services' => fn($q) => $q->where('is_active', true)->orderBy('sort_order'),
-                ])
-                ->first();
-
-            if (!$office) {
-                $office = new Office(['id' => $officeId, 'type' => $type, 'name_ar' => 'مكتب معتمد', 'name_en' => 'Certified Office']);
-                $office->setRelation('specialtiesRelation', collect());
-                $office->setRelation('services', collect());
-            }
-        } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::warning('officeDetail DB error: ' . $e->getMessage());
-            $office = new Office(['id' => $officeId, 'type' => $type, 'name_ar' => 'مكتب معتمد', 'name_en' => 'Certified Office']);
-            $office->setRelation('specialtiesRelation', collect());
-            $office->setRelation('services', collect());
-        }
+        $office = Office::where('id', $officeId)
+            ->where('type', $type)
+            ->where('is_active', true)
+            ->where('is_verified', true)
+            ->with(['services' => fn($q) => $q->where('is_active', true)->orderBy('sort_order')])
+            ->firstOrFail();
 
         return view('update_service.office_detail', compact('type', 'office', 'typeLabels'));
     }
-
 
     public function submitOfficeRequest(Request $request): JsonResponse
     {
@@ -317,69 +154,59 @@ class ServiceCatalogController extends Controller
     /* ── JSON: all categories with entities & services ── */
     public function apiServices(): JsonResponse
     {
-        try {
-            $categories = Category::with([
-                'entities' => fn($q) => $q->where('is_active', true)
-                    ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
-                    ->orderBy('sort_order'),
-            ])
-            ->where('is_active', true)
-            ->orderBy('sort_order')
-            ->get()
-            ->map(fn($cat) => [
-                'id'       => $cat->id,
-                'key'      => $cat->key,
-                'name_ar'  => $cat->name_ar,
-                'name_en'  => $cat->name_en,
-                'icon'     => $cat->icon,
-                'color'    => $cat->color,
-                'bg'       => $cat->bg,
-                'entities' => $cat->entities->map(fn($ent) => [
-                    'id'       => $ent->id,
-                    'name_ar'  => $ent->name_ar,
-                    'name_en'  => $ent->name_en,
-                    'icon'     => $ent->icon,
-                    'color'    => $ent->color,
-                    'bg'       => $ent->bg,
-                    'tag_ar'   => $ent->tag_ar,
-                    'tag_en'   => $ent->tag_en,
-                    'services' => $ent->govServices->map(fn($svc) => [
-                        'id'             => $svc->id,
-                        'name_ar'        => $svc->name_ar,
-                        'name_en'        => $svc->name_en,
-                        'icon'           => $svc->icon,
-                        'price'          => (float) $svc->price,
-                        'estimated_days' => $svc->estimated_days,
-                    ]),
+        $categories = Category::with([
+            'entities' => fn($q) => $q->where('is_active', true)
+                ->with(['govServices' => fn($sq) => $sq->where('is_active', true)->orderBy('sort_order')])
+                ->orderBy('sort_order'),
+        ])
+        ->where('is_active', true)
+        ->orderBy('sort_order')
+        ->get()
+        ->map(fn($cat) => [
+            'id'       => $cat->id,
+            'key'      => $cat->key,
+            'name_ar'  => $cat->name_ar,
+            'name_en'  => $cat->name_en,
+            'icon'     => $cat->icon,
+            'color'    => $cat->color,
+            'bg'       => $cat->bg,
+            'entities' => $cat->entities->map(fn($ent) => [
+                'id'       => $ent->id,
+                'name_ar'  => $ent->name_ar,
+                'name_en'  => $ent->name_en,
+                'icon'     => $ent->icon,
+                'color'    => $ent->color,
+                'bg'       => $ent->bg,
+                'tag_ar'   => $ent->tag_ar,
+                'tag_en'   => $ent->tag_en,
+                'services' => $ent->govServices->map(fn($svc) => [
+                    'id'             => $svc->id,
+                    'name_ar'        => $svc->name_ar,
+                    'name_en'        => $svc->name_en,
+                    'icon'           => $svc->icon,
+                    'price'          => (float) $svc->price,
+                    'estimated_days' => $svc->estimated_days,
                 ]),
-            ]);
+            ]),
+        ]);
 
-            return response()->json($categories);
-        } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::warning('apiServices DB error: ' . $e->getMessage());
-            return response()->json([]);
-        }
+        return response()->json($categories);
     }
 
     /* ── JSON: public office type counts (for main page) ── */
     public function publicOfficeTypes(): JsonResponse
     {
+        $rows = Office::where('is_active', true)
+            ->where('is_verified', true)
+            ->selectRaw('type, COUNT(*) as count')
+            ->groupBy('type')
+            ->get()
+            ->keyBy('type');
+
         $types = ['law', 'services', 'customs'];
-        $result = ['law' => 0, 'services' => 0, 'customs' => 0];
-
-        try {
-            $rows = Office::where('is_active', true)
-                ->where('is_verified', true)
-                ->selectRaw('type, COUNT(*) as count')
-                ->groupBy('type')
-                ->get()
-                ->keyBy('type');
-
-            foreach ($types as $t) {
-                $result[$t] = (int) ($rows[$t]->count ?? 0);
-            }
-        } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::warning('publicOfficeTypes DB error: ' . $e->getMessage());
+        $result = [];
+        foreach ($types as $t) {
+            $result[$t] = (int) ($rows[$t]->count ?? 0);
         }
 
         return response()->json($result);
@@ -528,14 +355,5 @@ class ServiceCatalogController extends Controller
         $user->update(['password' => Hash::make($request->new_password)]);
 
         return response()->json(['message' => 'تم تغيير كلمة المرور بنجاح']);
-    }
-
-    private function resolveMediaUrl(string $path): string
-    {
-        if (str_starts_with($path, 'homepage/')) {
-            return \Illuminate\Support\Facades\Storage::url($path);
-        }
-
-        return asset($path);
     }
 }

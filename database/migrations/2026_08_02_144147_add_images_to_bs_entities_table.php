@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::connection('business')->hasTable('bs_entities')) {
-            if (!Schema::connection('business')->hasColumn('bs_entities', 'images')) {
-                Schema::connection('business')->table('bs_entities', function (Blueprint $table) {
-                    $table->string('images')->nullable()->after('bg');
-                });
-            }
-        }
+       
+ Schema::connection('business')->table('bs_entities', function (Blueprint $table) {
+        $table->string('images')->nullable()->after('bg');
+    });
+
     }
 
     /**

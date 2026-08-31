@@ -16,7 +16,6 @@
         "vite": "^7.0.7"
     },
     "dependencies": {
-        "playwright": "^1.62.1",
         "vue": "^3.5.32"
     }
 }

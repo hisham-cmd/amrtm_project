@@ -1,9 +1,0 @@
-.git
-.env
-.env.backup
-.env.production
-node_modules
-vendor
-storage/*.key
-.phpunit.result.cache
-*.log
